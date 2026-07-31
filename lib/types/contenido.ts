@@ -18,6 +18,8 @@ export interface BlogPost {
 
 export interface CaseStudy {
   slug: string;
+  /** Nombre de negocio ilustrativo (no un cliente real) usado como referencia. */
+  cliente: string;
   title: string;
   industria: string;
   problema: string;

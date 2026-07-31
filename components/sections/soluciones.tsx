@@ -1,40 +1,10 @@
-import { ArrowRight, Cpu, Database, Network, Workflow } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Container, Section } from "@/components/ui/container";
 import { FadeIn } from "@/components/ui/fade-in";
-
-export const pilares = [
-  {
-    slug: "automatizacion",
-    icon: Workflow,
-    title: "Automatización",
-    description: "Procesos, reportes y documentos que dejan de hacerse a mano.",
-    incluye: ["Flujos de trabajo", "RPA", "Integración de aplicaciones"],
-  },
-  {
-    slug: "inteligencia-artificial",
-    icon: Cpu,
-    title: "Inteligencia Artificial",
-    description: "Agentes y asistentes que apoyan la operación diaria.",
-    incluye: ["Chatbots y copilotos", "IA generativa", "Procesamiento de documentos"],
-  },
-  {
-    slug: "datos-inteligencia",
-    icon: Database,
-    title: "Datos e Inteligencia",
-    description: "Dashboards y KPIs para decidir con información, no con intuición.",
-    incluye: ["Business Intelligence", "Dashboards", "Forecasting"],
-  },
-  {
-    slug: "transformacion-digital",
-    icon: Network,
-    title: "Transformación Digital",
-    description: "Sistemas conectados en lugar de islas de información.",
-    incluye: ["Integración de sistemas", "Cloud", "Roadmaps de IA"],
-  },
-];
+import { pilares } from "@/lib/data/pilares";
 
 export function Soluciones() {
   return (

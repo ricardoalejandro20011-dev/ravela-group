@@ -1,7 +1,9 @@
+import { Mail, Phone } from "lucide-react";
 import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
 import { Logo } from "@/components/ui/logo";
+import { CONTACTO } from "@/lib/constants/contacto";
 
 const columns: { title: string; links: { href: string; label: string }[] }[] = [
   {
@@ -43,6 +45,22 @@ export function Footer() {
               Transformamos procesos manuales en operaciones inteligentes para PYMEs
               mexicanas.
             </p>
+            <div className="mt-5 flex flex-col gap-2.5">
+              <a
+                href={`tel:${CONTACTO.telefonoE164}`}
+                className="flex items-center gap-2 text-sm text-cloud/60 transition-colors hover:text-cloud"
+              >
+                <Phone className="h-4 w-4" />
+                {CONTACTO.telefonoDisplay}
+              </a>
+              <a
+                href={`mailto:${CONTACTO.email}`}
+                className="flex items-center gap-2 text-sm text-cloud/60 transition-colors hover:text-cloud"
+              >
+                <Mail className="h-4 w-4" />
+                {CONTACTO.email}
+              </a>
+            </div>
           </div>
 
           {columns.map((column) => (

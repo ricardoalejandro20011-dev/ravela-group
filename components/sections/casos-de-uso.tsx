@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Badge } from "@/components/ui/badge";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Container, Section } from "@/components/ui/container";
@@ -27,7 +29,10 @@ export function CasosDeUso() {
                     <Badge variant="neutral">Ejemplo ilustrativo</Badge>
                   )}
                 </div>
-                <CardTitle className="mt-4">{caso.title}</CardTitle>
+                <p className="mt-4 text-xs font-medium uppercase tracking-wide text-cloud/40">
+                  {caso.cliente}
+                </p>
+                <CardTitle className="mt-1.5">{caso.title}</CardTitle>
                 <p className="mt-3 text-sm leading-relaxed text-cloud/65">
                   <span className="font-medium text-cloud/80">Problema: </span>
                   {caso.problema}
@@ -43,6 +48,15 @@ export function CasosDeUso() {
             </FadeIn>
           ))}
         </div>
+
+        <FadeIn className="mt-10 text-center">
+          <Link
+            href="/casos-de-exito"
+            className="text-sm font-medium text-soft-cyan hover:underline"
+          >
+            Ver todos los casos de éxito
+          </Link>
+        </FadeIn>
       </Container>
     </Section>
   );

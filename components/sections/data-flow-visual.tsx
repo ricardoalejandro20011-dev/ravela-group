@@ -3,12 +3,12 @@
 import { motion } from "framer-motion";
 
 const nodes = [
-  { id: "a", x: 60, y: 70, r: 5, color: "#7C3AED" },
-  { id: "b", x: 260, y: 30, r: 4, color: "#2563EB" },
-  { id: "c", x: 340, y: 130, r: 6, color: "#22D3EE" },
-  { id: "d", x: 150, y: 170, r: 4, color: "#2563EB" },
-  { id: "e", x: 400, y: 40, r: 3, color: "#7C3AED" },
-  { id: "f", x: 30, y: 180, r: 3, color: "#22D3EE" },
+  { id: "a", x: 60, y: 70, r: 5, color: "var(--color-electric-violet)" },
+  { id: "b", x: 260, y: 30, r: 4, color: "var(--color-cyber-blue)" },
+  { id: "c", x: 340, y: 130, r: 6, color: "var(--color-soft-cyan)" },
+  { id: "d", x: 150, y: 170, r: 4, color: "var(--color-cyber-blue)" },
+  { id: "e", x: 400, y: 40, r: 3, color: "var(--color-electric-violet)" },
+  { id: "f", x: 30, y: 180, r: 3, color: "var(--color-soft-cyan)" },
 ];
 
 const edges: [string, string][] = [
@@ -53,9 +53,9 @@ export function DataFlowVisual({ className }: { className?: string }) {
         })}
         <defs>
           <linearGradient id="data-flow-gradient" x1="0" y1="0" x2="430" y2="210">
-            <stop offset="0%" stopColor="#7C3AED" />
-            <stop offset="55%" stopColor="#2563EB" />
-            <stop offset="100%" stopColor="#22D3EE" />
+            <stop offset="0%" stopColor="var(--color-electric-violet)" />
+            <stop offset="55%" stopColor="var(--color-cyber-blue)" />
+            <stop offset="100%" stopColor="var(--color-soft-cyan)" />
           </linearGradient>
         </defs>
         {nodes.map((node, i) => (
