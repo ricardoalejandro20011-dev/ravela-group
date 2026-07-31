@@ -1,26 +1,65 @@
 @import "tailwindcss";
 
+@theme {
+  --color-deep-space: #080b14;
+  --color-midnight: #111827;
+  --color-electric-violet: #7c3aed;
+  --color-cyber-blue: #2563eb;
+  --color-soft-cyan: #22d3ee;
+  --color-cloud: #f8fafc;
+
+  --font-heading: var(--font-space-grotesk), "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: var(--color-deep-space);
+  --foreground: var(--color-cloud);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: color-mix(in srgb, var(--color-cloud) 12%, transparent);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: var(--color-electric-violet);
+  color: var(--color-cloud);
+}
+
+@layer utilities {
+  .glass {
+    background: color-mix(in srgb, var(--color-midnight) 55%, transparent);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid color-mix(in srgb, var(--color-cloud) 10%, transparent);
+  }
+
+  .gradient-brand {
+    background-image: linear-gradient(
+      135deg,
+      var(--color-electric-violet) 0%,
+      var(--color-cyber-blue) 55%,
+      var(--color-soft-cyan) 100%
+    );
+  }
+
+  .text-gradient-brand {
+    background-image: linear-gradient(
+      135deg,
+      var(--color-electric-violet) 0%,
+      var(--color-soft-cyan) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .glow-violet {
+    box-shadow: 0 0 40px -12px color-mix(in srgb, var(--color-electric-violet) 70%, transparent);
+  }
 }
