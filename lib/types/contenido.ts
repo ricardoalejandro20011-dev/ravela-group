@@ -20,6 +20,8 @@ export interface CaseStudy {
   slug: string;
   /** Nombre de negocio ilustrativo (no un cliente real) usado como referencia. */
   cliente: string;
+  /** Nombre de la persona responsable, ilustrativo. */
+  responsable?: string;
   title: string;
   industria: string;
   problema: string;

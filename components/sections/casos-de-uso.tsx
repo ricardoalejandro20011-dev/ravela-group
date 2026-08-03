@@ -18,7 +18,7 @@ export function CasosDeUso() {
           </p>
         </FadeIn>
 
-        <div className="mx-auto mt-12 grid max-w-4xl gap-6 sm:grid-cols-2">
+        <div className="mx-auto mt-12 grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {casosDeUso.map((caso, i) => (
             <FadeIn key={caso.slug} delay={i * 0.08}>
               <CasoCard caso={caso} className="h-full" />

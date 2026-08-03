@@ -1,33 +1,48 @@
 import type { CaseStudy } from "@/lib/types";
 
-// Todos los casos son ilustrativos: nombres de negocio genéricos, no
-// clientes reales de Ravela Group (ver sección 32 del master prompt).
+// Todos los casos son ilustrativos: nombres de negocio y personas
+// genéricos, no clientes reales de Ravela Group (ver sección 32 del
+// master prompt).
 export const casosDeUso: CaseStudy[] = [
   {
-    slug: "ferreteria-lopez-reportes-automatizados",
-    cliente: "Ferretería López",
-    title: "De días a minutos: reportes de ventas automatizados",
-    industria: "Ferretería y materiales de construcción",
+    slug: "refaccionaria-munguia-cotizaciones-whatsapp",
+    cliente: "Refaccionaria Munguía",
+    title: "De 3 horas de espera a cotizaciones al instante en WhatsApp",
+    industria: "Refaccionaria industrial y materiales",
     problema:
-      "El equipo administrativo dedicaba más de 15 horas a la semana consolidando reportes de ventas desde Excel de sus 3 sucursales.",
+      "Los mostradores de sus 2 sucursales se saturaban respondiendo preguntas sobre disponibilidad y precios de refacciones en WhatsApp, perdiendo clientes por tardar horas en contestar.",
     solucion:
-      "Automatización de la consolidación de datos y generación de reportes con un dashboard centralizado.",
-    resultado:
-      "Reducción estimada del tiempo de generación de reportes de días a minutos.",
+      "Flujo automatizado conectado a su inventario centralizado que consulta precios y stock disponible en segundos, generando una pre-cotización automática para el cliente.",
+    resultado: "Reducción del 80% en tiempo de respuesta a cotizaciones cotidianas.",
     pilarRelacionado: "automatizacion",
     esIlustrativo: true,
   },
   {
-    slug: "boutique-casa-bonita-asistente-whatsapp",
-    cliente: "Boutique Casa Bonita",
-    title: "Un asistente de IA que nunca deja un mensaje sin responder",
-    industria: "Comercio al por menor (venta por WhatsApp)",
+    slug: "odontocare-asistente-citas-whatsapp",
+    cliente: "Clínica Dental OdontoCare",
+    responsable: "Dra. Sofía Morales",
+    title: "Asistente de citas por WhatsApp que eliminó el ausentismo",
+    industria: "Salud y consultorio médico",
     problema:
-      "La dueña atendía manualmente más de 100 mensajes de WhatsApp al día entre pedidos, dudas de tallas y seguimiento de envíos.",
+      "La asistente dedicada perdía hasta 4 horas diarias confirmando citas por mensaje y teléfono. Aun así, el 25% de los pacientes no se presentaba por olvido, dejando huecos en la agenda.",
     solucion:
-      "Asistente de IA que responde preguntas frecuentes, captura pedidos simples y escala a una persona los casos que lo requieren.",
+      "Asistente conversacional de citas en WhatsApp que muestra fechas disponibles, agenda la cita, envía recordatorios automáticos 24 horas antes y permite reagendar con un par de clics.",
+    resultado: "Reducción del ausentismo del 25% al 5% y agenda optimizada en automático.",
+    pilarRelacionado: "inteligencia-artificial",
+    esIlustrativo: true,
+  },
+  {
+    slug: "torres-asociados-analisis-expedientes-ia",
+    cliente: "Firma Legal Torres & Asociados",
+    responsable: "Lic. Fernando Torres",
+    title: "Aplicación con IA para análisis express de expedientes",
+    industria: "Servicios legales / Abogacía",
+    problema:
+      "Revisar un expediente extenso o contrato de más de 80 páginas antes de una audiencia tomaba horas de lectura analítica a los abogados pasantes.",
+    solucion:
+      "Aplicación web interna (MVP) impulsada por un LLM que analiza los PDF de expedientes, extrae cláusulas críticas e inconsistencias, y genera un resumen ejecutivo con línea del tiempo en minutos.",
     resultado:
-      "Tiempo de respuesta estimado de horas a segundos, sin contratar personal adicional.",
+      "Reducción de horas de lectura previa a minutos, permitiendo atender más casos sin contratar personal extra.",
     pilarRelacionado: "inteligencia-artificial",
     esIlustrativo: true,
   },
