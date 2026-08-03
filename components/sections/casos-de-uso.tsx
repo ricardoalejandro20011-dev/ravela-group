@@ -1,7 +1,6 @@
 import Link from "next/link";
 
-import { Badge } from "@/components/ui/badge";
-import { Card, CardTitle } from "@/components/ui/card";
+import { CasoCard } from "@/components/casos/caso-card";
 import { Container, Section } from "@/components/ui/container";
 import { FadeIn } from "@/components/ui/fade-in";
 import { casosDeUso } from "@/lib/mock/casos";
@@ -22,29 +21,7 @@ export function CasosDeUso() {
         <div className="mx-auto mt-12 grid max-w-4xl gap-6 sm:grid-cols-2">
           {casosDeUso.map((caso, i) => (
             <FadeIn key={caso.slug} delay={i * 0.08}>
-              <Card className="h-full">
-                <div className="flex items-center justify-between gap-3">
-                  <Badge variant="violet">{caso.industria}</Badge>
-                  {caso.esIlustrativo && (
-                    <Badge variant="neutral">Ejemplo ilustrativo</Badge>
-                  )}
-                </div>
-                <p className="mt-4 text-xs font-medium uppercase tracking-wide text-cloud/40">
-                  {caso.cliente}
-                </p>
-                <CardTitle className="mt-1.5">{caso.title}</CardTitle>
-                <p className="mt-3 text-sm leading-relaxed text-cloud/65">
-                  <span className="font-medium text-cloud/80">Problema: </span>
-                  {caso.problema}
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-cloud/65">
-                  <span className="font-medium text-cloud/80">Solución: </span>
-                  {caso.solucion}
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-soft-cyan/90">
-                  {caso.resultado}
-                </p>
-              </Card>
+              <CasoCard caso={caso} className="h-full" />
             </FadeIn>
           ))}
         </div>

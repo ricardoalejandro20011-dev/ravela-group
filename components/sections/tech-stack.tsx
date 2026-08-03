@@ -1,5 +1,15 @@
-import { Bot, PieChart } from "lucide-react";
 import {
+  AppWindow,
+  Bot,
+  BrainCircuit,
+  Cloud,
+  Database,
+  Layers,
+  PieChart,
+  Workflow,
+} from "lucide-react";
+import {
+  SiAnthropic,
   SiGooglesheets,
   SiHubspot,
   SiN8N,
@@ -13,19 +23,28 @@ import { FadeIn } from "@/components/ui/fade-in";
 
 /**
  * Logos reales vía simple-icons (uso libre, CC0) para las marcas que lo
- * permiten. OpenAI y Power BI no están disponibles como logo de marca en
- * esa librería (restricción de la propia marca), así que se muestran con
- * un ícono genérico + nombre en vez de reproducir su logotipo.
+ * permiten. OpenAI, Power BI, Power Automate, Microsoft Fabric y Azure no
+ * están disponibles como logo de marca en esa librería (restricción de la
+ * propia marca), así que se muestran con un ícono genérico + nombre en vez
+ * de reproducir su logotipo.
  */
 const herramientas = [
   { name: "n8n", Icon: SiN8N },
   { name: "WhatsApp", Icon: SiWhatsapp },
   { name: "OpenAI", Icon: Bot },
+  { name: "Claude", Icon: SiAnthropic },
   { name: "Power BI", Icon: PieChart },
+  { name: "Power Automate", Icon: Workflow },
   { name: "Zapier", Icon: SiZapier },
   { name: "Google Sheets", Icon: SiGooglesheets },
   { name: "HubSpot", Icon: SiHubspot },
   { name: "Notion", Icon: SiNotion },
+  { name: "Apps a la medida", Icon: AppWindow },
+  { name: "Bots", Icon: Bot },
+  { name: "Bases de datos", Icon: Database },
+  { name: "Microsoft Fabric", Icon: Layers },
+  { name: "Azure", Icon: Cloud },
+  { name: "LLMs", Icon: BrainCircuit },
 ];
 
 export function TechStack() {

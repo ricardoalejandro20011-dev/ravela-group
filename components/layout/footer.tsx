@@ -2,6 +2,7 @@ import { Mail, Phone } from "lucide-react";
 import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
+import { LinkedinIcon } from "@/components/ui/icons/linkedin";
 import { Logo } from "@/components/ui/logo";
 import { CONTACTO } from "@/lib/constants/contacto";
 
@@ -59,6 +60,15 @@ export function Footer() {
               >
                 <Mail className="h-4 w-4" />
                 {CONTACTO.email}
+              </a>
+              <a
+                href={CONTACTO.linkedinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Ravela Group en LinkedIn"
+                className="mt-1 flex h-8 w-8 items-center justify-center rounded-lg border border-cloud/15 text-cloud/60 transition-colors hover:border-cloud/30 hover:text-cloud"
+              >
+                <LinkedinIcon className="h-4 w-4" />
               </a>
             </div>
           </div>
