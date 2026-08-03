@@ -35,8 +35,9 @@ export function RavelaIntelligence() {
               datos e integración, y el ahorro y tiempo que podrías recuperar.
             </p>
             <p className="mt-3 text-sm text-cloud/50">
-              Los resultados son orientativos: te dan un punto de partida, no
-              sustituyen una auditoría profesional.
+              Este formulario de 5 pasos es tu diagnóstico inicial: un punto de partida
+              orientativo. Ravela Intelligence™ se profundiza después, en una Discovery
+              Session con nuestro equipo.
             </p>
             <div className="mt-8">
               <Button href="/diagnostico">

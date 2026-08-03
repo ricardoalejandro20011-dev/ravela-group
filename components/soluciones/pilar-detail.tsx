@@ -20,6 +20,17 @@ export function PilarDetail({ pilar }: { pilar: Pilar }) {
               {pilar.title}
             </h1>
             <p className="mt-4 text-lg text-cloud/70">{pilar.heroDescription}</p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5">
+              {pilar.herramientas.map((tool) => (
+                <span
+                  key={tool.name}
+                  className="flex items-center gap-1.5 rounded-full border border-cloud/10 bg-cloud/5 px-3 py-1.5 text-xs text-cloud/60"
+                >
+                  <tool.Icon className="h-3.5 w-3.5" />
+                  {tool.name}
+                </span>
+              ))}
+            </div>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Button href="/diagnostico" size="lg">
                 Analiza tu empresa

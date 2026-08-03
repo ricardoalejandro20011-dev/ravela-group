@@ -20,6 +20,8 @@ export interface Lead {
   servicioInteres?: string;
   presupuestoEstimado?: string;
   mensaje?: string;
+  diaPreferido?: string;
+  bloqueHorario?: string;
   origen: LeadOrigen;
   createdAt: string;
 }

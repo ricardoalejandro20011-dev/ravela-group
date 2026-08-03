@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { flattenError } from "zod";
 
+import { notificarNuevoLead } from "@/lib/email/notify-lead";
 import { guardarLead } from "@/lib/mock/leads-store";
 import { checkRateLimit } from "@/lib/utils/rate-limit";
 import { contactoSchema } from "@/lib/validations/contacto";
@@ -34,10 +35,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  const { nombre, empresa, email, whatsapp, estado, industria, tamano, servicioInteres, presupuestoEstimado, mensaje } =
-    parsed.data;
-
-  const lead = guardarLead({
+  const {
     nombre,
     empresa,
     email,
@@ -48,8 +46,27 @@ export async function POST(request: Request) {
     servicioInteres,
     presupuestoEstimado,
     mensaje,
+    diaPreferido,
+    bloqueHorario,
+  } = parsed.data;
+
+  const lead = await guardarLead({
+    nombre,
+    empresa,
+    email,
+    whatsapp,
+    estado,
+    industria,
+    tamano: tamano || undefined,
+    servicioInteres,
+    presupuestoEstimado,
+    mensaje,
+    diaPreferido: diaPreferido || undefined,
+    bloqueHorario: bloqueHorario || undefined,
     origen: "contacto",
   });
+
+  await notificarNuevoLead(lead);
 
   return NextResponse.json({ ok: true, leadId: lead.id });
 }

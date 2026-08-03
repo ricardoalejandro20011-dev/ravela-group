@@ -1,4 +1,13 @@
-import { Cpu, Database, Network, Workflow } from "lucide-react";
+import { Bot, Cpu, Database, Network, PieChart, Workflow } from "lucide-react";
+import {
+  SiAnthropic,
+  SiGooglesheets,
+  SiHubspot,
+  SiN8N,
+  SiNotion,
+  SiWhatsapp,
+  SiZapier,
+} from "react-icons/si";
 
 export const pilares = [
   {
@@ -9,6 +18,11 @@ export const pilares = [
     heroDescription:
       "Quitamos de tu operación las tareas repetitivas que consumen horas cada semana, para que tu equipo se enfoque en lo que sí requiere criterio humano.",
     incluye: ["Flujos de trabajo", "RPA", "Integración de aplicaciones"],
+    herramientas: [
+      { name: "n8n", Icon: SiN8N },
+      { name: "Zapier", Icon: SiZapier },
+      { name: "WhatsApp", Icon: SiWhatsapp },
+    ],
     servicios: [
       "Automatización de procesos",
       "Automatización administrativa",
@@ -32,6 +46,11 @@ export const pilares = [
     heroDescription:
       "Incorporamos IA de forma práctica: asistentes que atienden, clasifican y resumen información, sin necesidad de que tu equipo se vuelva experto en tecnología.",
     incluye: ["Chatbots y copilotos", "IA generativa", "Procesamiento de documentos"],
+    herramientas: [
+      { name: "OpenAI", Icon: Bot },
+      { name: "Anthropic", Icon: SiAnthropic },
+      { name: "WhatsApp", Icon: SiWhatsapp },
+    ],
     servicios: [
       "Agentes de IA",
       "Asistentes virtuales",
@@ -56,6 +75,11 @@ export const pilares = [
     heroDescription:
       "Conectamos y ordenamos tu información dispersa en dashboards claros, para que las decisiones se tomen con datos y no solo con intuición.",
     incluye: ["Business Intelligence", "Dashboards", "Forecasting"],
+    herramientas: [
+      { name: "Power BI", Icon: PieChart },
+      { name: "Google Sheets", Icon: SiGooglesheets },
+      { name: "Notion", Icon: SiNotion },
+    ],
     servicios: [
       "Business Intelligence",
       "Dashboards",
@@ -79,6 +103,11 @@ export const pilares = [
     heroDescription:
       "Diseñamos el roadmap tecnológico de tu empresa: qué digitalizar primero, cómo conectar tus sistemas y cómo preparar tu operación para crecer.",
     incluye: ["Integración de sistemas", "Cloud", "Roadmaps de IA"],
+    herramientas: [
+      { name: "HubSpot", Icon: SiHubspot },
+      { name: "n8n", Icon: SiN8N },
+      { name: "Google Sheets", Icon: SiGooglesheets },
+    ],
     servicios: [
       "Digitalización de procesos",
       "Aplicaciones empresariales",

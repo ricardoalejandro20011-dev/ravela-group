@@ -28,6 +28,10 @@ export default function DiagnosticoPage() {
             5 pasos rápidos para identificar qué procesos puedes automatizar, cuánto
             podrías ahorrar y cómo la IA puede ayudar a tu negocio.
           </p>
+          <p className="mt-2 text-sm text-cloud/45">
+            Este es tu diagnóstico inicial. Ravela Intelligence™ profundiza después en
+            una Discovery Session con nuestro equipo.
+          </p>
         </FadeIn>
 
         <FadeIn delay={0.1} className="mx-auto mt-12 max-w-3xl">

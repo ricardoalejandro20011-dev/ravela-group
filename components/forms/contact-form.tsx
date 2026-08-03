@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircle2, Loader2 } from "lucide-react";
+import { CheckCircle2, Loader2, PhoneCall } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -195,10 +195,49 @@ export function ContactForm() {
         {errors.mensaje && <p className={errorClass}>{errors.mensaje.message}</p>}
       </div>
 
+      <div className="rounded-xl border border-cloud/10 bg-cloud/[0.03] p-4">
+        <p className="flex items-center gap-2 text-sm font-medium text-cloud/80">
+          <PhoneCall className="h-4 w-4 text-soft-cyan" />
+          ¿Prefieres que te llamemos? (opcional)
+        </p>
+        <div className="mt-3 grid gap-4 sm:grid-cols-2">
+          <div>
+            <label className={labelClass} htmlFor="diaPreferido">
+              Día preferido
+            </label>
+            <select id="diaPreferido" className={inputClass} defaultValue="" {...register("diaPreferido")}>
+              <option value="">Sin preferencia</option>
+              <option value="Lunes">Lunes</option>
+              <option value="Martes">Martes</option>
+              <option value="Miércoles">Miércoles</option>
+              <option value="Jueves">Jueves</option>
+              <option value="Viernes">Viernes</option>
+            </select>
+          </div>
+          <div>
+            <label className={labelClass} htmlFor="bloqueHorario">
+              Horario preferido
+            </label>
+            <select id="bloqueHorario" className={inputClass} defaultValue="" {...register("bloqueHorario")}>
+              <option value="">Sin preferencia</option>
+              <option value="9:00–12:00">9:00 – 12:00</option>
+              <option value="12:00–15:00">12:00 – 15:00</option>
+              <option value="15:00–18:00">15:00 – 18:00</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
       {status === "error" && (
         <p className="text-sm text-magenta">
           Hubo un problema al enviar tu mensaje. Intenta de nuevo o escríbenos directamente
           por correo.
+        </p>
+      )}
+
+      {Object.keys(errors).length > 0 && (
+        <p className="text-sm text-magenta">
+          Revisa los campos marcados antes de enviar el formulario.
         </p>
       )}
 

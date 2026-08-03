@@ -3,7 +3,7 @@ import { z } from "zod";
 export const diagnosticoSchema = z.object({
   nombre: z.string().trim().min(2, "Ingresa tu nombre").max(100),
   empresa: z.string().trim().min(2, "Ingresa el nombre de tu empresa").max(100),
-  email: z.string().trim().email("Ingresa un correo válido"),
+  email: z.email("Ingresa un correo válido").trim(),
   industria: z.string().trim().min(2, "Selecciona tu industria").max(100),
   estado: z.string().trim().min(2, "Selecciona tu estado").max(60),
   numEmpleados: z.enum(["1-5", "6-20", "21-50", "51-200", "200+"]),

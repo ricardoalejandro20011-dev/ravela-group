@@ -29,9 +29,25 @@ Copia `.env.example` a `.env.local` y completa los valores según el entorno:
 cp .env.example .env.local
 ```
 
-Mientras no se conecten los servicios reales (Supabase, proveedor de IA, email, CRM),
-el sitio funciona con datos mock (`lib/mock/`) y las variables pueden quedar vacías.
-Nunca subas `.env.local` a git ni expongas keys en código de cliente.
+Mientras no se conecten los servicios reales, el sitio funciona con datos mock y
+almacenamiento en memoria. Nunca subas `.env.local` a git ni expongas keys en código
+de cliente.
+
+**Para que los formularios (contacto y diagnóstico) guarden leads de forma real en
+producción, se necesitan estas dos variables como mínimo:**
+
+- **Supabase** (almacenamiento persistente de leads):
+  1. Crea un proyecto gratis en [supabase.com](https://supabase.com).
+  2. En el SQL Editor, corre el `create table leads (...)` documentado en
+     `lib/supabase/schema.ts`.
+  3. Copia `Project URL` → `NEXT_PUBLIC_SUPABASE_URL` y la `service_role` key
+     (Project Settings → API) → `SUPABASE_SERVICE_ROLE_KEY`.
+  - Sin esto, los leads solo viven en memoria durante esa invocación y se
+    pierden — en Vercel (serverless) esto significa que **no persisten**.
+- **Resend** (notificación por correo de cada lead nuevo a `ravelaservicios@gmail.com`):
+  1. Crea una cuenta gratis en [resend.com](https://resend.com).
+  2. Copia tu API key → `RESEND_API_KEY`.
+  - Sin esto, el envío de correo simplemente se omite (no rompe el sitio).
 
 ## 4. Ejecutar en localhost
 
@@ -112,4 +128,7 @@ public/brand/             Logo, isotipo, favicon
 
 ## Estado del proyecto
 
-Desarrollo por fases (ver roadmap acordado). Fase actual: **Fase 1 — Arquitectura**.
+Sitio completo: Home, Soluciones (+4 pilares), Ravela Intelligence™ (diagnóstico),
+Calculadora de ROI, Casos de éxito, Nosotros, Recursos, Blog y Contacto, todos
+funcionales. Pendiente antes de producción: conectar Supabase y Resend (ver
+sección 3), y SEO/analytics avanzados.
