@@ -30,8 +30,8 @@ export default function DiagnosticoPage() {
             cuánto podrías ahorrar y cómo la IA puede ayudar a tu negocio.
           </p>
           <p className="mt-2 text-sm text-cloud/70">
-            Este es tu diagnóstico inicial. Ravela Intelligence profundiza
-            después en una sesión de trabajo con nuestro equipo.
+            Ravela Intelligence es la herramienta de diagnóstico de Ravela Solutions.
+            Profundizamos en tus respuestas durante una sesión de trabajo.
           </p>
         </FadeIn>
 

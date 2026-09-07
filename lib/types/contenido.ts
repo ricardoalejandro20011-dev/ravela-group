@@ -18,19 +18,21 @@ export interface BlogPost {
 
 export interface CaseStudy {
   slug: string;
-  /** Sector demostrativo o nombre autorizado del cliente. */
-  cliente: string;
-  /** Solo para casos reales con autorización. */
-  responsable?: string;
   title: string;
-  industria: string;
-  problema: string;
-  solucion: string;
-  resultado: string;
-  pilarRelacionado: Pilar;
-  /** La publicación como caso real requiere autorización explícita. */
-  type: "demonstrative" | "real";
-  authorized?: boolean;
+  clientDisplayName: string;
+  industry: string;
+  real: true;
+  authorizedName: boolean;
+  summary: string;
+  /** Empty until the real project details are confirmed. Never infer from a demo. */
+  problem: string;
+  solution: string;
+  workflow?: string[];
+  technologies?: string[];
+  results?: { label: string; value: string; verified: boolean }[];
+  heroImage?: string;
+  heroImageAlt?: string;
+  screenshots?: string[];
 }
 
 export type Moneda = "MXN";

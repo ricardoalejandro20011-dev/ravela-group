@@ -1,3 +1,4 @@
+import { ProcessBeforeAfter } from "@/components/demos/workflow-demo";
 import Link from "next/link";
 import {
   Copy,
@@ -12,6 +13,9 @@ export function Problemas() {
   return (
     <Section>
       <Container>
+        <div className="mb-10 max-w-3xl">
+          <ProcessBeforeAfter />
+        </div>
         <p className="eyebrow">¿Te suena familiar?</p>
         <h2 className="section-title mt-4 max-w-3xl">
           Tu empresa no necesita trabajar más. Necesita hacer menos trabajo

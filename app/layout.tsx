@@ -1,3 +1,4 @@
+import { CONTACTO } from "@/lib/constants/contacto";
 import { Analytics } from "@/components/layout/analytics";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
@@ -57,6 +58,20 @@ export default function RootLayout({
                 "Automatización e Inteligencia Artificial para PYMEs mexicanas",
               founder: { "@type": "Person", name: "Ricardo Valdez" },
               areaServed: "México",
+              email: CONTACTO.email,
+              telephone: CONTACTO.telefonoE164,
+              department: [
+                {
+                  "@type": "Organization",
+                  name: "Ravela Solutions",
+                  url: "https://www.ravela.online/soluciones",
+                },
+                {
+                  "@type": "Organization",
+                  name: "Ravela Labs",
+                  url: "https://www.ravela.online/labs",
+                },
+              ],
             }),
           }}
         />

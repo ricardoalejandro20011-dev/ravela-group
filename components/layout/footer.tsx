@@ -6,9 +6,9 @@ import { LinkedinIcon } from "@/components/ui/icons/linkedin";
 import { Logo } from "@/components/ui/logo";
 import { CONTACTO } from "@/lib/constants/contacto";
 
-const columns: { title: string; links: { href: string; label: string }[] }[] = [
+const columns = [
   {
-    title: "Soluciones",
+    title: "Solutions",
     links: [
       { href: "/soluciones/automatizacion", label: "Automatización" },
       {
@@ -16,29 +16,30 @@ const columns: { title: string; links: { href: string; label: string }[] }[] = [
         label: "Inteligencia Artificial",
       },
       { href: "/soluciones/datos-inteligencia", label: "Datos e Inteligencia" },
-      {
-        href: "/soluciones/transformacion-digital",
-        label: "Transformación Digital",
-      },
-    ],
-  },
-  {
-    title: "Ravela Group",
-    links: [
       { href: "/diagnostico", label: "Ravela Intelligence" },
-      { href: "/calculadora-roi", label: "Calculadora de ROI" },
-      { href: "/casos-de-exito", label: "Casos de uso" },
-      { href: "/nosotros", label: "Nosotros" },
     ],
   },
   {
-    title: "Recursos",
+    title: "Labs",
     links: [
-      { href: "/recursos", label: "Recursos" },
-      { href: "/blog", label: "Blog" },
-      { href: "/contacto", label: "Contacto" },
-      { href: "/aviso-de-privacidad", label: "Aviso de privacidad" },
+      { href: "/labs#miga", label: "Miga" },
+      { href: "/labs#cobranza-escolar", label: "Cobranza escolar" },
+      { href: "/labs", label: "Ver Ravela Labs" },
     ],
+  },
+  {
+    title: "Empresa",
+    links: [
+      { href: "/casos-de-exito", label: "Casos reales" },
+      { href: "/nosotros", label: "Nosotros" },
+      { href: "/contacto", label: "Contacto" },
+      { href: "/blog", label: "Blog" },
+      { href: "/calculadora-roi", label: "Calculadora de ROI" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [{ href: "/aviso-de-privacidad", label: "Aviso de privacidad" }],
   },
 ];
 
@@ -46,11 +47,12 @@ export function Footer() {
   return (
     <footer className="border-t border-cloud/10 bg-midnight/40">
       <Container className="py-16">
-        <div className="grid gap-12 lg:grid-cols-[1.2fr_repeat(3,1fr)]">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
           <div>
             <Logo />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-cloud/70">
-              Automatización e Inteligencia Artificial para PYMEs mexicanas.
+              Tecnología, automatización e Inteligencia Artificial para
+              empresas.
             </p>
             <div className="mt-5 flex flex-col gap-2.5">
               <a
@@ -58,7 +60,7 @@ export function Footer() {
                 className="flex items-center gap-2 text-sm text-cloud/70 transition-colors hover:text-cloud"
               >
                 <Phone className="h-4 w-4" />
-                WhatsApp · {CONTACTO.telefonoDisplay}
+                {CONTACTO.telefonoDisplay}
               </a>
               <a
                 href={`mailto:${CONTACTO.email}`}

@@ -1,47 +1,43 @@
 import type { Metadata } from "next";
-
+import { Container, Section } from "@/components/ui/container";
 import { CasoCard } from "@/components/casos/caso-card";
 import { CtaFinal } from "@/components/sections/cta-final";
-import { Container, Section } from "@/components/ui/container";
-import { FadeIn } from "@/components/ui/fade-in";
-import { casosDeUso } from "@/lib/mock/casos";
-
+import { caseStudies } from "@/lib/data/cases";
 export const metadata: Metadata = {
-  alternates: { canonical: "/casos-de-exito" },
-  title: "Casos de uso — Ravela Group",
+  title: "Casos reales | Ravela Solutions — Ravela Group",
   description:
-    "Ejemplos ilustrativos de cómo una PYME mexicana podría aplicar automatización, IA y datos en su operación.",
+    "Trabajo realizado por Ravela. Proyectos reales, con identidad reservada y únicamente información confirmada.",
+  alternates: { canonical: "/casos-de-exito" },
+  openGraph: {
+    title: "Casos reales de Ravela",
+    description: "Trabajo realizado, sin resultados ni métricas inventadas.",
+  },
 };
-
-export default function CasosDeExitoPage() {
+export default function Cases() {
   return (
     <>
-      <Section className="pb-0 pt-24 sm:pt-32">
+      <Section className="pb-0">
         <Container>
-          <FadeIn className="mx-auto max-w-2xl text-center">
-            <h1 className="font-heading text-4xl font-semibold tracking-tight text-cloud sm:text-5xl">
-              Casos de uso
-            </h1>
-            <p className="mt-4 text-lg text-cloud/70">
-              Ejemplos ilustrativos de cómo una PYME mexicana podría aplicar
-              estas soluciones en su día a día.
-            </p>
-          </FadeIn>
+          <p className="eyebrow">Ravela Solutions</p>
+          <h1 className="section-title mt-4">
+            Trabajo realizado.
+            <br />
+            Proyectos reales.
+          </h1>
+          <p className="mt-5 max-w-2xl text-sm leading-7 text-cloud/75">
+            Compartimos únicamente proyectos confirmados. Respetamos la
+            confidencialidad de cada cliente y publicamos resultados cuando
+            están documentados.
+          </p>
         </Container>
       </Section>
-
       <Section>
-        <Container>
-          <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {casosDeUso.map((caso, i) => (
-              <FadeIn key={caso.slug} delay={i * 0.08}>
-                <CasoCard caso={caso} className="h-full" />
-              </FadeIn>
-            ))}
-          </div>
+        <Container className="space-y-16">
+          {caseStudies.map((c) => (
+            <CasoCard caso={c} key={c.slug} />
+          ))}
         </Container>
       </Section>
-
       <CtaFinal />
     </>
   );

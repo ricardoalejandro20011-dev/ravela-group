@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 
 import { CtaFinal } from "@/components/sections/cta-final";
@@ -20,17 +21,53 @@ export default function SolucionesPage() {
         <Container>
           <FadeIn className="mx-auto max-w-2xl text-center">
             <h1 className="font-heading text-4xl font-semibold tracking-tight text-cloud sm:text-5xl">
-              Soluciones
+              Ravela Solutions
             </h1>
             <p className="mt-4 text-lg text-cloud/70">
-              Identificamos oportunidades, diseñamos soluciones y usamos IA,
-              automatización y datos para ayudarte a trabajar mejor.
+              La unidad de servicios B2B de Ravela Group. Automatización, IA,
+              datos e integración para PYMEs mexicanas mediante proyectos,
+              implementaciones y servicios recurrentes.
             </p>
           </FadeIn>
         </Container>
       </Section>
 
       <Soluciones />
+      <Section>
+        <Container>
+          <p className="eyebrow">Integración y diagnóstico</p>
+          <div className="mt-5 grid gap-8 md:grid-cols-2">
+            <div>
+              <h2 className="text-2xl font-medium">
+                Conectamos lo que ya utilizas.
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-cloud/75">
+                Integraciones, aplicaciones internas y una ruta de
+                implementación para que tus herramientas compartan información.
+              </p>
+              <Link
+                href="/soluciones/transformacion-digital"
+                className="mt-5 inline-block py-2 text-sm font-medium text-soft-cyan"
+              >
+                Explorar integraciones y aplicaciones ↗
+              </Link>
+            </div>
+            <div>
+              <h2 className="text-2xl font-medium">Ravela Intelligence</h2>
+              <p className="mt-4 text-sm leading-7 text-cloud/75">
+                Nuestra herramienta de diagnóstico identifica oportunidades de
+                automatización e IA dentro de Ravela Solutions.
+              </p>
+              <Link
+                href="/diagnostico"
+                className="mt-5 inline-block py-2 text-sm font-medium text-soft-cyan"
+              >
+                Hacer diagnóstico gratuito ↗
+              </Link>
+            </div>
+          </div>
+        </Container>
+      </Section>
       <CtaFinal />
     </>
   );

@@ -11,7 +11,7 @@ export function Hero() {
           <div>
             <p className="eyebrow flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-soft-cyan" />
-              Consultoría tecnológica · México
+              Ravela Solutions · México
             </p>
             <h1 className="mt-7 max-w-2xl text-[2.65rem] leading-[1.08] font-medium tracking-[-.055em] sm:text-6xl xl:text-[4.4rem]">
               Automatizamos el trabajo que hoy tu equipo hace{" "}

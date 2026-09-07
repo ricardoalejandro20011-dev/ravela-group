@@ -1,80 +1,66 @@
-import { FounderSection } from "@/components/sections/founder-section";
-import { Layers, Target, Users } from "lucide-react";
 import type { Metadata } from "next";
-
-import { CtaFinal } from "@/components/sections/cta-final";
-import { Card } from "@/components/ui/card";
 import { Container, Section } from "@/components/ui/container";
-import { FadeIn } from "@/components/ui/fade-in";
-
+import { FounderExperience } from "@/components/sections/founder-experience";
+import { GroupArchitecture } from "@/components/sections/group-architecture";
+import { CtaFinal } from "@/components/sections/cta-final";
 export const metadata: Metadata = {
-  alternates: { canonical: "/nosotros" },
-  title: "Nosotros — Ravela Group",
+  title: "Nosotros — Ravela Group, Solutions y Labs",
   description:
-    "Conoce a Ravela Group: consultora tecnológica boutique enfocada en automatización, IA y datos para PYMEs mexicanas.",
+    "Conoce a Ricardo Valdez y la arquitectura de Ravela Group: servicios tecnológicos desde Solutions y productos propios desde Labs.",
+  alternates: { canonical: "/nosotros" },
+  openGraph: {
+    title: "Tecnología con criterio de negocio | Ravela Group",
+    description:
+      "Ravela Solutions, Ravela Labs y la experiencia de su fundador.",
+  },
 };
-
-const valores = [
-  {
-    icon: Target,
-    title: "Enfoque práctico",
-    description:
-      "Empezamos por el problema de negocio, no por la tecnología de moda.",
-  },
-  {
-    icon: Layers,
-    title: "Acompañamiento completo",
-    description:
-      "Del diagnóstico a la implementación y la mejora continua (nuestro método).",
-  },
-  {
-    icon: Users,
-    title: "Hecho para PYMEs",
-    description:
-      "Soluciones pensadas para negocios reales, no solo para grandes corporativos.",
-  },
-];
-
-export default function NosotrosPage() {
+export default function Nosotros() {
   return (
     <>
-      <Section className="pb-0 pt-24 sm:pt-32">
+      <Section>
         <Container>
-          <FadeIn className="mx-auto max-w-2xl text-center">
-            <h1 className="font-heading text-4xl font-semibold tracking-tight text-cloud sm:text-5xl">
-              Nosotros
-            </h1>
-            <p className="mt-4 text-lg text-cloud/70">
-              Ravela Group es una consultora tecnológica boutique enfocada en
-              ayudar a PYMEs mexicanas a automatizar procesos, adoptar
-              Inteligencia Artificial y tomar mejores decisiones con datos.
-            </p>
-          </FadeIn>
+          <p className="eyebrow">Ravela Group</p>
+          <h1 className="section-title mt-5 max-w-3xl">
+            Tecnología con criterio de negocio.
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-cloud/75">
+            Ravela Group nace para convertir problemas operativos en soluciones
+            tecnológicas implementables. Somos una empresa en etapa inicial, con
+            un enfoque práctico: entender lo que necesita el negocio y construir
+            a partir de ahí.
+          </p>
+          <p className="mt-5 max-w-2xl text-sm leading-7 text-cloud/75">
+            Ravela Group es la empresa madre. Ravela Solutions reúne los
+            servicios para empresas y Ravela Labs desarrolla productos propios.
+            Ravela Intelligence es la herramienta de diagnóstico dentro de
+            Solutions.
+          </p>
         </Container>
       </Section>
-
-      <FounderSection />
-
-      <Section className="pt-0">
+      <GroupArchitecture />
+      <FounderExperience />
+      <Section className="border-t">
         <Container>
-          <div className="grid gap-6 sm:grid-cols-3">
-            {valores.map((valor, i) => (
-              <FadeIn key={valor.title} delay={i * 0.08}>
-                <Card className="h-full">
-                  <valor.icon className="h-7 w-7 text-soft-cyan" />
-                  <h3 className="mt-4 font-heading text-base font-semibold text-cloud">
-                    {valor.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-cloud/70">
-                    {valor.description}
-                  </p>
-                </Card>
-              </FadeIn>
+          <p className="eyebrow">Nuestros principios</p>
+          <h2 className="section-title mt-4">
+            Criterio antes que complejidad.
+          </h2>
+          <ol className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              "Entender antes de construir.",
+              "Integrar antes de reemplazar.",
+              "Automatizar lo repetitivo.",
+              "Mantener criterio humano donde importa.",
+              "Medir el resultado.",
+            ].map((p, i) => (
+              <li key={p} className="border-t pt-5">
+                <span className="text-xs text-soft-cyan">0{i + 1}</span>
+                <p className="mt-4 text-lg font-medium">{p}</p>
+              </li>
             ))}
-          </div>
+          </ol>
         </Container>
       </Section>
-
       <CtaFinal />
     </>
   );

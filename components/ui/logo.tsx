@@ -47,15 +47,17 @@ export function Mark({ className }: { className?: string }) {
 export function Logo({
   className,
   markClassName,
+  compact = false,
 }: {
   className?: string;
   markClassName?: string;
+  compact?: boolean;
 }) {
   return (
     <span className={cn("inline-flex items-center gap-2.5", className)}>
       <Mark className={markClassName} />
       <span className="font-heading text-sm sm:text-lg font-semibold tracking-tight text-cloud">
-        RAVELA<span className="hidden text-soft-cyan sm:inline"> GROUP</span>
+        RAVELA{!compact && <span className="text-soft-cyan"> GROUP</span>}
       </span>
     </span>
   );

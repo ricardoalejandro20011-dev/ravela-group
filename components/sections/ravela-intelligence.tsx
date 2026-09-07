@@ -6,15 +6,16 @@ export function RavelaIntelligence() {
       <Container>
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
-            <p className="eyebrow">Ravela Intelligence</p>
+            <p className="eyebrow">Ravela Intelligence / Ravela Solutions</p>
             <h2 className="section-title mt-4">
               Antes de automatizar, encontramos dónde realmente vale la pena
               hacerlo.
             </h2>
             <p className="mt-5 text-sm leading-7 text-cloud/75">
-              Analizamos procesos manuales, horas invertidas, sistemas
-              utilizados, oportunidades de IA, integraciones y datos.
-              Identificamos el impacto potencial para decidir por dónde empezar.
+              Nuestra herramienta de diagnóstico dentro de Ravela Solutions
+              analiza procesos manuales, horas invertidas, sistemas utilizados,
+              oportunidades de IA, integraciones y datos. Identificamos el
+              impacto potencial para decidir por dónde empezar.
             </p>
             <Button href="/diagnostico" className="mt-7">
               Hacer diagnóstico gratuito ↗

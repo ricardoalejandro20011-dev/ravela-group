@@ -6,7 +6,8 @@ export function Analytics() {
   const path = usePathname();
   useEffect(() => {
     if (path.startsWith("/soluciones/")) track("service_view", { path });
-    if (path === "/casos-de-exito") track("case_use_view", { path });
+    if (path === "/casos-de-exito" || path.startsWith("/casos/"))
+      track("case_use_view", { path });
   }, [path]);
   useEffect(() => {
     function click(e: MouseEvent) {

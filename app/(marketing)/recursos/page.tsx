@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/recursos" },
   title: "Recursos — Ravela Group",
   description:
-    "Artículos, herramientas y casos de uso para ayudarte a empezar tu camino de automatización e Inteligencia Artificial.",
+    "Artículos, herramientas y casos reales para ayudarte a empezar tu camino de automatización e Inteligencia Artificial.",
 };
 
 const recursos = [
@@ -43,8 +43,8 @@ const recursos = [
   {
     href: "/casos-de-exito",
     icon: Trophy,
-    title: "Casos de uso",
-    description: "Ejemplos ilustrativos de cómo aplicar estas soluciones.",
+    title: "Casos reales",
+    description: "Proyectos reales de Ravela con información confirmada.",
   },
 ];
 

@@ -10,9 +10,9 @@ import { Logo } from "@/components/ui/logo";
 
 const navLinks = [
   { href: "/soluciones", label: "Soluciones" },
-  { href: "/#como-trabajamos", label: "Cómo trabajamos" },
-  { href: "/casos-de-exito", label: "Casos de uso" },
+  { href: "/casos-de-exito", label: "Casos reales" },
   { href: "/diagnostico", label: "Ravela Intelligence" },
+  { href: "/labs", label: "Labs" },
   { href: "/nosotros", label: "Nosotros" },
 ];
 
@@ -23,7 +23,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 border-b border-cloud/10 bg-deep-space/80 backdrop-blur-lg">
       <Container className="flex h-18 items-center justify-between">
         <Link href="/" className="shrink-0 mr-2" onClick={() => setOpen(false)}>
-          <Logo />
+          <Logo compact />
         </Link>
 
         <nav

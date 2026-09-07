@@ -12,6 +12,7 @@ npm run typecheck
 npm run build
 npm run start
 npx tsx scripts/check-api.ts
+npx tsx scripts/check-content.ts
 ```
 
 `check-api.ts` usa un servidor Supabase simulado local. Verifica validación, persistencia, fallos, honeypots, límite de solicitudes, diagnóstico y ROI; no envía correos ni crea prospectos reales.
@@ -21,7 +22,7 @@ npx tsx scripts/check-api.ts
 - `app/`: páginas estáticas y artículos, App Router, metadata y dos Route Handlers.
 - `components/`: presentación, formularios, diagnóstico y componentes visuales.
 - `lib/scoring/`: reglas originales de diagnóstico y cálculo ROI en MXN. No se presentan como predicción de IA ni como rendimiento garantizado.
-- `lib/data/` y `lib/mock/`: contenido local. Los artículos son contenido editorial; los casos son escenarios demostrativos sin clientes ni resultados ficticios.
+- `lib/data/` y `lib/mock/`: contenido local. Los artículos son contenido editorial; los casos reales están en `lib/data/cases.ts`; se eliminaron los escenarios ilustrativos anteriores.
 - `lib/supabase/`, `lib/mock/leads-store.ts`, `lib/email/`: persistencia y avisos existentes. El nombre histórico `mock/leads-store` se conserva para evitar romper importaciones.
 - No existían imágenes reales en `public`, scripts de analytics activos, sitemap, robots ni aviso de privacidad. El isotipo existente se conserva en una paleta sobria.
 - Ravela Intelligence es un diagnóstico basado en reglas. No existía un asistente conectado a un proveedor LLM en este repositorio.
@@ -40,21 +41,27 @@ Protección: validación Zod, campos trampa, límites por IP e instancia, respue
 
 ## Conversión y medición
 
-WhatsApp conserva el número existente y usa el mensaje aprobado. El correo público se centraliza en `lib/constants/contacto.ts`, configurable con `NEXT_PUBLIC_CONTACT_EMAIL`; no se publica un buzón de dominio inexistente.
+WhatsApp conserva el número existente y usa el mensaje aprobado. El correo público confirmado se centraliza en `lib/constants/contacto.ts`.
 
 `lib/analytics.ts` expone eventos en `window.dataLayer` y `ravela:analytics`: `hero_diagnostico_click`, `hero_whatsapp_click`, `diagnostico_start`, `diagnostico_complete`, `roi_calculator_use`, `contact_submit`, `whatsapp_click`, `service_view`, `case_use_view`. No envía datos personales ni instala un proveedor externo. Conectar la herramienta de analytics del negocio cuando se elija.
 
 ## Contenido y confianza
 
-Los casos llevan `type: "demonstrative"`. Para mostrar `Caso real`, se requieren `type: "real"`, `authorized: true` y contenido real autorizado. Nunca convertir un ejemplo en caso real cambiando únicamente el indicador.
+La arquitectura oficial es Ravela Group → Ravela Solutions (servicios B2B y Ravela Intelligence) + Ravela Labs (productos propios). La Home mantiene el foco comercial en Solutions.
 
-Ricardo Valdez tiene una sección editorial con monograma, sin fotografía falsa. Agregar su fotografía real cuando esté disponible. No se publican clientes, cifras de proyectos, testimonios, certificaciones o alianzas no confirmadas.
+`lib/data/cases.ts` contiene el caso real confirmado de una clínica dental privada: expediente digital y gestión de citas. El nombre comercial permanece reservado, las tecnologías están ocultas y solo se renderizan resultados con `verified === true`. Los tres casos demostrativos anteriores fueron eliminados del código.
+
+`/labs` presenta Miga y cobranza escolar inteligente como productos en desarrollo. Las capacidades futuras se identifican como planeadas y las interfaces son representaciones conceptuales, sin afirmar disponibilidad ni procesamiento de pagos.
+
+Ricardo Valdez aparece en Home y Nosotros, con experiencia previa diferenciada de los proyectos de Ravela. No se proporcionó su fotografía todavía. Al agregar `public/founder/ricardo-valdez.webp` y reconstruir, el componente la mostrará en ambos lugares mediante `next/image`; no hay avatar RV ni fotografía sustituta. Para el caso dental, `public/cases/dental/hero.webp` permite incorporar una imagen autorizada; mientras no exista, se muestra una representación del flujo confirmado sin datos reales de pacientes. Las imágenes deben entregarse con autorización, encuadre y anonimización ya revisados.
+
+Contacto público confirmado: `hola@ravela.online` y `+52 56 2534 6426`. Los enlaces `mailto`, `tel` y WhatsApp se generan desde `lib/constants/contacto.ts`. El antiguo destinatario Gmail de notificaciones se sustituye por el contacto actual; otros destinatarios de notificación configurados explícitamente se conservan.
 
 El aviso de privacidad describe el funcionamiento implementado. El negocio debe completar y validar los datos formales del responsable, domicilio, conservación y condiciones reales con quien gestione su privacidad; no se inventaron esos datos.
 
 ## SEO
 
-Canonical por página, metadata única de servicios y artículos, OpenGraph, imagen social generada con `next/og`, Twitter card, schema Organization, `robots.txt` y `sitemap.xml`. Se conserva `/casos-de-exito` para mantener enlaces existentes, con título visible “Casos de uso”.
+Canonical por página, metadata única de servicios y artículos, OpenGraph, imagen social generada con `next/og`, Twitter card, schema Organization, `robots.txt` y `sitemap.xml`. Se conserva `/casos-de-exito` para mantener enlaces existentes, con título visible “Casos reales”, y se agregan fichas bajo `/casos/[slug]`.
 
 ## Despliegue
 

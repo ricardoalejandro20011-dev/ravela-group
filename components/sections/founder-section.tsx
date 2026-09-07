@@ -1,43 +1,66 @@
+import Image from "next/image";
 import { Container, Section } from "@/components/ui/container";
+import { hasPublicAsset } from "@/lib/assets";
+const photo = "/founder/ricardo-valdez.webp";
 export function FounderSection() {
+  const hasPhoto = hasPublicAsset(photo);
   return (
     <Section>
       <Container>
-        <div className="grid gap-10 lg:grid-cols-[.6fr_1fr]">
-          <div className="flex min-h-64 flex-col justify-between rounded-xl border bg-[#f2f4ef] p-8">
-            <span className="eyebrow">Negocio + tecnología</span>
-            <span
-              aria-hidden="true"
-              className="text-7xl font-light tracking-tighter text-soft-cyan"
-            >
-              RV<span className="text-cloud">.</span>
-            </span>
-            <p className="text-sm">
-              Ricardo Valdez
-              <br />
-              <span className="text-cloud/70">Fundador de Ravela Group</span>
-            </p>
-          </div>
+        <div
+          className={`grid gap-10 ${hasPhoto ? "lg:grid-cols-[.65fr_1fr]" : "lg:grid-cols-[1fr_.7fr]"}`}
+        >
+          {hasPhoto && (
+            <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-midnight">
+              <Image
+                src={photo}
+                alt="Ricardo Valdez, fundador de Ravela Group"
+                fill
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                className="object-cover object-top"
+              />
+            </div>
+          )}
           <div className="self-center">
-            <p className="eyebrow">Una consultoría cercana a tu operación</p>
-            <h2 className="section-title mt-4">
-              Entender el negocio.
-              <br />
-              Saber cómo construirlo.
-            </h2>
-            <p className="mt-5 text-sm leading-7 text-cloud/75">
-              Ravela Group nace de experiencia diseñando soluciones de datos,
-              Inteligencia Artificial y automatización para operaciones
-              empresariales. Nuestro enfoque combina entendimiento de negocio
-              con capacidad técnica para convertir problemas operativos en
-              soluciones que realmente pueden implementarse.
+            <p className="eyebrow">La persona detrás de Ravela</p>
+            <h2 className="section-title mt-4">Ricardo Valdez</h2>
+            <p className="mt-3 text-sm font-medium text-soft-cyan">
+              Fundador, Ravela Group
             </p>
-            <p className="mt-4 text-sm leading-7 text-cloud/75">
-              Con experiencia en operaciones, supply chain, finanzas, datos,
-              automatización, IA y tecnología empresarial, Ricardo Valdez
-              conecta las necesidades del negocio con la implementación técnica.
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-cloud/80">
+              Perfil enfocado en conectar negocio y tecnología mediante
+              soluciones de datos, automatización e Inteligencia Artificial.
             </p>
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-cloud/75">
+              Entender el proceso, elegir las herramientas y llevar la solución
+              a la operación. Ese criterio guía tanto el trabajo con empresas
+              como el desarrollo de productos propios.
+            </p>
+            <ul className="mt-6 flex flex-wrap gap-2">
+              {[
+                "Automatización",
+                "IA",
+                "Datos",
+                "Operaciones",
+                "Supply Chain",
+                "Soluciones empresariales",
+              ].map((t) => (
+                <li className="rounded-full border px-3 py-2 text-xs" key={t}>
+                  {t}
+                </li>
+              ))}
+            </ul>
           </div>
+          {!hasPhoto && (
+            <div className="self-center border-l-2 border-soft-cyan pl-7">
+              <p className="eyebrow">Nuestro punto de partida</p>
+              <p className="mt-5 text-2xl font-medium leading-relaxed tracking-tight">
+                Entender el negocio.
+                <br />
+                Saber cómo construirlo.
+              </p>
+            </div>
+          )}
         </div>
       </Container>
     </Section>

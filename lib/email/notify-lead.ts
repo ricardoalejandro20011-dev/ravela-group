@@ -70,7 +70,11 @@ export async function notificarNuevoLead(lead: Lead) {
     const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
       from: process.env.RESEND_FROM || "Ravela Group <onboarding@resend.dev>",
-      to: process.env.NOTIFICATIONS_EMAIL_TO || CONTACTO.email,
+      to:
+        process.env.NOTIFICATIONS_EMAIL_TO &&
+        process.env.NOTIFICATIONS_EMAIL_TO !== "ravelaservicios@gmail.com"
+          ? process.env.NOTIFICATIONS_EMAIL_TO
+          : CONTACTO.email,
       subject: `Nuevo lead: ${lead.empresa} (${origenLabel[lead.origen]})`,
       html: renderLeadHtml(lead),
     });

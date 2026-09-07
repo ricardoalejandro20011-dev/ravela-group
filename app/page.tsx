@@ -1,7 +1,9 @@
 import { FAQ } from "@/components/sections/faq";
 import { WorkflowDemo } from "@/components/demos/workflow-demo";
 import { Container, Section } from "@/components/ui/container";
-import { CasosDeUso } from "@/components/sections/casos-de-uso";
+import { RealCase } from "@/components/sections/real-case";
+import { FounderExperience } from "@/components/sections/founder-experience";
+import { GroupArchitecture } from "@/components/sections/group-architecture";
 import { CtaFinal } from "@/components/sections/cta-final";
 import { Hero } from "@/components/sections/hero";
 import { Metodologia } from "@/components/sections/metodologia";
@@ -37,10 +39,12 @@ export default function Home() {
           </div>
         </Container>
       </Section>
+      <RealCase />
+      <FounderExperience />
       <RavelaIntelligence />
       <RoiWidget />
       <Metodologia />
-      <CasosDeUso />
+      <GroupArchitecture />
       <TechStack />
       <FAQ />
       <CtaFinal />
