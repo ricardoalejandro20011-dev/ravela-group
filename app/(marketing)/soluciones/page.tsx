@@ -6,7 +6,9 @@ import { Container, Section } from "@/components/ui/container";
 import { FadeIn } from "@/components/ui/fade-in";
 
 export const metadata: Metadata = {
-  title: "Soluciones — Automatización, IA, Datos y Transformación Digital | Ravela Group",
+  alternates: { canonical: "/soluciones" },
+  title:
+    "Soluciones — Automatización, IA, Datos y Transformación Digital | Ravela Group",
   description:
     "Automatización de procesos, Inteligencia Artificial, datos e inteligencia de negocio, y transformación digital para PYMEs mexicanas.",
 };

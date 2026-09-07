@@ -5,9 +5,8 @@ const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 /**
  * Cliente server-only con la service role key (nunca exponer al cliente).
- * `null` si no hay credenciales configuradas: los callers deben usar
- * lib/mock/leads-store.ts como respaldo en ese caso (p. ej. desarrollo
- * local sin Supabase conectado).
+ * `null` si no hay credenciales configuradas. Solo desarrollo permite
+ * respaldo en memoria; producción devuelve un error sin confirmar recepción.
  */
 export const supabaseAdmin =
   url && serviceKey ? createClient(url, serviceKey, { auth: { persistSession: false } }) : null;

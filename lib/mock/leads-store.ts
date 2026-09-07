@@ -37,14 +37,15 @@ export async function guardarLead(input: LeadInput): Promise<Lead> {
   };
 
   if (supabaseAdmin) {
-    const { error } = await supabaseAdmin.from("leads").insert(aFilaSupabase(lead));
-    if (error) {
-      console.error("[leads-store] Error insertando en Supabase, uso respaldo en memoria:", error);
-      leadsEnMemoria.push(lead);
-    }
+    const { error } = await supabaseAdmin
+      .from("leads")
+      .insert(aFilaSupabase(lead));
+    if (error) throw new Error("No fue posible guardar la solicitud");
     return lead;
   }
 
+  if (process.env.NODE_ENV === "production")
+    throw new Error("Almacenamiento no configurado");
   leadsEnMemoria.push(lead);
   return lead;
 }

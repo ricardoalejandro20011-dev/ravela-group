@@ -7,6 +7,7 @@ import { Container, Section } from "@/components/ui/container";
 import { FadeIn } from "@/components/ui/fade-in";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/calculadora-roi" },
   title: "Calculadora de ROI — Ravela Group",
   description:
     "Estima cuánto le cuestan a tu empresa los procesos manuales y cuánto podrías ahorrar automatizando, en pesos mexicanos.",
@@ -22,8 +23,8 @@ export default function CalculadoraRoiPage() {
               Calculadora de ROI
             </h1>
             <p className="mt-4 text-lg text-cloud/70">
-              Ajusta los valores según tu operación y obtén una estimación de tu costo
-              mensual, anual, y el ahorro potencial de automatizar.
+              Ajusta los valores según tu operación y obtén una estimación de tu
+              costo mensual, anual, y el ahorro potencial de automatizar.
             </p>
           </FadeIn>
         </Container>
@@ -37,9 +38,9 @@ export default function CalculadoraRoiPage() {
             <h2 className="font-heading text-2xl font-semibold text-cloud">
               ¿Quieres un análisis más completo?
             </h2>
-            <p className="mx-auto mt-3 max-w-md text-sm text-cloud/65">
-              Ravela Intelligence™ analiza tu operación completa y te da un Opportunity
-              Score con recomendaciones priorizadas.
+            <p className="mx-auto mt-3 max-w-md text-sm text-cloud/70">
+              Ravela Intelligence analiza tus respuestas y te da recomendaciones
+              priorizadas para tu operación.
             </p>
             <Button href="/diagnostico" size="lg" className="mt-6">
               Hacer el diagnóstico completo

@@ -6,6 +6,7 @@ import { FadeIn } from "@/components/ui/fade-in";
 import { blogPosts } from "@/lib/mock/blog";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog" },
   title: "Blog — Ravela Group",
   description:
     "Artículos prácticos sobre automatización, Inteligencia Artificial y datos para PYMEs mexicanas.",
@@ -20,8 +21,8 @@ export default function BlogIndexPage() {
             Blog
           </h1>
           <p className="mt-4 text-lg text-cloud/70">
-            Ideas prácticas sobre automatización, IA y datos, pensadas para PYMEs
-            mexicanas.
+            Ideas prácticas sobre automatización, IA y datos, pensadas para
+            PYMEs mexicanas.
           </p>
         </FadeIn>
 

@@ -5,11 +5,21 @@ import type { Lead } from "@/lib/types";
 
 const origenLabel: Record<Lead["origen"], string> = {
   contacto: "Formulario de contacto",
-  diagnostico: "Ravela Intelligence™ (diagnóstico)",
+  diagnostico: "Ravela Intelligence (diagnóstico)",
   "calculadora-roi": "Calculadora de ROI",
   "ai-assistant": "Asistente de IA",
   newsletter: "Newsletter",
 };
+
+function escapeHtml(value: string) {
+  return value.replace(
+    /[&<>"\']/g,
+    (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        c
+      ] || c,
+  );
+}
 
 function renderLeadHtml(lead: Lead): string {
   const filas: [string, string | undefined][] = [
@@ -32,7 +42,7 @@ function renderLeadHtml(lead: Lead): string {
     .filter(([, valor]) => Boolean(valor))
     .map(
       ([campo, valor]) =>
-        `<tr><td style="padding:4px 12px 4px 0;color:#666;white-space:nowrap;">${campo}</td><td style="padding:4px 0;">${valor}</td></tr>`,
+        `<tr><td style="padding:4px 12px 4px 0;color:#666;white-space:nowrap;">${campo}</td><td style="padding:4px 0;">${escapeHtml(valor || "")}</td></tr>`,
     )
     .join("");
 
@@ -50,18 +60,25 @@ function renderLeadHtml(lead: Lead): string {
 export async function notificarNuevoLead(lead: Lead) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    console.info("[notify-lead] RESEND_API_KEY no configurada; se omite el correo.");
+    console.info(
+      "[notify-lead] RESEND_API_KEY no configurada; se omite el correo.",
+    );
     return;
   }
 
   try {
     const resend = new Resend(apiKey);
-    await resend.emails.send({
-      from: "Ravela Group <onboarding@resend.dev>",
+    const { error } = await resend.emails.send({
+      from: process.env.RESEND_FROM || "Ravela Group <onboarding@resend.dev>",
       to: process.env.NOTIFICATIONS_EMAIL_TO || CONTACTO.email,
       subject: `Nuevo lead: ${lead.empresa} (${origenLabel[lead.origen]})`,
       html: renderLeadHtml(lead),
     });
+    if (error)
+      console.error(
+        "[notify-lead] Proveedor rechazó la notificación",
+        error.name,
+      );
   } catch (error) {
     console.error("[notify-lead] Error enviando notificación:", error);
   }

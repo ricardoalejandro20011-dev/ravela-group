@@ -8,7 +8,8 @@ import { checkRateLimit } from "@/lib/utils/rate-limit";
 import { diagnosticoSchema } from "@/lib/validations/diagnostico";
 
 export async function POST(request: Request) {
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anon";
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anon";
 
   if (!checkRateLimit(`diagnostico:${ip}`)) {
     return NextResponse.json(
@@ -19,31 +20,58 @@ export async function POST(request: Request) {
 
   const json = await request.json().catch(() => null);
   if (!json) {
-    return NextResponse.json({ error: "Cuerpo de solicitud inválido." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Cuerpo de solicitud inválido." },
+      { status: 400 },
+    );
   }
 
   const parsed = diagnosticoSchema.safeParse(json);
   if (!parsed.success) {
     return NextResponse.json(
-      { error: "Datos inválidos.", issues: flattenError(parsed.error).fieldErrors },
+      {
+        error: "Datos inválidos.",
+        issues: flattenError(parsed.error).fieldErrors,
+      },
       { status: 400 },
     );
   }
 
+  if (parsed.data.sitioWeb) return NextResponse.json({ ok: true });
   const respuestas = parsed.data;
   const resultado = generarDiagnostico(respuestas);
 
-  const lead = await guardarLead({
-    nombre: respuestas.nombre,
-    empresa: respuestas.empresa,
-    email: respuestas.email,
-    estado: respuestas.estado,
-    industria: respuestas.industria,
-    servicioInteres: respuestas.interesPrincipal,
-    origen: "diagnostico",
-  });
+  try {
+    const lead = await guardarLead({
+      nombre: respuestas.nombre,
+      empresa: respuestas.empresa,
+      email: respuestas.email,
+      estado: respuestas.estado,
+      industria: respuestas.industria,
+      servicioInteres: respuestas.interesPrincipal,
+      origen: "diagnostico",
+      mensaje: JSON.stringify({
+        respuestas: {
+          ...respuestas,
+          nombre: undefined,
+          empresa: undefined,
+          email: undefined,
+          sitioWeb: undefined,
+        },
+        resultado,
+      }),
+    });
 
-  await notificarNuevoLead(lead);
+    await notificarNuevoLead(lead);
 
-  return NextResponse.json({ ok: true, leadId: lead.id, resultado });
+    return NextResponse.json({ ok: true, leadId: lead.id, resultado });
+  } catch {
+    return NextResponse.json(
+      {
+        error:
+          "No pudimos guardar tu solicitud. Intenta de nuevo o contáctanos por WhatsApp.",
+      },
+      { status: 503 },
+    );
+  }
 }

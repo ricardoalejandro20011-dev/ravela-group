@@ -1,49 +1,52 @@
+import Link from "next/link";
 import {
-  Clock,
   Copy,
-  FileSpreadsheet,
-  MessageCircleMore,
-  RefreshCcw,
-  Shuffle,
+  MessageCircle,
+  ChartNoAxesCombined,
+  RefreshCw,
+  Files,
+  Keyboard,
 } from "lucide-react";
-
 import { Container, Section } from "@/components/ui/container";
-import { FadeIn } from "@/components/ui/fade-in";
-
-const problemas = [
-  { icon: FileSpreadsheet, label: "Reportes en Excel" },
-  { icon: Copy, label: "Captura repetitiva" },
-  { icon: MessageCircleMore, label: "Seguimiento por WhatsApp" },
-  { icon: Shuffle, label: "Información dispersa" },
-  { icon: RefreshCcw, label: "Procesos duplicados" },
-  { icon: Clock, label: "Tareas que consumen horas" },
-];
-
 export function Problemas() {
   return (
     <Section>
       <Container>
-        <FadeIn className="mx-auto max-w-2xl text-center">
-          <h2 className="font-heading text-3xl font-semibold tracking-tight text-cloud sm:text-4xl">
-            ¿Tu empresa todavía hace esto manualmente?
-          </h2>
-          <p className="mt-4 text-cloud/70">
-            Si te identificas con alguno de estos puntos, hay oportunidad de mejora.
-          </p>
-        </FadeIn>
-
-        <div className="mx-auto mt-12 grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {problemas.map((problema, i) => (
-            <FadeIn key={problema.label} delay={i * 0.06}>
-              <div className="glass flex items-center gap-3 rounded-xl px-5 py-4">
-                <problema.icon className="h-5 w-5 shrink-0 text-electric-violet" />
-                <span className="text-sm font-medium text-cloud/85">
-                  {problema.label}
-                </span>
-              </div>
-            </FadeIn>
+        <p className="eyebrow">¿Te suena familiar?</p>
+        <h2 className="section-title mt-4 max-w-3xl">
+          Tu empresa no necesita trabajar más. Necesita hacer menos trabajo
+          manual.
+        </h2>
+        <div className="mt-10 grid gap-px overflow-hidden rounded-xl border bg-[#dedfdc] sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            { icon: Copy, text: "Copiar información entre Excel y sistemas." },
+            {
+              icon: MessageCircle,
+              text: "Contestar las mismas preguntas por WhatsApp.",
+            },
+            {
+              icon: ChartNoAxesCombined,
+              text: "Preparar reportes manualmente.",
+            },
+            { icon: RefreshCw, text: "Dar seguimiento uno por uno." },
+            {
+              icon: Files,
+              text: "Buscar información entre correos y documentos.",
+            },
+            { icon: Keyboard, text: "Capturar los mismos datos varias veces." },
+          ].map((p) => (
+            <div key={p.text} className="flex gap-4 bg-white p-6">
+              <p.icon size={20} className="shrink-0 text-soft-cyan" />
+              <p className="text-sm leading-relaxed">{p.text}</p>
+            </div>
           ))}
         </div>
+        <Link
+          className="mt-7 inline-block py-2 text-sm font-medium text-soft-cyan"
+          href="/diagnostico"
+        >
+          Quiero saber qué puedo automatizar →
+        </Link>
       </Container>
     </Section>
   );

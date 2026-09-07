@@ -14,19 +14,21 @@ export function PilarDetail({ pilar }: { pilar: Pilar }) {
         <Container>
           <FadeIn className="mx-auto max-w-2xl text-center">
             <span className="gradient-brand mx-auto flex h-14 w-14 items-center justify-center rounded-2xl">
-              <pilar.icon className="h-7 w-7 text-cloud" />
+              <pilar.icon className="h-7 w-7 text-white" />
             </span>
             <h1 className="mt-6 font-heading text-4xl font-semibold tracking-tight text-cloud sm:text-5xl">
               {pilar.title}
             </h1>
-            <p className="mt-4 text-lg text-cloud/70">{pilar.heroDescription}</p>
+            <p className="mt-4 text-lg text-cloud/70">
+              {pilar.heroDescription}
+            </p>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5">
               {pilar.herramientas.map((tool) => (
                 <span
                   key={tool.name}
-                  className="flex items-center gap-1.5 rounded-full border border-cloud/10 bg-cloud/5 px-3 py-1.5 text-xs text-cloud/60"
+                  className="flex items-center gap-1.5 rounded-full border border-cloud/10 bg-cloud/5 px-3 py-1.5 text-xs text-cloud/70"
                 >
-                  <tool.Icon className="h-3.5 w-3.5" />
+                  <tool.Icon aria-hidden="true" className="h-3.5 w-3.5" />
                   {tool.name}
                 </span>
               ))}
@@ -54,7 +56,10 @@ export function PilarDetail({ pilar }: { pilar: Pilar }) {
                 </h2>
                 <ul className="mt-4 flex flex-col gap-3">
                   {pilar.servicios.map((servicio) => (
-                    <li key={servicio} className="flex items-start gap-2.5 text-sm text-cloud/75">
+                    <li
+                      key={servicio}
+                      className="flex items-start gap-2.5 text-sm text-cloud/75"
+                    >
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-soft-cyan" />
                       {servicio}
                     </li>

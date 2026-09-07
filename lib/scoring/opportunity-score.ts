@@ -6,7 +6,7 @@ import type {
 } from "@/lib/types";
 
 /**
- * Motor de Ravela Opportunity Score™.
+ * Motor de Diagnóstico de oportunidades.
  *
  * Es un modelo heurístico y transparente (no un modelo predictivo/ML):
  * traduce respuestas cualitativas del diagnóstico en indicadores 0-100
@@ -19,7 +19,10 @@ const clamp = (value: number, min = 5, max = 98) =>
 
 // Punto medio representativo de cada bracket, solo para estimar
 // ahorros orientativos (el diagnóstico no pide número exacto de empleados).
-const EMPLEADOS_PUNTO_MEDIO: Record<DiagnosticoRespuestas["numEmpleados"], number> = {
+const EMPLEADOS_PUNTO_MEDIO: Record<
+  DiagnosticoRespuestas["numEmpleados"],
+  number
+> = {
   "1-5": 3,
   "6-20": 13,
   "21-50": 35,
@@ -33,14 +36,19 @@ const COSTO_HORA_ASUMIDO_MXN = 120;
 function scoreAutomation(r: DiagnosticoRespuestas): number {
   const porHoras = Math.min(r.horasSemanalesEnProcesosManuales / 30, 1) * 55;
   const porProcesos = Math.min(r.procesosManuales.length / 5, 1) * 30;
-  const porExcel = { no: 0, ocasional: 5, intensivo: 10, critico: 13 }[r.usoExcel];
+  const porExcel = { no: 0, ocasional: 5, intensivo: 10, critico: 13 }[
+    r.usoExcel
+  ];
   return clamp(porHoras + porProcesos + porExcel);
 }
 
 function scoreAI(r: DiagnosticoRespuestas): number {
-  const porUsoActual = { ninguno: 40, explorando: 30, pruebas: 18, "en-uso": 8 }[
-    r.usoActualIA
-  ];
+  const porUsoActual = {
+    ninguno: 40,
+    explorando: 30,
+    pruebas: 18,
+    "en-uso": 8,
+  }[r.usoActualIA];
   const procesosAfinesIA = r.procesosManuales.filter((p) =>
     ["atencion-whatsapp", "seguimiento-clientes", "captura-datos"].includes(p),
   ).length;
@@ -50,7 +58,9 @@ function scoreAI(r: DiagnosticoRespuestas): number {
 }
 
 function scoreData(r: DiagnosticoRespuestas): number {
-  const porExcel = { no: 5, ocasional: 20, intensivo: 35, critico: 45 }[r.usoExcel];
+  const porExcel = { no: 5, ocasional: 20, intensivo: 35, critico: 45 }[
+    r.usoExcel
+  ];
   const porReportes = r.procesosManuales.includes("reportes") ? 25 : 5;
   const porSistemas = Math.min(r.sistemasUtilizados.length / 4, 1) * 25;
   return clamp(porExcel + porReportes + porSistemas);
@@ -86,7 +96,10 @@ export function calcularOpportunityScore(
   const digitalMaturity = scoreDigitalMaturity(respuestas);
 
   const overall = clamp(
-    automation * 0.3 + ai * 0.25 + data * 0.2 + integration * 0.15 +
+    automation * 0.3 +
+      ai * 0.25 +
+      data * 0.2 +
+      integration * 0.15 +
       (100 - digitalMaturity) * 0.1,
   );
 
@@ -98,7 +111,11 @@ function estimarAhorroYHoras(respuestas: DiagnosticoRespuestas) {
   const horasSemanales = respuestas.horasSemanalesEnProcesosManuales;
   const horasRecuperablesSemanales = Math.round(horasSemanales * 0.4);
   const ahorroEstimadoMensualMXN = Math.round(
-    horasRecuperablesSemanales * 4.33 * COSTO_HORA_ASUMIDO_MXN * Math.min(empleados, 10) / 10,
+    (horasRecuperablesSemanales *
+      4.33 *
+      COSTO_HORA_ASUMIDO_MXN *
+      Math.min(empleados, 10)) /
+      10,
   );
   return { horasRecuperablesSemanales, ahorroEstimadoMensualMXN };
 }
@@ -144,7 +161,10 @@ export function generarRecomendaciones(
   ];
 
   return candidatas
-    .sort((a, b) => (a.prioridad === "alta" ? -1 : 1) - (b.prioridad === "alta" ? -1 : 1))
+    .sort(
+      (a, b) =>
+        (a.prioridad === "alta" ? -1 : 1) - (b.prioridad === "alta" ? -1 : 1),
+    )
     .slice(0, 3);
 }
 

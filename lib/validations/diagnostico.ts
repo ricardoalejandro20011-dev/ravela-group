@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const diagnosticoSchema = z.object({
+  sitioWeb: z.string().max(200).optional(),
   nombre: z.string().trim().min(2, "Ingresa tu nombre").max(100),
   empresa: z.string().trim().min(2, "Ingresa el nombre de tu empresa").max(100),
   email: z.email("Ingresa un correo válido").trim(),

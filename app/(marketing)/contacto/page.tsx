@@ -7,6 +7,7 @@ import { FadeIn } from "@/components/ui/fade-in";
 import { CONTACTO } from "@/lib/constants/contacto";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/contacto" },
   title: "Contacto — Ravela Group",
   description:
     "Habla con Ravela Group. Cuéntanos sobre tu empresa y te ayudamos a identificar por dónde empezar a automatizar.",
@@ -42,7 +43,8 @@ export default function ContactoPage() {
             Habla con Ravela Group
           </h1>
           <p className="mt-4 text-lg text-cloud/70">
-            Cuéntanos sobre tu empresa. Te ayudamos a identificar por dónde empezar.
+            Cuéntanos sobre tu empresa. Te ayudamos a identificar por dónde
+            empezar.
           </p>
         </FadeIn>
 
@@ -53,22 +55,31 @@ export default function ContactoPage() {
                 key={canal.label}
                 href={canal.href}
                 target={canal.href.startsWith("http") ? "_blank" : undefined}
-                rel={canal.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                rel={
+                  canal.href.startsWith("http")
+                    ? "noopener noreferrer"
+                    : undefined
+                }
                 className="glass flex items-center gap-4 rounded-xl px-5 py-4 transition-colors hover:border-cloud/25"
               >
                 <span className="gradient-brand flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
-                  <canal.icon className="h-5 w-5 text-cloud" />
+                  <canal.icon className="h-5 w-5 text-white" />
                 </span>
                 <span>
-                  <span className="block text-xs text-cloud/50">{canal.label}</span>
-                  <span className="block text-sm font-medium text-cloud">{canal.value}</span>
+                  <span className="block text-xs text-cloud/70">
+                    {canal.label}
+                  </span>
+                  <span className="block text-sm font-medium text-cloud">
+                    {canal.value}
+                  </span>
                 </span>
               </a>
             ))}
-            <p className="mt-2 text-sm leading-relaxed text-cloud/50">
-              ¿Prefieres un diagnóstico guiado antes de hablar con nosotros? Prueba{" "}
-              <a href="/diagnostico" className="text-soft-cyan hover:underline">
-                Ravela Intelligence™
+            <p className="mt-2 text-sm leading-relaxed text-cloud/70">
+              ¿Prefieres un diagnóstico guiado antes de hablar con nosotros?
+              Prueba{" "}
+              <a href="/diagnostico" className="text-soft-cyan underline">
+                Ravela Intelligence
               </a>
               .
             </p>

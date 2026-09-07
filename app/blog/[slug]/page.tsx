@@ -26,7 +26,17 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = blogPosts.find((p) => p.slug === slug);
   if (!post) return {};
-  return { title: `${post.title} — Ravela Group`, description: post.excerpt };
+  return {
+    title: `${post.title} — Ravela Group`,
+    description: post.excerpt,
+    alternates: { canonical: `/blog/${slug}` },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: "article",
+      url: `/blog/${slug}`,
+    },
+  };
 }
 
 export default async function BlogPostPage({
@@ -46,10 +56,12 @@ export default async function BlogPostPage({
       <Container>
         <FadeIn className="mx-auto max-w-2xl">
           <div className="gradient-brand flex h-40 items-center justify-center rounded-2xl sm:h-48">
-            {Icon && <Icon className="h-14 w-14 text-cloud/90" strokeWidth={1.5} />}
+            {Icon && (
+              <Icon className="h-14 w-14 text-white" strokeWidth={1.5} />
+            )}
           </div>
 
-          <div className="mt-6 flex items-center gap-3 text-xs text-cloud/45">
+          <div className="mt-6 flex items-center gap-3 text-xs text-cloud/70">
             <span>{dateFormatter.format(new Date(post.publishedAt))}</span>
             <span>·</span>
             <span>{post.author}</span>

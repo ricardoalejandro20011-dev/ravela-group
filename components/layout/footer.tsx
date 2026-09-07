@@ -11,17 +11,23 @@ const columns: { title: string; links: { href: string; label: string }[] }[] = [
     title: "Soluciones",
     links: [
       { href: "/soluciones/automatizacion", label: "Automatización" },
-      { href: "/soluciones/inteligencia-artificial", label: "Inteligencia Artificial" },
+      {
+        href: "/soluciones/inteligencia-artificial",
+        label: "Inteligencia Artificial",
+      },
       { href: "/soluciones/datos-inteligencia", label: "Datos e Inteligencia" },
-      { href: "/soluciones/transformacion-digital", label: "Transformación Digital" },
+      {
+        href: "/soluciones/transformacion-digital",
+        label: "Transformación Digital",
+      },
     ],
   },
   {
     title: "Ravela Group",
     links: [
-      { href: "/diagnostico", label: "Ravela Intelligence™" },
+      { href: "/diagnostico", label: "Ravela Intelligence" },
       { href: "/calculadora-roi", label: "Calculadora de ROI" },
-      { href: "/casos-de-exito", label: "Casos de éxito" },
+      { href: "/casos-de-exito", label: "Casos de uso" },
       { href: "/nosotros", label: "Nosotros" },
     ],
   },
@@ -31,6 +37,7 @@ const columns: { title: string; links: { href: string; label: string }[] }[] = [
       { href: "/recursos", label: "Recursos" },
       { href: "/blog", label: "Blog" },
       { href: "/contacto", label: "Contacto" },
+      { href: "/aviso-de-privacidad", label: "Aviso de privacidad" },
     ],
   },
 ];
@@ -42,21 +49,20 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-[1.2fr_repeat(3,1fr)]">
           <div>
             <Logo />
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-cloud/60">
-              Transformamos procesos manuales en operaciones inteligentes para PYMEs
-              mexicanas.
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-cloud/70">
+              Automatización e Inteligencia Artificial para PYMEs mexicanas.
             </p>
             <div className="mt-5 flex flex-col gap-2.5">
               <a
-                href={`tel:${CONTACTO.telefonoE164}`}
-                className="flex items-center gap-2 text-sm text-cloud/60 transition-colors hover:text-cloud"
+                href={CONTACTO.whatsappUrl}
+                className="flex items-center gap-2 text-sm text-cloud/70 transition-colors hover:text-cloud"
               >
                 <Phone className="h-4 w-4" />
-                {CONTACTO.telefonoDisplay}
+                WhatsApp · {CONTACTO.telefonoDisplay}
               </a>
               <a
                 href={`mailto:${CONTACTO.email}`}
-                className="flex items-center gap-2 text-sm text-cloud/60 transition-colors hover:text-cloud"
+                className="flex items-center gap-2 text-sm text-cloud/70 transition-colors hover:text-cloud"
               >
                 <Mail className="h-4 w-4" />
                 {CONTACTO.email}
@@ -66,7 +72,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Ravela Group en LinkedIn"
-                className="mt-1 flex h-8 w-8 items-center justify-center rounded-lg border border-cloud/15 text-cloud/60 transition-colors hover:border-cloud/30 hover:text-cloud"
+                className="mt-1 flex h-8 w-8 items-center justify-center rounded-lg border border-cloud/15 text-cloud/70 transition-colors hover:border-cloud/30 hover:text-cloud"
               >
                 <LinkedinIcon className="h-4 w-4" />
               </a>
@@ -83,7 +89,7 @@ export function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-cloud/60 transition-colors hover:text-cloud"
+                      className="text-sm text-cloud/70 transition-colors hover:text-cloud"
                     >
                       {link.label}
                     </Link>
@@ -94,9 +100,12 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-16 flex flex-col gap-4 border-t border-cloud/10 pt-8 text-xs text-cloud/50 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} Ravela Group. Todos los derechos reservados.</p>
-          <p>Intelligence. Automated. — Hecho en México.</p>
+        <div className="mt-16 flex flex-col gap-4 border-t border-cloud/10 pt-8 text-xs text-cloud/70 sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            © {new Date().getFullYear()} Ravela Group. Todos los derechos
+            reservados.
+          </p>
+          <p>Hecho en México.</p>
         </div>
       </Container>
     </footer>

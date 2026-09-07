@@ -18,9 +18,9 @@ export interface BlogPost {
 
 export interface CaseStudy {
   slug: string;
-  /** Nombre de negocio ilustrativo (no un cliente real) usado como referencia. */
+  /** Sector demostrativo o nombre autorizado del cliente. */
   cliente: string;
-  /** Nombre de la persona responsable, ilustrativo. */
+  /** Solo para casos reales con autorización. */
   responsable?: string;
   title: string;
   industria: string;
@@ -28,8 +28,9 @@ export interface CaseStudy {
   solucion: string;
   resultado: string;
   pilarRelacionado: Pilar;
-  /** Todos los casos actuales son ilustrativos: no se han inventado clientes reales. */
-  esIlustrativo: true;
+  /** La publicación como caso real requiere autorización explícita. */
+  type: "demonstrative" | "real";
+  authorized?: boolean;
 }
 
 export type Moneda = "MXN";

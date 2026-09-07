@@ -7,7 +7,8 @@ import { FadeIn } from "@/components/ui/fade-in";
 import { casosDeUso } from "@/lib/mock/casos";
 
 export const metadata: Metadata = {
-  title: "Casos de éxito — Ravela Group",
+  alternates: { canonical: "/casos-de-exito" },
+  title: "Casos de uso — Ravela Group",
   description:
     "Ejemplos ilustrativos de cómo una PYME mexicana podría aplicar automatización, IA y datos en su operación.",
 };
@@ -19,11 +20,11 @@ export default function CasosDeExitoPage() {
         <Container>
           <FadeIn className="mx-auto max-w-2xl text-center">
             <h1 className="font-heading text-4xl font-semibold tracking-tight text-cloud sm:text-5xl">
-              Casos de éxito
+              Casos de uso
             </h1>
             <p className="mt-4 text-lg text-cloud/70">
-              Ejemplos ilustrativos de cómo una PYME mexicana podría aplicar estas
-              soluciones en su día a día.
+              Ejemplos ilustrativos de cómo una PYME mexicana podría aplicar
+              estas soluciones en su día a día.
             </p>
           </FadeIn>
         </Container>

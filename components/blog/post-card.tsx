@@ -18,11 +18,11 @@ export function PostCard({ post }: { post: BlogPost }) {
   return (
     <Link href={`/blog/${post.slug}`} className="block">
       <div className="glass group flex gap-5 overflow-hidden rounded-2xl transition-colors duration-200 hover:border-cloud/20">
-        <div className="gradient-brand flex w-24 shrink-0 items-center justify-center sm:w-32">
-          {Icon && <Icon className="h-8 w-8 text-cloud/90" strokeWidth={1.5} />}
+        <div className="gradient-brand hidden sm:flex w-24 shrink-0 items-center justify-center sm:w-32">
+          {Icon && <Icon className="h-8 w-8 text-white" strokeWidth={1.5} />}
         </div>
-        <div className="py-6 pr-6">
-          <div className="flex items-center gap-3 text-xs text-cloud/45">
+        <div className="min-w-0 p-6 sm:pl-0">
+          <div className="flex flex-wrap items-center gap-3 text-xs text-cloud/70">
             <span>{dateFormatter.format(new Date(post.publishedAt))}</span>
             {pilar && <Badge variant="neutral">{pilar.title}</Badge>}
           </div>

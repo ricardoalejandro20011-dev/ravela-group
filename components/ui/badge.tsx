@@ -13,7 +13,7 @@ const badgeVariants = cva(
         cyan: "bg-soft-cyan/15 text-soft-cyan",
         alta: "bg-electric-violet/15 text-electric-violet",
         media: "bg-cyber-blue/15 text-cyber-blue",
-        baja: "bg-cloud/10 text-cloud/60",
+        baja: "bg-cloud/10 text-cloud/70",
       },
     },
     defaultVariants: {
@@ -23,9 +23,10 @@ const badgeVariants = cva(
 );
 
 interface BadgeProps
-  extends HTMLAttributes<HTMLSpanElement>,
-    VariantProps<typeof badgeVariants> {}
+  extends HTMLAttributes<HTMLSpanElement>, VariantProps<typeof badgeVariants> {}
 
 export function Badge({ className, variant, ...props }: BadgeProps) {
-  return <span className={cn(badgeVariants({ variant, className }))} {...props} />;
+  return (
+    <span className={cn(badgeVariants({ variant, className }))} {...props} />
+  );
 }

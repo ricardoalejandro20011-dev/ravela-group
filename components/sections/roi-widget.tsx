@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 
+import { track } from "@/lib/analytics";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Container, Section } from "@/components/ui/container";
 import { FadeIn } from "@/components/ui/fade-in";
@@ -45,7 +47,10 @@ function Field({
         max={max}
         step={step}
         value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
+        onChange={(e) => {
+          onChange(Number(e.target.value));
+          track("roi_calculator_use");
+        }}
         className="mt-3 w-full accent-electric-violet"
       />
     </label>
@@ -78,8 +83,8 @@ export function RoiWidget() {
             ¿Cuánto te cuestan tus procesos manuales?
           </h2>
           <p className="mt-4 text-cloud/70">
-            Ajusta los valores y mira una estimación de tu costo mensual y ahorro
-            potencial.
+            Ajusta los valores y mira una estimación de tu costo mensual y
+            ahorro potencial.
           </p>
         </FadeIn>
 
@@ -94,7 +99,7 @@ export function RoiWidget() {
                 max={50}
               />
               <Field
-                label="Horas semanales en procesos manuales"
+                label="Horas semanales por persona"
                 value={horasSemanales}
                 onChange={setHorasSemanales}
                 min={1}
@@ -123,28 +128,63 @@ export function RoiWidget() {
 
             <div className="flex flex-col justify-center gap-6 border-cloud/10 pt-8 lg:border-l lg:pt-0 lg:pl-10">
               <div>
-                <p className="text-sm text-cloud/60">Costo mensual actual</p>
+                <p className="text-sm text-cloud/70">Costo mensual actual</p>
                 <p className="font-heading text-3xl font-semibold text-cloud">
                   {mxn.format(resultado.costoMensualMXN)}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-cloud/60">Ahorro potencial mensual</p>
+                <p className="text-sm text-cloud/70">
+                  Ahorro potencial mensual
+                </p>
                 <p className="text-gradient-brand font-heading text-3xl font-semibold">
                   {mxn.format(resultado.ahorroPotencialMensualMXN)}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-cloud/60">Horas recuperables al mes</p>
+                <p className="text-sm text-cloud/70">
+                  Horas en tareas manuales al mes
+                </p>
+                <p className="text-2xl font-semibold">
+                  {resultado.horasMensuales} hrs
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-cloud/70">
+                  Horas recuperables al mes
+                </p>
                 <p className="font-heading text-2xl font-semibold text-cloud">
                   {resultado.horasRecuperablesMensuales} hrs
                 </p>
               </div>
             </div>
           </Card>
-          <p className="mt-4 text-center text-xs text-cloud/40">
+          <div
+            className="mt-5"
+            role="img"
+            aria-label={`${porcentajeAutomatizacion}% del tiempo potencialmente recuperable`}
+          >
+            <div className="h-3 overflow-hidden rounded-full bg-cloud/10">
+              <div
+                className="h-full bg-soft-cyan"
+                style={{ width: `${porcentajeAutomatizacion}%` }}
+              />
+            </div>
+            <p className="mt-2 text-xs text-cloud/70">
+              {porcentajeAutomatizacion}% del tiempo potencialmente recuperable
+              · supuesto ajustable
+            </p>
+          </div>
+          <div className="mt-6 text-center">
+            <Button href="/contacto">
+              Quiero calcularlo con mi proceso real ↗
+            </Button>
+          </div>
+          <p className="mt-4 text-center text-xs leading-6 text-cloud/70">
             Los resultados son estimaciones orientativas y no representan una
-            proyección financiera garantizada.
+            proyección financiera garantizada. El ahorro representa capacidad de
+            trabajo recuperable, no necesariamente reducción de gastos. No
+            incluye inversión de implementación ni costos de herramientas.
           </p>
         </FadeIn>
       </Container>

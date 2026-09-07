@@ -14,7 +14,13 @@ export function Mark({ className }: { className?: string }) {
       aria-hidden="true"
     >
       <defs>
-        <linearGradient id="ravela-wave-gradient" x1="14" y1="70" x2="86" y2="30">
+        <linearGradient
+          id="ravela-wave-gradient"
+          x1="14"
+          y1="70"
+          x2="86"
+          y2="30"
+        >
           <stop offset="0%" stopColor="var(--color-electric-violet)" />
           <stop offset="55%" stopColor="var(--color-cyber-blue)" />
           <stop offset="100%" stopColor="var(--color-soft-cyan)" />
@@ -48,8 +54,8 @@ export function Logo({
   return (
     <span className={cn("inline-flex items-center gap-2.5", className)}>
       <Mark className={markClassName} />
-      <span className="font-heading text-lg font-semibold tracking-tight text-cloud">
-        RAVELA<span className="text-soft-cyan">GROUP</span>
+      <span className="font-heading text-sm sm:text-lg font-semibold tracking-tight text-cloud">
+        RAVELA<span className="hidden text-soft-cyan sm:inline"> GROUP</span>
       </span>
     </span>
   );

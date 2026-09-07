@@ -18,7 +18,7 @@ export const blogPosts: BlogPost[] = [
 
 **5. Generación de documentos.** Cotizaciones, contratos, órdenes de compra: si se arman copiando y pegando de una plantilla, se pueden generar automáticamente a partir de la información que ya tienes.
 
-La pregunta no es si automatizar, sino por dónde empezar. Por eso creamos Ravela Intelligence™: un diagnóstico gratuito que te ayuda a identificar cuál de estos procesos tiene el mayor potencial en tu operación.`,
+La pregunta no es si automatizar, sino por dónde empezar. Por eso creamos Ravela Intelligence: un diagnóstico gratuito que te ayuda a identificar cuál de estos procesos tiene el mayor potencial en tu operación.`,
     publishedAt: "2026-06-02",
     author: "Ravela Group",
     tags: ["automatización", "pymes"],
@@ -40,7 +40,7 @@ Algunas señales de que tu empresa depende demasiado de Excel:
 
 Ninguna de estas señales significa que haya que abandonar Excel de la noche a la mañana. Significa que hay oportunidad de conectar esa información a un sistema o dashboard que la mantenga ordenada, actualizada y accesible para todo el equipo, sin perder la flexibilidad que ya conoces.
 
-Si te identificas con varias de estas señales, es un buen punto de partida para un diagnóstico con Ravela Intelligence™.`,
+Si te identificas con varias de estas señales, es un buen punto de partida para un diagnóstico con Ravela Intelligence.`,
     publishedAt: "2026-06-16",
     author: "Ravela Group",
     tags: ["datos", "excel", "pymes"],

@@ -1,51 +1,15 @@
 "use client";
-
-import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
-import { useState } from "react";
-
+import { useState, useRef, useEffect, type FormEvent } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { track } from "@/lib/analytics";
 import type { DiagnosticoResultado } from "@/lib/types";
 import type { DiagnosticoFormValues } from "@/lib/validations/diagnostico";
-
 import { ResultadoDiagnostico } from "./resultado";
-
-const inputClass =
-  "w-full rounded-xl border border-cloud/15 bg-cloud/5 px-4 py-2.5 text-sm text-cloud placeholder:text-cloud/35 outline-none transition-colors focus:border-soft-cyan/60 focus:ring-2 focus:ring-soft-cyan/20";
-const labelClass = "mb-1.5 block text-sm font-medium text-cloud/80";
-
-type WizardState = {
-  nombre: string;
-  empresa: string;
-  email: string;
-  industria: string;
-  estado: string;
-  numEmpleados: DiagnosticoFormValues["numEmpleados"] | "";
-  procesosManuales: DiagnosticoFormValues["procesosManuales"];
-  horasSemanalesEnProcesosManuales: number;
-  usoExcel: DiagnosticoFormValues["usoExcel"] | "";
-  sistemasUtilizados: string[];
-  usoActualIA: DiagnosticoFormValues["usoActualIA"] | "";
-  principalesProblemas: string[];
-  interesPrincipal: DiagnosticoFormValues["interesPrincipal"] | "";
-};
-
-const initialState: WizardState = {
-  nombre: "",
-  empresa: "",
-  email: "",
-  industria: "",
-  estado: "",
-  numEmpleados: "",
-  procesosManuales: [],
-  horasSemanalesEnProcesosManuales: 10,
-  usoExcel: "",
-  sistemasUtilizados: [],
-  usoActualIA: "",
-  principalesProblemas: [],
-  interesPrincipal: "",
-};
-
-const procesosOpciones: { value: DiagnosticoFormValues["procesosManuales"][number]; label: string }[] = [
+const procesosOpciones: {
+  value: DiagnosticoFormValues["procesosManuales"][number];
+  label: string;
+}[] = [
   { value: "reportes", label: "Reportes" },
   { value: "captura-datos", label: "Captura de datos" },
   { value: "seguimiento-clientes", label: "Seguimiento a clientes" },
@@ -74,7 +38,10 @@ const problemasOpciones = [
   "Tareas que consumen horas",
 ];
 
-const interesOpciones: { value: DiagnosticoFormValues["interesPrincipal"]; label: string }[] = [
+const interesOpciones: {
+  value: DiagnosticoFormValues["interesPrincipal"];
+  label: string;
+}[] = [
   { value: "automatizacion", label: "Automatización" },
   { value: "inteligencia-artificial", label: "Inteligencia Artificial" },
   { value: "datos-dashboards", label: "Datos y dashboards" },
@@ -82,315 +49,291 @@ const interesOpciones: { value: DiagnosticoFormValues["interesPrincipal"]; label
   { value: "no-estoy-seguro", label: "No estoy seguro" },
 ];
 
-function toggle<T>(list: T[], value: T): T[] {
-  return list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
-}
-
-function CheckboxGrid<T extends string>({
-  options,
-  selected,
-  onChange,
-}: {
-  options: { value: T; label: string }[];
-  selected: T[];
-  onChange: (next: T[]) => void;
-}) {
-  return (
-    <div className="grid gap-2.5 sm:grid-cols-2">
-      {options.map((opt) => (
-        <label
-          key={opt.value}
-          className={`flex cursor-pointer items-center gap-2.5 rounded-xl border px-4 py-3 text-sm transition-colors ${
-            selected.includes(opt.value)
-              ? "border-soft-cyan/50 bg-soft-cyan/10 text-cloud"
-              : "border-cloud/15 bg-cloud/5 text-cloud/70 hover:border-cloud/25"
-          }`}
-        >
-          <input
-            type="checkbox"
-            className="sr-only"
-            checked={selected.includes(opt.value)}
-            onChange={() => onChange(toggle(selected, opt.value))}
-          />
-          {opt.label}
-        </label>
-      ))}
-    </div>
-  );
-}
-
-function RadioGrid<T extends string>({
-  options,
-  selected,
-  onChange,
-}: {
-  options: { value: T; label: string }[];
-  selected: T | "";
-  onChange: (next: T) => void;
-}) {
-  return (
-    <div className="grid gap-2.5 sm:grid-cols-2">
-      {options.map((opt) => (
-        <label
-          key={opt.value}
-          className={`flex cursor-pointer items-center gap-2.5 rounded-xl border px-4 py-3 text-sm transition-colors ${
-            selected === opt.value
-              ? "border-soft-cyan/50 bg-soft-cyan/10 text-cloud"
-              : "border-cloud/15 bg-cloud/5 text-cloud/70 hover:border-cloud/25"
-          }`}
-        >
-          <input
-            type="radio"
-            className="sr-only"
-            checked={selected === opt.value}
-            onChange={() => onChange(opt.value)}
-          />
-          {opt.label}
-        </label>
-      ))}
-    </div>
-  );
-}
-
-const TOTAL_STEPS = 5;
-
+const questions = [
+  {
+    key: "procesosManuales",
+    title: "¿Qué procesos haces manualmente?",
+    options: procesosOpciones,
+    multi: true,
+  },
+  {
+    key: "horasSemanalesEnProcesosManuales",
+    title: "¿Cuántas horas semanales dedica el equipo a esos procesos?",
+    range: true,
+  },
+  {
+    key: "numEmpleados",
+    title: "¿Cuántas personas tiene tu empresa?",
+    options: [
+      { value: "1-5", label: "1 a 5" },
+      { value: "6-20", label: "6 a 20" },
+      { value: "21-50", label: "21 a 50" },
+      { value: "51-200", label: "51 a 200" },
+      { value: "200+", label: "Más de 200" },
+    ],
+  },
+  {
+    key: "usoExcel",
+    title: "¿Qué tanto dependes de Excel?",
+    options: [
+      { value: "no", label: "Casi nada" },
+      { value: "ocasional", label: "Ocasionalmente" },
+      { value: "intensivo", label: "Lo usamos a diario" },
+      { value: "critico", label: "Es crítico para operar" },
+    ],
+  },
+  {
+    key: "sistemasUtilizados",
+    title: "¿Qué sistemas usas hoy?",
+    options: sistemasOpciones.map((s) => ({ value: s, label: s })),
+    multi: true,
+  },
+  {
+    key: "usoActualIA",
+    title: "¿Ya utilizas Inteligencia Artificial?",
+    options: [
+      { value: "ninguno", label: "Todavía no" },
+      { value: "explorando", label: "Explorando opciones" },
+      { value: "pruebas", label: "En pruebas" },
+      { value: "en-uso", label: "Ya la usamos" },
+    ],
+  },
+  {
+    key: "principalesProblemas",
+    title: "¿Qué problemas quieres resolver primero?",
+    options: problemasOpciones.map((s) => ({ value: s, label: s })),
+    multi: true,
+  },
+  {
+    key: "interesPrincipal",
+    title: "¿Qué te interesa mejorar?",
+    options: interesOpciones,
+  },
+  {
+    key: "contacto",
+    title: "¿A dónde enviamos el seguimiento de tu diagnóstico?",
+  },
+];
 export function DiagnosticoWizard() {
-  const [step, setStep] = useState(1);
-  const [state, setState] = useState<WizardState>(initialState);
-  const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
+  const [step, setStep] = useState(0);
+  const [state, setState] = useState<
+    Record<string, string | string[] | number>
+  >({
+    procesosManuales: [],
+    horasSemanalesEnProcesosManuales: 10,
+    sistemasUtilizados: [],
+    principalesProblemas: [],
+    nombre: "",
+    empresa: "",
+    email: "",
+    industria: "No indicada",
+    estado: "No indicado",
+    sitioWeb: "",
+  });
+  const [status, setStatus] = useState("idle");
+  const [error, setError] = useState("");
   const [resultado, setResultado] = useState<DiagnosticoResultado | null>(null);
-
-  function update<K extends keyof WizardState>(key: K, value: WizardState[K]) {
-    setState((s) => ({ ...s, [key]: value }));
-  }
-
-  const canAdvance = (() => {
-    switch (step) {
-      case 1:
-        return state.nombre.trim().length > 1 && state.empresa.trim().length > 1 &&
-          /\S+@\S+\.\S+/.test(state.email) && state.industria.trim().length > 1 &&
-          state.estado.trim().length > 1;
-      case 2:
-        return state.numEmpleados !== "" && state.procesosManuales.length > 0;
-      case 3:
-        return state.usoExcel !== "" && state.usoActualIA !== "";
-      case 4:
-        return state.interesPrincipal !== "";
-      default:
-        return true;
+  const heading = useRef<HTMLHeadingElement>(null);
+  const started = useRef(false);
+  const q = questions[step];
+  const value = state[q.key];
+  const last = step === questions.length - 1;
+  useEffect(() => {
+    if (step > 0) heading.current?.focus();
+  }, [step]);
+  function update(key: string, v: string | string[] | number) {
+    setState((s) => ({ ...s, [key]: v }));
+    if (!started.current) {
+      track("diagnostico_start");
+      started.current = true;
     }
-  })();
-
-  async function handleSubmit() {
-    setStatus("submitting");
+  }
+  const valid = last
+    ? String(state.nombre).trim().length >= 2 &&
+      String(state.empresa).trim().length >= 2 &&
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(state.email))
+    : q.range || (Array.isArray(value) ? value.length > 0 : Boolean(value));
+  async function submit(e: FormEvent) {
+    e.preventDefault();
+    if (!valid || status === "loading") return;
+    if (!last) {
+      setStep((s) => s + 1);
+      return;
+    }
+    setStatus("loading");
+    setError("");
     try {
-      const payload: DiagnosticoFormValues = {
-        ...state,
-        numEmpleados: state.numEmpleados as DiagnosticoFormValues["numEmpleados"],
-        usoExcel: state.usoExcel as DiagnosticoFormValues["usoExcel"],
-        usoActualIA: state.usoActualIA as DiagnosticoFormValues["usoActualIA"],
-        interesPrincipal: state.interesPrincipal as DiagnosticoFormValues["interesPrincipal"],
-      };
       const res = await fetch("/api/diagnostico", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(state),
       });
-      if (!res.ok) throw new Error("request-failed");
       const data = await res.json();
+      if (!res.ok || !data.resultado) throw new Error();
       setResultado(data.resultado);
+      track("diagnostico_complete");
       setStatus("idle");
     } catch {
-      setStatus("error");
+      setStatus("idle");
+      setError(
+        "No pudimos guardar tu diagnóstico. Intenta de nuevo o contáctanos desde la página de contacto.",
+      );
     }
   }
-
-  if (resultado) {
-    return <ResultadoDiagnostico resultado={resultado} empresa={state.empresa} />;
-  }
-
-  return (
-    <div className="glass rounded-2xl p-6 sm:p-8">
-      <div className="mb-8 flex items-center gap-2">
-        {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
-          <div
-            key={i}
-            className={`h-1.5 flex-1 rounded-full ${i + 1 <= step ? "gradient-brand" : "bg-cloud/10"}`}
-          />
-        ))}
+  if (resultado)
+    return (
+      <div tabIndex={-1} ref={(el) => el?.focus()}>
+        <ResultadoDiagnostico
+          resultado={resultado}
+          empresa={String(state.empresa)}
+        />
       </div>
-
-      {step === 1 && (
-        <div className="flex flex-col gap-5">
-          <h2 className="font-heading text-xl font-semibold text-cloud">Cuéntanos de ti</h2>
-          <div className="grid gap-5 sm:grid-cols-2">
-            <div>
-              <label className={labelClass} htmlFor="wizard-nombre">Nombre</label>
-              <input id="wizard-nombre" className={inputClass} value={state.nombre} onChange={(e) => update("nombre", e.target.value)} />
+    );
+  return (
+    <form
+      onSubmit={submit}
+      className="rounded-xl border bg-[#fafbf9] p-6 sm:p-10"
+    >
+      <div className="mb-3 flex justify-between text-xs text-cloud/70">
+        <span>Tu diagnóstico inicial</span>
+        <span>
+          Paso {step + 1} de {questions.length}
+        </span>
+      </div>
+      <progress
+        aria-label="Progreso del diagnóstico"
+        className="mb-8 h-1.5 w-full accent-soft-cyan"
+        value={step + 1}
+        max={questions.length}
+      />
+      <div key={step} className="step-enter">
+        <h2
+          ref={heading}
+          tabIndex={-1}
+          className="mb-6 text-2xl font-medium tracking-tight"
+        >
+          {q.title}
+        </h2>
+        {q.options && (
+          <fieldset>
+            <legend className="sr-only">{q.title}</legend>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {q.options.map((opt) => {
+                const checked = Array.isArray(value)
+                  ? value.includes(opt.value)
+                  : value === opt.value;
+                return (
+                  <label
+                    key={opt.value}
+                    className={`flex min-h-14 cursor-pointer items-center gap-3 rounded-lg border p-4 text-sm ${checked ? "border-soft-cyan bg-[#e9efe6]" : "bg-white"}`}
+                  >
+                    <input
+                      type={q.multi ? "checkbox" : "radio"}
+                      name={q.key}
+                      value={opt.value}
+                      checked={checked}
+                      className="accent-soft-cyan"
+                      onChange={() =>
+                        update(
+                          q.key,
+                          q.multi
+                            ? checked
+                              ? (value as string[]).filter(
+                                  (v) => v !== opt.value,
+                                )
+                              : [
+                                  ...(Array.isArray(value) ? value : []),
+                                  opt.value,
+                                ]
+                            : opt.value,
+                        )
+                      }
+                    />
+                    {opt.label}
+                  </label>
+                );
+              })}
             </div>
-            <div>
-              <label className={labelClass} htmlFor="wizard-empresa">Empresa</label>
-              <input id="wizard-empresa" className={inputClass} value={state.empresa} onChange={(e) => update("empresa", e.target.value)} />
-            </div>
-            <div>
-              <label className={labelClass} htmlFor="wizard-email">Correo electrónico</label>
-              <input id="wizard-email" type="email" className={inputClass} value={state.email} onChange={(e) => update("email", e.target.value)} />
-            </div>
-            <div>
-              <label className={labelClass} htmlFor="wizard-industria">Industria</label>
-              <input id="wizard-industria" className={inputClass} value={state.industria} onChange={(e) => update("industria", e.target.value)} />
-            </div>
-            <div>
-              <label className={labelClass} htmlFor="wizard-estado">Estado</label>
-              <input id="wizard-estado" className={inputClass} value={state.estado} onChange={(e) => update("estado", e.target.value)} />
-            </div>
-          </div>
-        </div>
-      )}
-
-      {step === 2 && (
-        <div className="flex flex-col gap-6">
-          <h2 className="font-heading text-xl font-semibold text-cloud">Tu operación</h2>
-          <div>
-            <label className={labelClass}>Número de empleados</label>
-            <RadioGrid
-              options={[
-                { value: "1-5", label: "1 a 5" },
-                { value: "6-20", label: "6 a 20" },
-                { value: "21-50", label: "21 a 50" },
-                { value: "51-200", label: "51 a 200" },
-                { value: "200+", label: "Más de 200" },
-              ]}
-              selected={state.numEmpleados}
-              onChange={(v) => update("numEmpleados", v)}
-            />
-          </div>
-          <div>
-            <label className={labelClass}>¿Qué procesos haces manualmente? (elige los que apliquen)</label>
-            <CheckboxGrid
-              options={procesosOpciones}
-              selected={state.procesosManuales}
-              onChange={(v) => update("procesosManuales", v)}
-            />
-          </div>
-          <div>
-            <label className={labelClass}>
-              Horas semanales dedicadas a esos procesos: {state.horasSemanalesEnProcesosManuales}
-            </label>
+          </fieldset>
+        )}
+        {q.range && (
+          <label className="block text-sm">
+            Horas por semana: <strong className="text-2xl">{value}</strong>
             <input
+              className="mt-6 w-full accent-soft-cyan"
               type="range"
               min={1}
-              max={60}
-              value={state.horasSemanalesEnProcesosManuales}
-              onChange={(e) => update("horasSemanalesEnProcesosManuales", Number(e.target.value))}
-              className="w-full accent-electric-violet"
+              max={80}
+              value={Number(value)}
+              onChange={(e) => update(q.key, Number(e.target.value))}
             />
-          </div>
-        </div>
-      )}
-
-      {step === 3 && (
-        <div className="flex flex-col gap-6">
-          <h2 className="font-heading text-xl font-semibold text-cloud">Herramientas actuales</h2>
-          <div>
-            <label className={labelClass}>¿Qué tanto dependes de Excel/hojas de cálculo?</label>
-            <RadioGrid
-              options={[
-                { value: "no", label: "Casi nada" },
-                { value: "ocasional", label: "Ocasional" },
-                { value: "intensivo", label: "Intensivo" },
-                { value: "critico", label: "Es crítico para operar" },
-              ]}
-              selected={state.usoExcel}
-              onChange={(v) => update("usoExcel", v)}
-            />
-          </div>
-          <div>
-            <label className={labelClass}>¿Qué sistemas usas hoy?</label>
-            <CheckboxGrid
-              options={sistemasOpciones.map((s) => ({ value: s, label: s }))}
-              selected={state.sistemasUtilizados}
-              onChange={(v) => update("sistemasUtilizados", v)}
-            />
-          </div>
-          <div>
-            <label className={labelClass}>¿Ya usas Inteligencia Artificial?</label>
-            <RadioGrid
-              options={[
-                { value: "ninguno", label: "Todavía no" },
-                { value: "explorando", label: "Explorando opciones" },
-                { value: "pruebas", label: "En pruebas" },
-                { value: "en-uso", label: "Ya la usamos" },
-              ]}
-              selected={state.usoActualIA}
-              onChange={(v) => update("usoActualIA", v)}
-            />
-          </div>
-        </div>
-      )}
-
-      {step === 4 && (
-        <div className="flex flex-col gap-6">
-          <h2 className="font-heading text-xl font-semibold text-cloud">Prioridades</h2>
-          <div>
-            <label className={labelClass}>¿Cuáles son tus principales problemas hoy?</label>
-            <CheckboxGrid
-              options={problemasOpciones.map((p) => ({ value: p, label: p }))}
-              selected={state.principalesProblemas}
-              onChange={(v) => update("principalesProblemas", v)}
-            />
-          </div>
-          <div>
-            <label className={labelClass}>¿Qué te interesa más en este momento?</label>
-            <RadioGrid options={interesOpciones} selected={state.interesPrincipal} onChange={(v) => update("interesPrincipal", v)} />
-          </div>
-        </div>
-      )}
-
-      {step === 5 && (
-        <div className="flex flex-col items-center gap-4 py-6 text-center">
-          <h2 className="font-heading text-xl font-semibold text-cloud">Todo listo</h2>
-          <p className="max-w-sm text-sm text-cloud/65">
-            Vamos a calcular tu Ravela Opportunity Score™ con base en tus respuestas. Los
-            resultados son orientativos.
-          </p>
-          {status === "error" && (
-            <p className="text-sm text-magenta">
-              Hubo un problema al generar tu diagnóstico. Intenta de nuevo.
+            <span className="mt-3 block text-xs text-cloud/70">
+              Suma las horas que el equipo dedica a estas tareas en una semana
+              habitual.
+            </span>
+          </label>
+        )}
+        {last && (
+          <div className="space-y-4">
+            {[
+              ["nombre", "Nombre", "text", "name"],
+              ["empresa", "Empresa", "text", "organization"],
+              ["email", "Correo electrónico", "email", "email"],
+            ].map(([key, label, type, auto]) => (
+              <label key={key} className="block text-sm">
+                {label}
+                <input
+                  className="field mt-2"
+                  type={type}
+                  autoComplete={auto}
+                  required
+                  maxLength={100}
+                  value={String(state[key])}
+                  onChange={(e) => update(key, e.target.value)}
+                />
+              </label>
+            ))}
+            <div hidden aria-hidden="true">
+              <input
+                aria-label="Sitio web"
+                tabIndex={-1}
+                autoComplete="off"
+                value={String(state.sitioWeb)}
+                onChange={(e) => update("sitioWeb", e.target.value)}
+              />
+            </div>
+            <p className="text-xs leading-6 text-cloud/70">
+              Usaremos tus datos para dar seguimiento a tu solicitud.{" "}
+              <Link href="/aviso-de-privacidad" className="underline">
+                Aviso de privacidad
+              </Link>
+              . Los resultados son orientativos.
             </p>
-          )}
-        </div>
+          </div>
+        )}
+      </div>
+      {error && (
+        <p role="alert" className="mt-5 text-sm text-magenta">
+          {error}
+        </p>
       )}
-
-      <div className="mt-8 flex items-center justify-between">
+      <div className="mt-8 flex justify-between gap-3">
         <Button
           type="button"
           variant="ghost"
-          onClick={() => setStep((s) => Math.max(1, s - 1))}
-          className={step === 1 ? "invisible" : ""}
+          disabled={step === 0 || status === "loading"}
+          onClick={() => setStep((s) => s - 1)}
         >
-          <ArrowLeft className="h-4 w-4" />
-          Atrás
+          ← Atrás
         </Button>
-
-        {step < TOTAL_STEPS ? (
-          <Button type="button" disabled={!canAdvance} onClick={() => setStep((s) => s + 1)}>
-            Siguiente
-            <ArrowRight className="h-4 w-4" />
-          </Button>
-        ) : (
-          <Button type="button" disabled={status === "submitting"} onClick={handleSubmit}>
-            {status === "submitting" ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Calculando...
-              </>
-            ) : (
-              "Ver mi Opportunity Score"
-            )}
-          </Button>
-        )}
+        <Button type="submit" disabled={!valid || status === "loading"}>
+          {status === "loading"
+            ? "Calculando…"
+            : last
+              ? "Ver mi diagnóstico"
+              : "Siguiente →"}
+        </Button>
       </div>
-    </div>
+    </form>
   );
 }

@@ -10,9 +10,9 @@ import { Logo } from "@/components/ui/logo";
 
 const navLinks = [
   { href: "/soluciones", label: "Soluciones" },
-  { href: "/diagnostico", label: "Ravela Intelligence™" },
-  { href: "/casos-de-exito", label: "Casos de éxito" },
-  { href: "/recursos", label: "Recursos" },
+  { href: "/#como-trabajamos", label: "Cómo trabajamos" },
+  { href: "/casos-de-exito", label: "Casos de uso" },
+  { href: "/diagnostico", label: "Ravela Intelligence" },
   { href: "/nosotros", label: "Nosotros" },
 ];
 
@@ -22,11 +22,14 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-cloud/10 bg-deep-space/80 backdrop-blur-lg">
       <Container className="flex h-18 items-center justify-between">
-        <Link href="/" className="shrink-0" onClick={() => setOpen(false)}>
+        <Link href="/" className="shrink-0 mr-2" onClick={() => setOpen(false)}>
           <Logo />
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex" aria-label="Navegación principal">
+        <nav
+          className="hidden items-center gap-5 lg:flex"
+          aria-label="Navegación principal"
+        >
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -38,9 +41,9 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden lg:block">
+        <div className="ml-auto mr-3 lg:ml-0 lg:mr-0">
           <Button href="/contacto" size="sm">
-            Habla con Ravela Group
+            Diagnóstico gratuito
           </Button>
         </div>
 
@@ -49,6 +52,10 @@ export function Navbar() {
           className="inline-flex items-center justify-center rounded-lg p-2 text-cloud lg:hidden"
           aria-label={open ? "Cerrar menú" : "Abrir menú"}
           aria-expanded={open}
+          aria-controls="menu-movil"
+          onKeyDown={(e) => {
+            if (e.key === "Escape") setOpen(false);
+          }}
           onClick={() => setOpen((v) => !v)}
         >
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -58,6 +65,10 @@ export function Navbar() {
       {open && (
         <nav
           className="border-t border-cloud/10 bg-deep-space px-6 py-4 lg:hidden"
+          id="menu-movil"
+          onKeyDown={(e) => {
+            if (e.key === "Escape") setOpen(false);
+          }}
           aria-label="Navegación móvil"
         >
           <ul className="flex flex-col gap-1">
@@ -73,8 +84,12 @@ export function Navbar() {
               </li>
             ))}
           </ul>
-          <Button href="/contacto" className="mt-4 w-full" onClick={() => setOpen(false)}>
-            Habla con Ravela Group
+          <Button
+            href="/contacto"
+            className="mt-4 w-full"
+            onClick={() => setOpen(false)}
+          >
+            Diagnóstico gratuito
           </Button>
         </nav>
       )}

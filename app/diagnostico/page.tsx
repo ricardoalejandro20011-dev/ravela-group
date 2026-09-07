@@ -7,9 +7,10 @@ import { Container, Section } from "@/components/ui/container";
 import { FadeIn } from "@/components/ui/fade-in";
 
 export const metadata: Metadata = {
-  title: "Ravela Intelligence™ — Diagnóstico gratuito | Ravela Group",
+  alternates: { canonical: "/diagnostico" },
+  title: "Ravela Intelligence — Diagnóstico gratuito | Ravela Group",
   description:
-    "Descubre en minutos qué procesos de tu empresa puedes automatizar y cómo la Inteligencia Artificial puede ayudarte, con tu Ravela Opportunity Score™.",
+    "Descubre en minutos qué procesos de tu empresa puedes automatizar y cómo la Inteligencia Artificial puede ayudarte, con tu Diagnóstico de oportunidades.",
 };
 
 export default function DiagnosticoPage() {
@@ -19,18 +20,18 @@ export default function DiagnosticoPage() {
         <FadeIn className="mx-auto max-w-2xl text-center">
           <Badge variant="cyan">
             <Sparkles className="h-3.5 w-3.5" />
-            Ravela Intelligence™
+            Ravela Intelligence
           </Badge>
           <h1 className="mt-5 font-heading text-4xl font-semibold tracking-tight text-cloud sm:text-5xl">
-            Descubre tu Ravela Opportunity Score™
+            Encuentra qué vale la pena automatizar.
           </h1>
           <p className="mt-4 text-lg text-cloud/70">
-            5 pasos rápidos para identificar qué procesos puedes automatizar, cuánto
-            podrías ahorrar y cómo la IA puede ayudar a tu negocio.
+            Preguntas breves para identificar qué procesos puedes automatizar,
+            cuánto podrías ahorrar y cómo la IA puede ayudar a tu negocio.
           </p>
-          <p className="mt-2 text-sm text-cloud/45">
-            Este es tu diagnóstico inicial. Ravela Intelligence™ profundiza después en
-            una Discovery Session con nuestro equipo.
+          <p className="mt-2 text-sm text-cloud/70">
+            Este es tu diagnóstico inicial. Ravela Intelligence profundiza
+            después en una sesión de trabajo con nuestro equipo.
           </p>
         </FadeIn>
 

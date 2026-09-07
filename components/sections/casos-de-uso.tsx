@@ -31,7 +31,7 @@ export function CasosDeUso() {
             href="/casos-de-exito"
             className="text-sm font-medium text-soft-cyan hover:underline"
           >
-            Ver todos los casos de éxito
+            Ver todos los casos de uso
           </Link>
         </FadeIn>
       </Container>

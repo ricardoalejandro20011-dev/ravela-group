@@ -7,7 +7,8 @@ import { checkRateLimit } from "@/lib/utils/rate-limit";
 import { contactoSchema } from "@/lib/validations/contacto";
 
 export async function POST(request: Request) {
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anon";
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anon";
 
   if (!checkRateLimit(`contacto:${ip}`)) {
     return NextResponse.json(
@@ -18,13 +19,19 @@ export async function POST(request: Request) {
 
   const json = await request.json().catch(() => null);
   if (!json) {
-    return NextResponse.json({ error: "Cuerpo de solicitud inválido." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Cuerpo de solicitud inválido." },
+      { status: 400 },
+    );
   }
 
   const parsed = contactoSchema.safeParse(json);
   if (!parsed.success) {
     return NextResponse.json(
-      { error: "Datos inválidos.", issues: flattenError(parsed.error).fieldErrors },
+      {
+        error: "Datos inválidos.",
+        issues: flattenError(parsed.error).fieldErrors,
+      },
       { status: 400 },
     );
   }
@@ -50,23 +57,33 @@ export async function POST(request: Request) {
     bloqueHorario,
   } = parsed.data;
 
-  const lead = await guardarLead({
-    nombre,
-    empresa,
-    email,
-    whatsapp,
-    estado,
-    industria,
-    tamano: tamano || undefined,
-    servicioInteres,
-    presupuestoEstimado,
-    mensaje,
-    diaPreferido: diaPreferido || undefined,
-    bloqueHorario: bloqueHorario || undefined,
-    origen: "contacto",
-  });
+  try {
+    const lead = await guardarLead({
+      nombre,
+      empresa,
+      email,
+      whatsapp,
+      estado,
+      industria,
+      tamano: tamano || undefined,
+      servicioInteres,
+      presupuestoEstimado,
+      mensaje,
+      diaPreferido: diaPreferido || undefined,
+      bloqueHorario: bloqueHorario || undefined,
+      origen: "contacto",
+    });
 
-  await notificarNuevoLead(lead);
+    await notificarNuevoLead(lead);
 
-  return NextResponse.json({ ok: true, leadId: lead.id });
+    return NextResponse.json({ ok: true, leadId: lead.id });
+  } catch {
+    return NextResponse.json(
+      {
+        error:
+          "No pudimos guardar tu solicitud. Intenta de nuevo o contáctanos por WhatsApp.",
+      },
+      { status: 503 },
+    );
+  }
 }

@@ -1,134 +1,69 @@
-# Ravela Group — Sitio y plataforma comercial
+# Ravela Group
 
-**Intelligence. Automated.** Sitio web y plataforma de generación de leads de Ravela Group, consultora de automatización, IA y transformación digital para PYMEs mexicanas.
+Sitio B2B para PYMEs mexicanas. Conserva Next.js 16.2.12 (App Router), React 19.2.4, TypeScript y Tailwind CSS 4.
 
-## Stack
-
-- [Next.js 16](https://nextjs.org) (App Router, Turbopack)
-- TypeScript
-- Tailwind CSS v4
-- Framer Motion, Lucide Icons, Recharts
-- React Hook Form + Zod
-
-## 1. Requisitos
-
-- Node.js 20.9+ (recomendado 22 LTS o superior)
-- npm 10+
-
-## 2. Instalación
+## Desarrollo y validación
 
 ```bash
-npm install
-```
-
-## 3. Variables de entorno
-
-Copia `.env.example` a `.env.local` y completa los valores según el entorno:
-
-```bash
-cp .env.example .env.local
-```
-
-Mientras no se conecten los servicios reales, el sitio funciona con datos mock y
-almacenamiento en memoria. Nunca subas `.env.local` a git ni expongas keys en código
-de cliente.
-
-**Para que los formularios (contacto y diagnóstico) guarden leads de forma real en
-producción, se necesitan estas dos variables como mínimo:**
-
-- **Supabase** (almacenamiento persistente de leads):
-  1. Crea un proyecto gratis en [supabase.com](https://supabase.com).
-  2. En el SQL Editor, corre el `create table leads (...)` documentado en
-     `lib/supabase/schema.ts`.
-  3. Copia `Project URL` → `NEXT_PUBLIC_SUPABASE_URL` y la `service_role` key
-     (Project Settings → API) → `SUPABASE_SERVICE_ROLE_KEY`.
-  - Sin esto, los leads solo viven en memoria durante esa invocación y se
-    pierden — en Vercel (serverless) esto significa que **no persisten**.
-- **Resend** (notificación por correo de cada lead nuevo a `ravelaservicios@gmail.com`):
-  1. Crea una cuenta gratis en [resend.com](https://resend.com).
-  2. Copia tu API key → `RESEND_API_KEY`.
-  - Sin esto, el envío de correo simplemente se omite (no rompe el sitio).
-
-## 4. Ejecutar en localhost
-
-```bash
+npm ci
 npm run dev
-```
-
-Abre [http://localhost:3000](http://localhost:3000). Si el puerto 3000 está ocupado, Next.js
-usará automáticamente el siguiente disponible (por ejemplo 3001) e imprimirá la URL en consola.
-
-## 5. Build de producción
-
-```bash
-npm run build
-npm run start
-```
-
-## 6. Tests
-
-```bash
-npm run test
-```
-
-*(Se agrega en la Fase 15 — Testing.)*
-
-## 7. Lint y typecheck
-
-```bash
 npm run lint
 npm run typecheck
+npm run build
+npm run start
+npx tsx scripts/check-api.ts
 ```
 
-## 8. Despliegue
+`check-api.ts` usa un servidor Supabase simulado local. Verifica validación, persistencia, fallos, honeypots, límite de solicitudes, diagnóstico y ROI; no envía correos ni crea prospectos reales.
 
-Preparado para desplegar en [Vercel](https://vercel.com) (compatible también con Supabase,
-Cloudflare y Azure para servicios de backend). Pasos generales:
+## Arquitectura conservada
 
-1. Crear repositorio en GitHub y hacer push de este proyecto.
-2. Importar el repositorio en Vercel.
-3. Configurar las variables de entorno de `.env.example` en el dashboard de Vercel
-   (Project Settings → Environment Variables).
-4. Desplegar. Vercel detecta Next.js automáticamente.
+- `app/`: páginas estáticas y artículos, App Router, metadata y dos Route Handlers.
+- `components/`: presentación, formularios, diagnóstico y componentes visuales.
+- `lib/scoring/`: reglas originales de diagnóstico y cálculo ROI en MXN. No se presentan como predicción de IA ni como rendimiento garantizado.
+- `lib/data/` y `lib/mock/`: contenido local. Los artículos son contenido editorial; los casos son escenarios demostrativos sin clientes ni resultados ficticios.
+- `lib/supabase/`, `lib/mock/leads-store.ts`, `lib/email/`: persistencia y avisos existentes. El nombre histórico `mock/leads-store` se conserva para evitar romper importaciones.
+- No existían imágenes reales en `public`, scripts de analytics activos, sitemap, robots ni aviso de privacidad. El isotipo existente se conserva en una paleta sobria.
+- Ravela Intelligence es un diagnóstico basado en reglas. No existía un asistente conectado a un proveedor LLM en este repositorio.
 
-No se despliega nada automáticamente sin autorización explícita.
+## Recepción de solicitudes
 
-## 9. Configuración de dominio
+Configurar en Vercel las variables de `.env.example` y crear la tabla `leads` descrita en `lib/supabase/schema.ts`. `NEXT_PUBLIC_SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY` son obligatorias para guardar prospectos en producción.
 
-Desde Vercel: Project Settings → Domains → agregar el dominio de Ravela Group y seguir las
-instrucciones de DNS (registros A/CNAME). HTTPS se configura automáticamente vía Vercel.
+Las variables locales de Supabase y Resend estaban vacías durante esta entrega. Las pruebas de integración usan un servidor simulado; no prueban recepción real en una cuenta de producción. Si falta almacenamiento o falla la inserción, la API responde 503 y el formulario ofrece reintento y WhatsApp, sin confirmar falsamente la recepción. En desarrollo, sin Supabase, se conserva el respaldo temporal en memoria.
 
-## 10. Variables de entorno en producción
+El contacto acepta nombre, empresa, WhatsApp **o** correo y descripción. Se preservan los campos anteriores como opcionales por compatibilidad. El diagnóstico pide contacto al final y conserva sus respuestas y resultado en `mensaje` para el seguimiento.
 
-Configurar en Vercel (o el proveedor elegido) las mismas claves de `.env.example`,
-con los valores reales de producción — nunca reutilizar credenciales de desarrollo.
+Resend notifica después del guardado. Revisar remitente y destinatario autorizados; el remitente de prueba tiene restricciones del proveedor. Una falla de notificación no elimina un prospecto guardado. No se ha enviado ningún correo real durante la verificación.
 
-## Estructura del proyecto
+Protección: validación Zod, campos trampa, límites por IP e instancia, respuestas de error controladas y escape HTML en correos. Ante abuso distribuido, complementar con reglas del firewall de Vercel o un límite compartido.
 
-```
-app/                  Rutas (App Router)
-  (marketing)/         Páginas de marketing: soluciones, industrias, nosotros, contacto...
-  diagnostico/          Ravela Intelligence™ (wizard de diagnóstico)
-  calculadora-roi/
-  blog/[slug]/
-  api/                  Route handlers (diagnóstico, ROI, contacto, asistente IA)
-components/
-  ui/                   Design system (botones, cards, inputs)
-  sections/              Secciones reutilizables de página
-  layout/                Navbar, footer
-lib/
-  types/                 Modelo de datos (Lead, Diagnóstico, ROI, Blog, Casos, Paquetes)
-  scoring/                Motor de Ravela Opportunity Score™ y cálculo de ROI
-  mock/                   Datos mock (paquetes, blog, casos, leads en memoria)
-  supabase/               Contrato de esquema para la futura conexión a Supabase
-  validations/            Esquemas Zod de formularios
-content/blog/            Contenido del blog
-public/brand/             Logo, isotipo, favicon
-```
+## Conversión y medición
 
-## Estado del proyecto
+WhatsApp conserva el número existente y usa el mensaje aprobado. El correo público se centraliza en `lib/constants/contacto.ts`, configurable con `NEXT_PUBLIC_CONTACT_EMAIL`; no se publica un buzón de dominio inexistente.
 
-Sitio completo: Home, Soluciones (+4 pilares), Ravela Intelligence™ (diagnóstico),
-Calculadora de ROI, Casos de éxito, Nosotros, Recursos, Blog y Contacto, todos
-funcionales. Pendiente antes de producción: conectar Supabase y Resend (ver
-sección 3), y SEO/analytics avanzados.
+`lib/analytics.ts` expone eventos en `window.dataLayer` y `ravela:analytics`: `hero_diagnostico_click`, `hero_whatsapp_click`, `diagnostico_start`, `diagnostico_complete`, `roi_calculator_use`, `contact_submit`, `whatsapp_click`, `service_view`, `case_use_view`. No envía datos personales ni instala un proveedor externo. Conectar la herramienta de analytics del negocio cuando se elija.
+
+## Contenido y confianza
+
+Los casos llevan `type: "demonstrative"`. Para mostrar `Caso real`, se requieren `type: "real"`, `authorized: true` y contenido real autorizado. Nunca convertir un ejemplo en caso real cambiando únicamente el indicador.
+
+Ricardo Valdez tiene una sección editorial con monograma, sin fotografía falsa. Agregar su fotografía real cuando esté disponible. No se publican clientes, cifras de proyectos, testimonios, certificaciones o alianzas no confirmadas.
+
+El aviso de privacidad describe el funcionamiento implementado. El negocio debe completar y validar los datos formales del responsable, domicilio, conservación y condiciones reales con quien gestione su privacidad; no se inventaron esos datos.
+
+## SEO
+
+Canonical por página, metadata única de servicios y artículos, OpenGraph, imagen social generada con `next/og`, Twitter card, schema Organization, `robots.txt` y `sitemap.xml`. Se conserva `/casos-de-exito` para mantener enlaces existentes, con título visible “Casos de uso”.
+
+## Despliegue
+
+Repositorio: `ricardoalejandro20011-dev/ravela-group`, rama `main`. Proyecto existente de Vercel: `ravela-group`. El repositorio registra despliegues del bot de Vercel al publicar en GitHub.
+
+El dominio `https://www.ravela.online` ya responde desde Vercel. GoDaddy administra el dominio; no se requiere mover el sitio a GoDaddy ni modificar DNS si se mantiene el proyecto y la asociación actuales. La sesión de Vercel CLI estaba vencida, por lo que esta entrega usa GitHub para disparar el despliegue. Verificar el estado del nuevo despliegue y el contenido servido por el dominio.
+
+## Entrega visual
+
+Home orientada a problemas y tres soluciones, interfaces propias en HTML/React, navegación compacta, WhatsApp, FAQ, método en español, casos demostrativos y fundador. Se crearon `WorkflowDemo`, `WhatsAppAgentDemo`, `DashboardPreview`, `ProcessBeforeAfter`, `ServiceCard`, `FounderSection`, `FAQ`, `LogoStrip` y la capa `Analytics`; se refactorizaron `DiagnosticoWizard`, `RoiWidget`, `CasoCard`, `ContactForm` y `CtaFinal`.
+
+Las mediciones locales no sustituyen datos de campo de Core Web Vitals ni la revisión del contenido real del negocio. Ver `docs/verification.md` para resultados de esta entrega.

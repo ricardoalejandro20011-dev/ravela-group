@@ -1,4 +1,10 @@
-import { ArrowRight, BookOpen, Calculator, Sparkles, Trophy } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  Calculator,
+  Sparkles,
+  Trophy,
+} from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -7,17 +13,19 @@ import { Container, Section } from "@/components/ui/container";
 import { FadeIn } from "@/components/ui/fade-in";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/recursos" },
   title: "Recursos — Ravela Group",
   description:
-    "Artículos, herramientas y casos de éxito para ayudarte a empezar tu camino de automatización e Inteligencia Artificial.",
+    "Artículos, herramientas y casos de uso para ayudarte a empezar tu camino de automatización e Inteligencia Artificial.",
 };
 
 const recursos = [
   {
     href: "/diagnostico",
     icon: Sparkles,
-    title: "Ravela Intelligence™",
-    description: "Diagnóstico gratuito: descubre tu Ravela Opportunity Score™.",
+    title: "Ravela Intelligence",
+    description:
+      "Diagnóstico gratuito: descubre tu Diagnóstico de oportunidades.",
   },
   {
     href: "/calculadora-roi",
@@ -29,12 +37,13 @@ const recursos = [
     href: "/blog",
     icon: BookOpen,
     title: "Blog",
-    description: "Artículos prácticos sobre automatización, IA y datos para PYMEs.",
+    description:
+      "Artículos prácticos sobre automatización, IA y datos para PYMEs.",
   },
   {
     href: "/casos-de-exito",
     icon: Trophy,
-    title: "Casos de éxito",
+    title: "Casos de uso",
     description: "Ejemplos ilustrativos de cómo aplicar estas soluciones.",
   },
 ];
@@ -48,7 +57,8 @@ export default function RecursosPage() {
             Recursos
           </h1>
           <p className="mt-4 text-lg text-cloud/70">
-            Herramientas y artículos para ayudarte a identificar por dónde empezar.
+            Herramientas y artículos para ayudarte a identificar por dónde
+            empezar.
           </p>
         </FadeIn>
 

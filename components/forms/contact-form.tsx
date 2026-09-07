@@ -1,256 +1,124 @@
 "use client";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircle2, Loader2, PhoneCall } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-
+import { useState, type FormEvent } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { contactoSchema, type ContactoFormValues } from "@/lib/validations/contacto";
-
-const inputClass =
-  "w-full rounded-xl border border-cloud/15 bg-cloud/5 px-4 py-2.5 text-sm text-cloud placeholder:text-cloud/35 outline-none transition-colors focus:border-soft-cyan/60 focus:ring-2 focus:ring-soft-cyan/20";
-
-const labelClass = "mb-1.5 block text-sm font-medium text-cloud/80";
-
-const errorClass = "mt-1 text-xs text-magenta";
-
-const serviciosInteres = [
-  { value: "automatizacion", label: "Automatización" },
-  { value: "inteligencia-artificial", label: "Inteligencia Artificial" },
-  { value: "datos-inteligencia", label: "Datos e Inteligencia" },
-  { value: "transformacion-digital", label: "Transformación Digital" },
-  { value: "no-estoy-seguro", label: "No estoy seguro / diagnóstico" },
-];
-
-const presupuestos = [
-  { value: "menos-15k", label: "Menos de $15,000 MXN" },
-  { value: "15k-30k", label: "$15,000 - $30,000 MXN" },
-  { value: "30k-60k", label: "$30,000 - $60,000 MXN" },
-  { value: "mas-60k", label: "Más de $60,000 MXN" },
-  { value: "no-seguro", label: "Aún no lo sé" },
-];
-
+import { CONTACTO } from "@/lib/constants/contacto";
+import { track } from "@/lib/analytics";
 export function ContactForm() {
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<ContactoFormValues>({
-    resolver: zodResolver(contactoSchema),
-  });
-
-  async function onSubmit(values: ContactoFormValues) {
-    setStatus("submitting");
+  const [status, setStatus] = useState("idle");
+  const [error, setError] = useState("");
+  async function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (status === "loading") return;
+    const f = new FormData(e.currentTarget);
+    const contacto = String(f.get("contacto")).trim();
+    if (
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contacto) &&
+      !/^\+?[0-9 ()-]{10,20}$/.test(contacto)
+    ) {
+      setError("Ingresa un correo o WhatsApp válido.");
+      return;
+    }
+    setError("");
+    setStatus("loading");
     try {
       const res = await fetch("/api/contacto", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          nombre: f.get("nombre"),
+          empresa: f.get("empresa"),
+          email: contacto.includes("@") ? contacto : "",
+          whatsapp: contacto.includes("@") ? "" : contacto,
+          mensaje: f.get("mensaje"),
+          sitioWeb: f.get("sitioWeb"),
+        }),
       });
-      if (!res.ok) throw new Error("request-failed");
+      if (!res.ok) throw new Error();
+      track("contact_submit");
       setStatus("success");
-      reset();
     } catch {
-      setStatus("error");
+      setStatus("idle");
+      setError(
+        "No pudimos enviar tu solicitud. Intenta de nuevo o escríbenos por WhatsApp.",
+      );
     }
   }
-
-  if (status === "success") {
+  if (status === "success")
     return (
-      <div className="glass flex flex-col items-center gap-3 rounded-2xl p-10 text-center">
-        <CheckCircle2 className="h-10 w-10 text-soft-cyan" />
-        <h3 className="font-heading text-xl font-semibold text-cloud">
-          ¡Gracias por escribirnos!
-        </h3>
-        <p className="max-w-sm text-sm text-cloud/65">
-          Recibimos tu mensaje. Un miembro de Ravela Group se pondrá en contacto contigo
-          muy pronto.
+      <div className="rounded-xl border bg-[#edf2eb] p-8" role="status">
+        <h2 className="text-2xl font-medium">Recibimos tu solicitud.</h2>
+        <p className="mt-4 text-sm leading-7">
+          Revisaremos el proceso que quieres mejorar y te contactaremos por el
+          medio que compartiste para coordinar el diagnóstico inicial.
         </p>
-        <Button variant="secondary" onClick={() => setStatus("idle")}>
-          Enviar otro mensaje
-        </Button>
+        <Link href="/" className="mt-5 inline-block text-sm underline">
+          Volver al inicio
+        </Link>
       </div>
     );
-  }
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="glass flex flex-col gap-5 rounded-2xl p-6 sm:p-8" noValidate>
-      {/* Honeypot anti-spam: invisible para personas, atractivo para bots */}
-      <input
-        type="text"
-        tabIndex={-1}
-        autoComplete="off"
-        className="absolute left-[-9999px] h-0 w-0 opacity-0"
-        aria-hidden="true"
-        {...register("sitioWeb")}
-      />
-
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <label className={labelClass} htmlFor="nombre">
-            Nombre completo
-          </label>
-          <input id="nombre" className={inputClass} {...register("nombre")} />
-          {errors.nombre && <p className={errorClass}>{errors.nombre.message}</p>}
-        </div>
-        <div>
-          <label className={labelClass} htmlFor="empresa">
-            Empresa
-          </label>
-          <input id="empresa" className={inputClass} {...register("empresa")} />
-          {errors.empresa && <p className={errorClass}>{errors.empresa.message}</p>}
-        </div>
-        <div>
-          <label className={labelClass} htmlFor="email">
-            Correo electrónico
-          </label>
-          <input id="email" type="email" className={inputClass} {...register("email")} />
-          {errors.email && <p className={errorClass}>{errors.email.message}</p>}
-        </div>
-        <div>
-          <label className={labelClass} htmlFor="whatsapp">
-            WhatsApp (opcional)
-          </label>
-          <input id="whatsapp" className={inputClass} {...register("whatsapp")} />
-        </div>
-        <div>
-          <label className={labelClass} htmlFor="estado">
-            Estado
-          </label>
-          <input id="estado" className={inputClass} placeholder="Ej. Jalisco" {...register("estado")} />
-          {errors.estado && <p className={errorClass}>{errors.estado.message}</p>}
-        </div>
-        <div>
-          <label className={labelClass} htmlFor="industria">
-            Industria
-          </label>
+    <form
+      onSubmit={submit}
+      className="space-y-5 rounded-xl border bg-[#fafbf9] p-6 sm:p-8"
+    >
+      <h2 className="text-xl font-medium">
+        Cuéntanos qué proceso te gustaría mejorar.
+      </h2>
+      {[
+        ["nombre", "Nombre", "name"],
+        ["empresa", "Empresa", "organization"],
+        ["contacto", "WhatsApp o correo", "off"],
+      ].map(([name, label, auto]) => (
+        <label className="block text-sm" key={name}>
+          {label}
           <input
-            id="industria"
-            className={inputClass}
-            placeholder="Ej. Distribución, manufactura..."
-            {...register("industria")}
+            className="field mt-2"
+            name={name}
+            autoComplete={auto}
+            required
+            minLength={name === "contacto" ? 10 : 2}
+            maxLength={100}
           />
-          {errors.industria && <p className={errorClass}>{errors.industria.message}</p>}
-        </div>
-        <div>
-          <label className={labelClass} htmlFor="tamano">
-            Tamaño de la empresa
-          </label>
-          <select id="tamano" className={inputClass} defaultValue="" {...register("tamano")}>
-            <option value="" disabled>
-              Selecciona una opción
-            </option>
-            <option value="1-10">1 a 10 empleados</option>
-            <option value="11-50">11 a 50 empleados</option>
-            <option value="51-200">51 a 200 empleados</option>
-            <option value="201-500">201 a 500 empleados</option>
-            <option value="500+">Más de 500 empleados</option>
-          </select>
-        </div>
-        <div>
-          <label className={labelClass} htmlFor="servicioInteres">
-            ¿Qué te interesa?
-          </label>
-          <select id="servicioInteres" className={inputClass} defaultValue="" {...register("servicioInteres")}>
-            <option value="" disabled>
-              Selecciona una opción
-            </option>
-            {serviciosInteres.map((s) => (
-              <option key={s.value} value={s.value}>
-                {s.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="sm:col-span-2">
-          <label className={labelClass} htmlFor="presupuestoEstimado">
-            Presupuesto estimado (opcional)
-          </label>
-          <select
-            id="presupuestoEstimado"
-            className={inputClass}
-            defaultValue=""
-            {...register("presupuestoEstimado")}
-          >
-            <option value="" disabled>
-              Selecciona una opción
-            </option>
-            {presupuestos.map((p) => (
-              <option key={p.value} value={p.value}>
-                {p.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div>
-        <label className={labelClass} htmlFor="mensaje">
-          Cuéntanos sobre tu empresa y qué te gustaría lograr
         </label>
-        <textarea id="mensaje" rows={5} className={inputClass} {...register("mensaje")} />
-        {errors.mensaje && <p className={errorClass}>{errors.mensaje.message}</p>}
+      ))}
+      <label className="block text-sm">
+        ¿Qué proceso te gustaría mejorar?
+        <textarea
+          className="field mt-2 min-h-28"
+          name="mensaje"
+          required
+          minLength={10}
+          maxLength={2000}
+        />
+      </label>
+      <div className="hidden" aria-hidden="true">
+        <label>
+          Sitio web
+          <input name="sitioWeb" tabIndex={-1} autoComplete="off" />
+        </label>
       </div>
-
-      <div className="rounded-xl border border-cloud/10 bg-cloud/[0.03] p-4">
-        <p className="flex items-center gap-2 text-sm font-medium text-cloud/80">
-          <PhoneCall className="h-4 w-4 text-soft-cyan" />
-          ¿Prefieres que te llamemos? (opcional)
-        </p>
-        <div className="mt-3 grid gap-4 sm:grid-cols-2">
-          <div>
-            <label className={labelClass} htmlFor="diaPreferido">
-              Día preferido
-            </label>
-            <select id="diaPreferido" className={inputClass} defaultValue="" {...register("diaPreferido")}>
-              <option value="">Sin preferencia</option>
-              <option value="Lunes">Lunes</option>
-              <option value="Martes">Martes</option>
-              <option value="Miércoles">Miércoles</option>
-              <option value="Jueves">Jueves</option>
-              <option value="Viernes">Viernes</option>
-            </select>
-          </div>
-          <div>
-            <label className={labelClass} htmlFor="bloqueHorario">
-              Horario preferido
-            </label>
-            <select id="bloqueHorario" className={inputClass} defaultValue="" {...register("bloqueHorario")}>
-              <option value="">Sin preferencia</option>
-              <option value="9:00–12:00">9:00 – 12:00</option>
-              <option value="12:00–15:00">12:00 – 15:00</option>
-              <option value="15:00–18:00">15:00 – 18:00</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      {status === "error" && (
-        <p className="text-sm text-magenta">
-          Hubo un problema al enviar tu mensaje. Intenta de nuevo o escríbenos directamente
-          por correo.
+      <p className="text-xs leading-6 text-cloud/70">
+        Usaremos tus datos para atender esta solicitud. Consulta el{" "}
+        <Link href="/aviso-de-privacidad" className="underline">
+          aviso de privacidad
+        </Link>
+        . No incluyas información confidencial.
+      </p>
+      {error && (
+        <p role="alert" className="text-sm text-magenta">
+          {error}
         </p>
       )}
-
-      {Object.keys(errors).length > 0 && (
-        <p className="text-sm text-magenta">
-          Revisa los campos marcados antes de enviar el formulario.
-        </p>
-      )}
-
-      <Button type="submit" disabled={status === "submitting"} className="self-start">
-        {status === "submitting" ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" />
-            Enviando...
-          </>
-        ) : (
-          "Enviar mensaje"
-        )}
+      <Button type="submit" disabled={status === "loading"} className="w-full">
+        {status === "loading" ? "Enviando…" : "Solicitar diagnóstico"}
       </Button>
+      <a
+        href={CONTACTO.whatsappUrl}
+        className="block py-2 text-center text-sm text-soft-cyan"
+      >
+        Prefiero hablar por WhatsApp ↗
+      </a>
     </form>
   );
 }
