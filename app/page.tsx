@@ -3,7 +3,7 @@ import { WorkflowDemo } from "@/components/demos/workflow-demo";
 import { Container, Section } from "@/components/ui/container";
 import { RealCase } from "@/components/sections/real-case";
 import { FounderExperience } from "@/components/sections/founder-experience";
-import { GroupArchitecture } from "@/components/sections/group-architecture";
+import { Insights } from "@/components/sections/insights";
 import { CtaFinal } from "@/components/sections/cta-final";
 import { Hero } from "@/components/sections/hero";
 import { Metodologia } from "@/components/sections/metodologia";
@@ -41,11 +41,11 @@ export default function Home() {
       </Section>
       <RealCase />
       <FounderExperience />
+      <TechStack />
       <RavelaIntelligence />
       <RoiWidget />
       <Metodologia />
-      <GroupArchitecture />
-      <TechStack />
+      <Insights />
       <FAQ />
       <CtaFinal />
     </>

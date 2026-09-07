@@ -6,7 +6,7 @@ export const blogPosts: BlogPost[] = [
     title: "5 procesos que una PYME mexicana puede automatizar",
     excerpt:
       "Reportes, seguimiento por WhatsApp, captura de datos y más: identifica por dónde empezar.",
-    content: `No todas las empresas necesitan automatizar todo al mismo tiempo. La mayoría de las PYMEs mexicanas con las que hablamos tienen entre 3 y 5 procesos que consumen la mayor parte del tiempo administrativo. Estos son los más comunes.
+    content: `No todas las empresas necesitan automatizar todo al mismo tiempo. Conviene empezar por las tareas repetitivas que consumen tiempo administrativo y revisar sus reglas y excepciones. Estos son cinco procesos que vale la pena evaluar.
 
 **1. Reportes de ventas y operación.** Si cada semana alguien en tu equipo abre Excel, copia datos de varios lugares y arma un reporte a mano, ese proceso se puede automatizar casi por completo con un dashboard que se actualiza solo.
 

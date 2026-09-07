@@ -77,6 +77,9 @@ export function CasoCard({
         ) : (
           <h2 className="section-title mt-4">{caseDisplayName(caso)}</h2>
         )}
+        <p className="mt-4 text-xl font-medium leading-snug tracking-tight">
+          {caso.title}
+        </p>
         <p className="mt-5 text-sm leading-7 text-cloud/75">{caso.summary}</p>
         <CaseFacts caso={caso} />
         {!caso.problem && !caso.solution && (

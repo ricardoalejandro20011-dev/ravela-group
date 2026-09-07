@@ -47,13 +47,13 @@ WhatsApp conserva el número existente y usa el mensaje aprobado. El correo púb
 
 ## Contenido y confianza
 
-La arquitectura oficial es Ravela Group → Ravela Solutions (servicios B2B y Ravela Intelligence) + Ravela Labs (productos propios). La Home mantiene el foco comercial en Solutions.
+La arquitectura oficial es Ravela Group → Ravela Solutions (servicios B2B y Ravela Intelligence) + Ravela Labs (productos propios). La Home mantiene el foco comercial en Solutions. Labs no aparece en el header ni en el flujo de Home; se descubre desde el footer.
 
 `lib/data/cases.ts` contiene el caso real confirmado de una clínica dental privada: expediente digital y gestión de citas. El nombre comercial permanece reservado, las tecnologías están ocultas y solo se renderizan resultados con `verified === true`. Los tres casos demostrativos anteriores fueron eliminados del código.
 
 `/labs` presenta Miga y cobranza escolar inteligente como productos en desarrollo. Las capacidades futuras se identifican como planeadas y las interfaces son representaciones conceptuales, sin afirmar disponibilidad ni procesamiento de pagos.
 
-Ricardo Valdez aparece en Home y Nosotros, con experiencia previa diferenciada de los proyectos de Ravela. Su fotografía real proporcionada por el usuario se conserva en `public/founder/ricardo-valdez.png` (185 × 273 px), sin modificar rasgos ni encuadre. Se presenta a su tamaño original mediante `next/image`, con espacio reservado y carga diferida. Para el caso dental, `public/cases/dental/hero.webp` permite incorporar una imagen autorizada; mientras no exista, se muestra una representación del flujo confirmado sin datos reales de pacientes.
+Ricardo Valdez aparece en Home y Nosotros, con experiencia previa diferenciada de los proyectos de Ravela. Su fotografía real proporcionada por el usuario se conserva en `public/founder/ricardo-valdez.jpg` (400 × 400 px), sin modificar rasgos ni encuadre. Se presenta a su tamaño original mediante `next/image`, con espacio reservado y carga diferida. Para el caso dental, `public/cases/dental/hero.webp` permite incorporar una imagen autorizada; mientras no exista, se muestra una representación del flujo confirmado sin datos reales de pacientes.
 
 Contacto público confirmado: `hola@ravela.online` y `+52 56 2534 6426`. Los enlaces `mailto`, `tel` y WhatsApp se generan desde `lib/constants/contacto.ts`. El antiguo destinatario Gmail de notificaciones se sustituye por el contacto actual; otros destinatarios de notificación configurados explícitamente se conservan.
 
@@ -71,6 +71,6 @@ El dominio `https://www.ravela.online` ya responde desde Vercel. GoDaddy adminis
 
 ## Entrega visual
 
-Home orientada a problemas y tres soluciones, interfaces propias en HTML/React, navegación compacta, WhatsApp, FAQ, método en español, casos demostrativos y fundador. Se crearon `WorkflowDemo`, `WhatsAppAgentDemo`, `DashboardPreview`, `ProcessBeforeAfter`, `ServiceCard`, `FounderSection`, `FAQ`, `LogoStrip` y la capa `Analytics`; se refactorizaron `DiagnosticoWizard`, `RoiWidget`, `CasoCard`, `ContactForm` y `CtaFinal`.
+Home orientada a problemas y tres soluciones, interfaces propias en HTML/React, navegación compacta, WhatsApp, FAQ, método en español, caso real dental y fundador. Se crearon `WorkflowDemo`, `WhatsAppAgentDemo`, `DashboardPreview`, `ProcessBeforeAfter`, `ServiceCard`, `FounderSection`, `FAQ`, `LogoStrip` y la capa `Analytics`; se refactorizaron `DiagnosticoWizard`, `RoiWidget`, `CasoCard`, `ContactForm` y `CtaFinal`.
 
-Las mediciones locales no sustituyen datos de campo de Core Web Vitals ni la revisión del contenido real del negocio. Ver `docs/verification.md` para resultados de esta entrega.
+Las mediciones locales no sustituyen datos de campo de Core Web Vitals ni la revisión del contenido real del negocio. Ver `docs/iteration-v3.md` para la última iteración visual y `docs/technology-assets.md` para la procedencia de logos.

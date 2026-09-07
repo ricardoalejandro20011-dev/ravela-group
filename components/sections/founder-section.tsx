@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Container, Section } from "@/components/ui/container";
 import { hasPublicAsset } from "@/lib/assets";
-const photo = "/founder/ricardo-valdez.png";
+const photo = "/founder/ricardo-valdez.jpg";
 export function FounderSection() {
   const hasPhoto = hasPublicAsset(photo);
   return (
@@ -11,14 +11,14 @@ export function FounderSection() {
           className={`grid gap-10 ${hasPhoto ? "lg:grid-cols-[.65fr_1fr]" : "lg:grid-cols-[1fr_.7fr]"}`}
         >
           {hasPhoto && (
-            <div className="flex min-h-80 items-center justify-center rounded-xl border bg-[#f2f4ef] p-6 sm:p-10">
+            <div className="flex min-h-80 items-center justify-center rounded-xl border bg-[#f2f4ef] p-5 sm:p-7">
               <Image
                 src={photo}
                 alt="Ricardo Valdez, fundador de Ravela Group"
-                width={185}
-                height={273}
-                sizes="185px"
-                className="h-auto w-[185px] max-w-full"
+                width={400}
+                height={400}
+                sizes="(max-width: 640px) 280px, 400px"
+                className="h-auto w-full max-w-[400px] rounded-lg"
               />
             </div>
           )}

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Container, Section } from "@/components/ui/container";
-import { CtaFinal } from "@/components/sections/cta-final";
+import Link from "next/link";
 import {
   MigaPreview,
   SchoolPreview,
@@ -8,7 +8,7 @@ import {
 } from "@/components/demos/lab-previews";
 import { labProducts, type LabProduct } from "@/lib/data/products";
 export const metadata: Metadata = {
-  title: "Ravela Labs — Productos nacidos de problemas reales",
+  title: "Ravela Labs — Exploramos problemas. Construimos productos.",
   description:
     "El estudio de producto de Ravela Group. Conoce Miga y nuestra plataforma de cobranza escolar, ambos en desarrollo.",
   alternates: { canonical: "/labs" },
@@ -37,20 +37,20 @@ export default function Labs() {
   const [miga, school] = labProducts;
   return (
     <>
-      <Section className="border-b bg-[#f4f5ef]">
+      <Section className="labs-entry border-b bg-[#f4f5ef]">
         <Container>
           <p className="eyebrow">Ravela Labs</p>
           <h1 className="section-title mt-5 max-w-3xl">
-            Productos nacidos de problemas reales.
+            Exploramos problemas. Construimos productos.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-cloud/75">
-            Ravela Labs es el estudio de producto de Ravela Group. Diseñamos
-            herramientas digitales que simplifican tareas cotidianas de personas
-            y empresas.
+            Ravela Labs es el espacio de producto de Ravela Group. Aquí
+            desarrollamos herramientas propias a partir de problemas que
+            observamos en empresas y en la vida cotidiana.
           </p>
           <p className="mt-5 max-w-xl text-sm leading-7 text-cloud/75">
-            Estamos comenzando. Construimos productos propios a partir de
-            problemas reales y compartimos aquí lo que estamos desarrollando.
+            Algunos proyectos apenas están tomando forma. Otros evolucionarán
+            hacia productos independientes.
           </p>
           <div className="mt-8 flex flex-wrap gap-4 text-sm">
             <a className="rounded-lg border px-4 py-3" href="#miga">
@@ -141,7 +141,25 @@ export default function Labs() {
           </div>
         </Container>
       </Section>
-      <CtaFinal />
+      <Section className="border-t bg-[#edf0e7]">
+        <Container>
+          <p className="eyebrow">Ravela Labs</p>
+          <h2 className="section-title mt-4 max-w-2xl">
+            Ideas que toman forma.
+            <br />
+            Productos que aún estamos construyendo.
+          </h2>
+          <p className="mt-5 text-sm text-cloud/75">
+            A product initiative by Ravela Group.
+          </p>
+          <Link
+            href="/"
+            className="mt-6 inline-block py-3 text-sm font-medium text-soft-cyan"
+          >
+            Volver a Ravela Group ↗
+          </Link>
+        </Container>
+      </Section>
     </>
   );
 }

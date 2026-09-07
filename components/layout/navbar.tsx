@@ -12,7 +12,6 @@ const navLinks = [
   { href: "/soluciones", label: "Soluciones" },
   { href: "/casos-de-exito", label: "Casos reales" },
   { href: "/diagnostico", label: "Ravela Intelligence" },
-  { href: "/labs", label: "Labs" },
   { href: "/nosotros", label: "Nosotros" },
 ];
 

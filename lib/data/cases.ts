@@ -2,7 +2,7 @@ import type { CaseStudy } from "@/lib/types";
 export const caseStudies: CaseStudy[] = [
   {
     slug: "clinica-dental-privada",
-    title: "Expedientes y citas en un mismo flujo",
+    title: "Expedientes y citas en un solo flujo digital.",
     clientDisplayName: "Clínica dental privada",
     industry: "Clínica dental",
     real: true,
@@ -26,7 +26,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     results: [
       {
-        label: "Resultado confirmado",
+        label: "Expedientes y citas centralizados",
         value:
           "La solución permitió concentrar en un mismo flujo la información del paciente, su expediente y la administración de sus citas.",
         verified: true,

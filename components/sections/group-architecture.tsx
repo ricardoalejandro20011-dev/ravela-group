@@ -47,12 +47,18 @@ export function GroupArchitecture() {
               <p className="mt-4 flex-1 text-sm leading-7 text-cloud/75">
                 {u.text}
               </p>
-              <Link
-                href={u.href}
-                className="mt-7 inline-block py-2 text-sm font-medium text-soft-cyan"
-              >
-                {u.cta} ↗
-              </Link>
+              {u.href !== "/labs" ? (
+                <Link
+                  href={u.href}
+                  className="mt-7 inline-block py-2 text-sm font-medium text-soft-cyan"
+                >
+                  {u.cta} ↗
+                </Link>
+              ) : (
+                <p className="mt-7 py-2 text-sm text-cloud/70">
+                  Estudio interno de producto de Ravela Group.
+                </p>
+              )}
             </article>
           ))}
         </div>

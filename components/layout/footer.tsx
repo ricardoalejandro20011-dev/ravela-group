@@ -8,7 +8,7 @@ import { CONTACTO } from "@/lib/constants/contacto";
 
 const columns = [
   {
-    title: "Solutions",
+    title: "Soluciones",
     links: [
       { href: "/soluciones/automatizacion", label: "Automatización" },
       {
@@ -20,12 +20,8 @@ const columns = [
     ],
   },
   {
-    title: "Labs",
-    links: [
-      { href: "/labs#miga", label: "Miga" },
-      { href: "/labs#cobranza-escolar", label: "Cobranza escolar" },
-      { href: "/labs", label: "Ver Ravela Labs" },
-    ],
+    title: "Explorar",
+    links: [{ href: "/labs", label: "Ravela Labs" }],
   },
   {
     title: "Empresa",
@@ -33,8 +29,7 @@ const columns = [
       { href: "/casos-de-exito", label: "Casos reales" },
       { href: "/nosotros", label: "Nosotros" },
       { href: "/contacto", label: "Contacto" },
-      { href: "/blog", label: "Blog" },
-      { href: "/calculadora-roi", label: "Calculadora de ROI" },
+      { href: "/blog", label: "Perspectivas" },
     ],
   },
   {

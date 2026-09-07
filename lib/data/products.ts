@@ -16,9 +16,9 @@ export const labProducts: LabProduct[] = [
     name: "Miga",
     status: "En desarrollo",
     category: "Finanzas personales · Inteligencia Artificial",
-    tagline: "Tú le dices a Miga qué gastaste. Miga organiza el resto.",
+    tagline: "Registrar tus gastos debería ser tan fácil como contarlos.",
     description:
-      "Una aplicación sencilla para registrar y entender gastos usando lenguaje natural e Inteligencia Artificial.",
+      "Una app para registrar y entender gastos mediante lenguaje natural.",
     capabilities: [
       { label: "Registro de gastos mediante texto", status: "En desarrollo" },
       { label: "Categorización automática", status: "Planeado" },
@@ -33,9 +33,9 @@ export const labProducts: LabProduct[] = [
     name: "Cobranza escolar inteligente",
     status: "En desarrollo",
     category: "Software para escuelas privadas",
-    tagline: "La cobranza empieza antes del vencimiento.",
+    tagline: "La cobranza empieza antes de que exista morosidad.",
     description:
-      "Una plataforma en desarrollo para ayudar a identificar pagos próximos, pendientes y familias que necesitan seguimiento antes de acumular morosidad.",
+      "SaaS diseñado para ayudar a escuelas privadas a anticipar vencimientos, automatizar recordatorios y dar seguimiento a colegiaturas desde una sola vista.",
     capabilities: [
       {
         label: "Seguimiento de colegiaturas y agenda de vencimientos",
