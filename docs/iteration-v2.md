@@ -22,7 +22,7 @@ Correo público `hola@ravela.online`; teléfono y WhatsApp `+52 56 2534 6426`. S
 
 ## Información real pendiente del usuario
 
-- Foto real de Ricardo Valdez: `public/founder/ricardo-valdez.webp`. No fue adjuntada ni encontrada en el repositorio. El componente se activa al agregarla y reconstruir, en Home y Nosotros. No se publicó avatar ni foto sustituta.
+- Foto del fundador: recibida e incorporada posteriormente en `public/founder/ricardo-valdez.png`, en Home y Nosotros. Se conserva el original de 185 × 273 px sin alterar la identidad ni ampliar artificialmente.
 - Imagen autorizada del caso: `public/cases/dental/hero.webp`. Hasta entonces se muestra la representación del flujo autorizado, sin datos reales de pacientes ni capturas inventadas.
 - Tecnologías efectivamente utilizadas en el proyecto dental; sección oculta hasta recibir confirmación.
 - Nombre comercial de la clínica y autorización, si se decide publicarlo. Actualmente reservado.
