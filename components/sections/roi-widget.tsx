@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 
+import Link from "next/link";
 import { track } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -51,7 +52,8 @@ function Field({
           onChange(Number(e.target.value));
           track("roi_calculator_use");
         }}
-        className="mt-3 w-full accent-electric-violet"
+        aria-valuetext={`${value}${suffix || ""}`}
+        className="roi-range mt-2 w-full accent-electric-violet"
       />
     </label>
   );
@@ -76,7 +78,7 @@ export function RoiWidget() {
   );
 
   return (
-    <Section>
+    <Section id="calculadora" className="roi-section border-y bg-[#eef2eb]">
       <Container>
         <FadeIn className="mx-auto max-w-2xl text-center">
           <h2 className="font-heading text-3xl font-semibold tracking-tight text-cloud sm:text-4xl">
@@ -89,8 +91,9 @@ export function RoiWidget() {
         </FadeIn>
 
         <FadeIn delay={0.1} className="mx-auto mt-10 max-w-4xl">
-          <Card className="grid gap-10 lg:grid-cols-2">
-            <div className="flex flex-col gap-8">
+          <Card className="grid gap-8 overflow-hidden bg-white lg:grid-cols-2">
+            <div className="flex flex-col gap-5">
+              <p className="eyebrow">01 / Ajusta tu proceso</p>
               <Field
                 label="Número de empleados involucrados"
                 value={numEmpleados}
@@ -126,10 +129,17 @@ export function RoiWidget() {
               />
             </div>
 
-            <div className="flex flex-col justify-center gap-6 border-cloud/10 pt-8 lg:border-l lg:pt-0 lg:pl-10">
+            <div
+              aria-live="polite"
+              aria-atomic="true"
+              className="roi-results flex flex-col justify-center gap-6 rounded-xl bg-[#203e33] p-6 sm:p-8"
+            >
               <div>
-                <p className="text-sm text-cloud/70">Costo mensual actual</p>
-                <p className="font-heading text-3xl font-semibold text-cloud">
+                <p className="text-sm text-cloud/70">Costo mensual estimado</p>
+                <p
+                  key={resultado.costoMensualMXN}
+                  className="result-number font-heading text-3xl font-semibold text-cloud"
+                >
                   {mxn.format(resultado.costoMensualMXN)}
                 </p>
               </div>
@@ -167,7 +177,10 @@ export function RoiWidget() {
             <div className="h-3 overflow-hidden rounded-full bg-cloud/10">
               <div
                 className="h-full bg-soft-cyan"
-                style={{ width: `${porcentajeAutomatizacion}%` }}
+                style={{
+                  transform: `scaleX(${porcentajeAutomatizacion / 100})`,
+                  transformOrigin: "left",
+                }}
               />
             </div>
             <p className="mt-2 text-xs text-cloud/70">
@@ -176,10 +189,16 @@ export function RoiWidget() {
             </p>
           </div>
           <div className="mt-6 text-center">
-            <Button href="/contacto">
-              Quiero calcularlo con mi proceso real ↗
-            </Button>
+            <Button href="/contacto">Calcularlo con mi proceso real ↗</Button>
           </div>
+          <p className="mt-5 text-center text-sm">
+            <Link
+              href="/diagnostico"
+              className="inline-flex min-h-11 items-center text-soft-cyan underline underline-offset-4"
+            >
+              ¿No sabes por dónde empezar? Explora Ravela Intelligence →
+            </Link>
+          </p>
           <p className="mt-4 text-center text-xs leading-6 text-cloud/70">
             Los resultados son estimaciones orientativas y no representan una
             proyección financiera garantizada. El ahorro representa capacidad de

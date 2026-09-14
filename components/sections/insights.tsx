@@ -10,7 +10,7 @@ export function Insights() {
           <div>
             <p className="eyebrow">Perspectivas</p>
             <h2 className="section-title mt-4">
-              Pensar el proceso también es parte del trabajo.
+              Ideas para mejorar tu operación.
             </h2>
           </div>
           <Link
@@ -29,17 +29,14 @@ export function Insights() {
                   {post.tags[0]}
                 </span>
               </div>
-              <h3 className="mt-7 text-2xl font-medium leading-snug tracking-tight">
+              <h3 className="mt-5 text-xl sm:text-2xl font-medium leading-snug tracking-tight">
                 <Link href={`/blog/${post.slug}`} className="hover:underline">
                   {post.title}
                 </Link>
               </h3>
-              <p className="mt-4 text-sm leading-7 text-cloud/75">
-                {post.excerpt}
-              </p>
               <Link
                 href={`/blog/${post.slug}`}
-                aria-label={`Leer: ${post.title}`}
+                aria-label={`Leer perspectiva: ${post.title}`}
                 className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-soft-cyan"
               >
                 Leer perspectiva <ArrowUpRight size={15} />

@@ -18,7 +18,7 @@ function Frame({
   title,
   tag,
   children,
-  caption = "Datos demostrativos · Experiencia anonimizada",
+  caption = "Representación de solución · Datos demostrativos",
 }: {
   title: string;
   tag: string;

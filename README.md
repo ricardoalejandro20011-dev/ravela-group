@@ -73,4 +73,4 @@ El dominio `https://www.ravela.online` ya responde desde Vercel. GoDaddy adminis
 
 Home orientada a problemas y tres soluciones, interfaces propias en HTML/React, navegación compacta, WhatsApp, FAQ, método en español, caso real dental y fundador. Se crearon `WorkflowDemo`, `WhatsAppAgentDemo`, `DashboardPreview`, `ProcessBeforeAfter`, `ServiceCard`, `FounderSection`, `FAQ`, `LogoStrip` y la capa `Analytics`; se refactorizaron `DiagnosticoWizard`, `RoiWidget`, `CasoCard`, `ContactForm` y `CtaFinal`.
 
-Las mediciones locales no sustituyen datos de campo de Core Web Vitals ni la revisión del contenido real del negocio. Ver `docs/iteration-v3.md` para la última iteración visual y `docs/technology-assets.md` para la procedencia de logos.
+Las mediciones locales no sustituyen datos de campo de Core Web Vitals ni la revisión del contenido real del negocio. Ver `docs/iteration-v4.md` para la última iteración de diseño, interactividad y móvil y `docs/technology-assets.md` para la procedencia de logos.

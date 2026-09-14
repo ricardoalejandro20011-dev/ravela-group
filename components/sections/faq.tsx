@@ -49,10 +49,10 @@ export function FAQ() {
           <div>
             {items.map(([q, a]) => (
               <details key={q} className="group border-b py-5">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-5 text-sm font-medium">
+                <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-5 text-sm font-medium">
                   {q}
                   <span
-                    className="text-xl text-soft-cyan group-open:rotate-45"
+                    className="text-xl text-soft-cyan transition-transform group-open:rotate-45"
                     aria-hidden="true"
                   >
                     +

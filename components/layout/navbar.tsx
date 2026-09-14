@@ -1,30 +1,39 @@
 "use client";
-
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
-
+import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Logo } from "@/components/ui/logo";
-
 const navLinks = [
   { href: "/soluciones", label: "Soluciones" },
   { href: "/casos-de-exito", label: "Casos reales" },
   { href: "/diagnostico", label: "Ravela Intelligence" },
   { href: "/nosotros", label: "Nosotros" },
 ];
-
 export function Navbar() {
-  const [open, setOpen] = useState(false);
-
+  const dialog = useRef<HTMLDialogElement>(null);
+  const trigger = useRef<HTMLButtonElement>(null);
+  function close() {
+    dialog.current?.close();
+  }
+  useEffect(() => {
+    const media = matchMedia("(min-width: 1024px)");
+    const changed = () => {
+      if (media.matches) dialog.current?.close();
+    };
+    media.addEventListener("change", changed);
+    return () => {
+      media.removeEventListener("change", changed);
+      document.body.style.overflow = "";
+    };
+  }, []);
   return (
-    <header className="sticky top-0 z-50 border-b border-cloud/10 bg-deep-space/80 backdrop-blur-lg">
-      <Container className="flex h-18 items-center justify-between">
-        <Link href="/" className="shrink-0 mr-2" onClick={() => setOpen(false)}>
+    <header className="sticky top-0 z-50 border-b border-cloud/10 bg-deep-space/95 backdrop-blur-lg">
+      <Container className="flex h-16 items-center justify-between lg:h-18">
+        <Link href="/" className="mr-2 shrink-0">
           <Logo compact />
         </Link>
-
         <nav
           className="hidden items-center gap-5 lg:flex"
           aria-label="Navegación principal"
@@ -33,65 +42,109 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-cloud/75 transition-colors hover:text-cloud"
+              className="inline-flex min-h-11 items-center text-sm font-medium text-cloud/75 transition-colors hover:text-cloud"
             >
               {link.label}
             </Link>
           ))}
         </nav>
-
-        <div className="ml-auto mr-3 lg:ml-0 lg:mr-0">
+        <div className="ml-auto mr-3 hidden sm:block lg:ml-0 lg:mr-0">
           <Button href="/contacto" size="sm">
             Diagnóstico gratuito
           </Button>
         </div>
-
         <button
+          ref={trigger}
           type="button"
-          className="inline-flex items-center justify-center rounded-lg p-2 text-cloud lg:hidden"
-          aria-label={open ? "Cerrar menú" : "Abrir menú"}
-          aria-expanded={open}
+          className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-cloud lg:hidden"
+          aria-label="Abrir menú"
+          aria-haspopup="dialog"
           aria-controls="menu-movil"
-          onKeyDown={(e) => {
-            if (e.key === "Escape") setOpen(false);
+          onClick={() => {
+            dialog.current?.showModal();
+            document.body.style.overflow = "hidden";
           }}
-          onClick={() => setOpen((v) => !v)}
         >
-          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          <Menu className="h-6 w-6" />
         </button>
       </Container>
-
-      {open && (
-        <nav
-          className="border-t border-cloud/10 bg-deep-space px-6 py-4 lg:hidden"
-          id="menu-movil"
-          onKeyDown={(e) => {
-            if (e.key === "Escape") setOpen(false);
-          }}
-          aria-label="Navegación móvil"
-        >
-          <ul className="flex flex-col gap-1">
-            {navLinks.map((link) => (
+      <dialog
+        ref={dialog}
+        id="menu-movil"
+        className="mobile-drawer"
+        aria-labelledby="menu-title"
+        onKeyDown={(e) => {
+          if (e.key !== "Tab") return;
+          const controls = e.currentTarget.querySelectorAll<HTMLElement>(
+            "a[href], button:not([disabled])",
+          );
+          const first = controls[0];
+          const last = controls[controls.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last?.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first?.focus();
+          }
+        }}
+        onClose={() => {
+          document.body.style.overflow = "";
+          trigger.current?.focus();
+        }}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) {
+            const box = e.currentTarget.getBoundingClientRect();
+            if (
+              e.clientX < box.left ||
+              e.clientX > box.right ||
+              e.clientY < box.top ||
+              e.clientY > box.bottom
+            )
+              close();
+          }
+        }}
+      >
+        <div className="flex items-center justify-between border-b pb-5">
+          <p id="menu-title" className="eyebrow">
+            Explora Ravela
+          </p>
+          <button
+            autoFocus
+            type="button"
+            className="flex h-11 w-11 items-center justify-center rounded-lg border"
+            aria-label="Cerrar menú"
+            onClick={close}
+          >
+            <X size={22} />
+          </button>
+        </div>
+        <nav aria-label="Navegación móvil" className="mt-6">
+          <ul>
+            {navLinks.map((link, i) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="block rounded-lg px-3 py-3 text-base font-medium text-cloud/85 hover:bg-cloud/5"
-                  onClick={() => setOpen(false)}
+                  className="flex min-h-16 items-center justify-between gap-4 border-b py-4 text-lg font-medium"
+                  onClick={close}
                 >
-                  {link.label}
+                  <span>
+                    <span className="mr-4 text-xs text-cloud/70">0{i + 1}</span>
+                    {link.label}
+                  </span>
+                  <ArrowUpRight size={18} />
                 </Link>
               </li>
             ))}
           </ul>
-          <Button
-            href="/contacto"
-            className="mt-4 w-full"
-            onClick={() => setOpen(false)}
-          >
+          <Button href="/contacto" className="mt-8 w-full" onClick={close}>
             Diagnóstico gratuito
           </Button>
         </nav>
-      )}
+        <p className="mt-6 text-xs leading-6 text-cloud/70">
+          Tecnología para que tu operación avance.
+        </p>
+      </dialog>
     </header>
   );
 }

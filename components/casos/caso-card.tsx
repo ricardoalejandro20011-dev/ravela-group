@@ -1,4 +1,4 @@
-import { DentalPreview } from "@/components/demos/dental-preview";
+import { DentalComparison } from "@/components/demos/dental-comparison";
 import Image from "next/image";
 import Link from "next/link";
 import { hasPublicAsset } from "@/lib/assets";
@@ -16,7 +16,7 @@ export function CaseVisual({ caso }: { caso: CaseStudy }) {
       />
     </div>
   ) : caso.slug === "clinica-dental-privada" ? (
-    <DentalPreview />
+    <DentalComparison />
   ) : (
     <div className="rounded-xl border bg-midnight p-8">
       <p className="eyebrow">Trabajo realizado</p>

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Container, Section } from "@/components/ui/container";
 import { hasPublicAsset } from "@/lib/assets";
 const photo = "/founder/ricardo-valdez.jpg";
@@ -51,6 +52,12 @@ export function FounderSection() {
                 </li>
               ))}
             </ul>
+            <Link
+              href="/nosotros"
+              className="mt-5 inline-flex min-h-11 items-center text-sm font-medium text-soft-cyan"
+            >
+              Conoce su experiencia aplicada ↗
+            </Link>
           </div>
           {!hasPhoto && (
             <div className="self-center border-l-2 border-soft-cyan pl-7">

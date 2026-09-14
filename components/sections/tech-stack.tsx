@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   SiClaude,
   SiN8N,
@@ -28,43 +28,104 @@ const rows = [
     { name: "HubSpot", Icon: SiHubspot },
   ],
 ];
-export function LogoStrip({ paused = false }: { paused?: boolean }) {
+function LogoLane({
+  children,
+  index,
+  paused,
+  onInteract,
+}: {
+  children: ReactNode;
+  index: number;
+  paused: boolean;
+  onInteract: () => void;
+}) {
+  const root = useRef<HTMLDivElement>(null);
+  const manual = useRef(false);
+  useEffect(() => {
+    const lane = root.current;
+    const track = lane?.firstElementChild as HTMLElement | null;
+    if (!lane || !track || paused || !manual.current) return;
+    const width = track.scrollWidth / 2;
+    const duration = index ? 75 : 65;
+    track.style.animationDelay = `${(-(lane.scrollLeft % width) / width) * duration}s`;
+    lane.scrollLeft = 0;
+    track.style.transform = "";
+    track.style.animationName = "";
+    manual.current = false;
+  }, [paused, index]);
+  function enableSwipe() {
+    const lane = root.current;
+    const track = lane?.firstElementChild as HTMLElement | null;
+    if (!lane || !track || manual.current) return;
+    const transform = getComputedStyle(track).transform;
+    const offset =
+      transform === "none" ? 0 : -new DOMMatrixReadOnly(transform).m41;
+    track.style.setProperty("animation-name", "none");
+    track.style.setProperty("transform", "none");
+    lane.scrollLeft = offset;
+    manual.current = true;
+    onInteract();
+  }
   return (
-    <div className={`logo-bands mt-9 space-y-4 ${paused ? "is-paused" : ""}`}>
+    <div
+      ref={root}
+      className="logo-window"
+      tabIndex={0}
+      role="region"
+      aria-label={`Plataformas, fila ${index + 1}. Desliza o usa las flechas para explorar`}
+      onPointerDown={enableSwipe}
+      onKeyDown={(e) => {
+        if (e.key === "ArrowRight" || e.key === "ArrowLeft") enableSwipe();
+      }}
+    >
+      <div className={`logo-track ${index ? "logo-slow" : ""}`}>{children}</div>
+    </div>
+  );
+}
+export function LogoStrip({
+  paused = false,
+  onInteract,
+}: {
+  paused?: boolean;
+  onInteract: () => void;
+}) {
+  return (
+    <div className={`logo-bands mt-9 space-y-3 ${paused ? "is-paused" : ""}`}>
       {rows.map((row, i) => (
-        <div className="logo-window" key={i}>
-          <div className={`logo-track ${i ? "logo-reverse" : ""}`}>
-            {[0, 1].map((copy) => (
-              <ul
-                key={copy}
-                aria-hidden={copy === 1 ? true : undefined}
-                className={`logo-group ${copy ? "logo-duplicate" : ""}`}
-              >
-                {row.map((t) => (
-                  <li
-                    key={t.name}
-                    className="flex h-20 w-48 shrink-0 items-center justify-center gap-3 rounded-lg border bg-white px-4"
-                  >
-                    {"src" in t ? (
-                      <Image
-                        src={`/technology/${t.src}`}
-                        alt={"wide" in t ? t.name : ""}
-                        width={"wide" in t ? 108 : 30}
-                        height={"wide" in t ? 23 : 30}
-                        className={`shrink-0 object-contain ${t.name === "OpenAI" ? "rounded-full bg-cloud p-1" : ""}`}
-                      />
-                    ) : (
-                      <t.Icon aria-hidden="true" className="h-7 w-7 shrink-0" />
-                    )}
-                    {!("wide" in t) && (
-                      <span className="text-sm font-medium">{t.name}</span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            ))}
-          </div>
-        </div>
+        <LogoLane key={i} index={i} paused={paused} onInteract={onInteract}>
+          {[0, 1].map((copy) => (
+            <ul
+              key={copy}
+              aria-hidden={copy === 1 ? true : undefined}
+              className={`logo-group ${copy ? "logo-duplicate" : ""}`}
+            >
+              {row.map((t) => (
+                <li key={t.name} className="logo-item">
+                  {"src" in t ? (
+                    <Image
+                      src={`/technology/${t.src}`}
+                      alt={t.name}
+                      width={"wide" in t ? 130 : 30}
+                      height={"wide" in t ? 28 : 30}
+                      className={`technology-mark shrink-0 object-contain ${t.name === "OpenAI" ? "openai-mark" : ""}`}
+                    />
+                  ) : (
+                    <t.Icon
+                      role="img"
+                      aria-label={t.name}
+                      className="h-7 w-7 shrink-0"
+                    />
+                  )}
+                  {!("wide" in t) && (
+                    <span aria-hidden="true" className="text-sm font-medium">
+                      {t.name}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ))}
+        </LogoLane>
       ))}
     </div>
   );
@@ -72,15 +133,14 @@ export function LogoStrip({ paused = false }: { paused?: boolean }) {
 export function TechStack() {
   const [paused, setPaused] = useState(false);
   return (
-    <Section className="overflow-hidden border-y bg-[#f7f8f5]">
+    <Section className="technology-section overflow-hidden border-y">
       <Container>
         <p className="eyebrow">Tecnología / Ecosistema tecnológico</p>
         <h2 className="section-title mt-4 max-w-3xl">
           Trabajamos con las plataformas que tu empresa ya utiliza.
         </h2>
         <p className="mt-5 max-w-2xl text-sm leading-7 text-cloud/75">
-          No vendemos una herramienta específica. Diseñamos la solución y
-          elegimos la tecnología adecuada para implementarla.
+          Conectamos tu operación sin obligarte a empezar desde cero.
         </p>
         <div className="mt-7 flex flex-wrap items-center justify-between gap-4">
           <p className="text-xs text-cloud/70">
@@ -96,9 +156,9 @@ export function TechStack() {
             {paused ? "Reanudar movimiento" : "Pausar movimiento"}
           </button>
         </div>
-        <LogoStrip paused={paused} />
+        <LogoStrip paused={paused} onInteract={() => setPaused(true)} />
         <p className="mt-6 text-xs text-cloud/70">
-          Trabajamos con tu tecnología, no te obligamos a empezar de cero.
+          Desliza para explorar las plataformas →
         </p>
       </Container>
     </Section>
