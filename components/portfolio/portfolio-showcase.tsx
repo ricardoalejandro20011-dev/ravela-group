@@ -8,9 +8,11 @@ import { Container, Section } from "@/components/ui/container";
 export function PortfolioShowcase({
   library = false,
   experienceOnly = false,
+  confirmedOnly = false,
 }: {
   library?: boolean;
   experienceOnly?: boolean;
+  confirmedOnly?: boolean;
 }) {
   const [filter, setFilter] = useState("Todos");
   const [active, setActive] = useState(0);
@@ -20,9 +22,16 @@ export function PortfolioShowcase({
   );
   const items = portfolio.filter(
     (p) =>
+      (!confirmedOnly || p.kind !== "Concepto demostrativo") &&
       (!experienceOnly || p.kind === "Experiencia aplicada") &&
       (filter === "Todos" || p.filters.includes(filter)),
   );
+  if (confirmedOnly)
+    items.sort((a, b) => {
+      const rank = (scene: string) =>
+        scene === "dashboard" ? 0 : scene === "application" ? 2 : 1;
+      return rank(a.scene) - rank(b.scene);
+    });
   function move(delta: number) {
     const el = lane.current;
     if (!el) return;
@@ -57,9 +66,9 @@ export function PortfolioShowcase({
           </div>
         )}
         <p className="portfolio-note mb-7">
-          Cada ficha distingue entre un caso de Ravela, experiencia previa de
-          Ricardo Valdez y un concepto demostrativo. Las representaciones usan
-          datos ficticios.
+          {confirmedOnly
+            ? "Proyectos implementados y experiencia previa de Ricardo Valdez, identificados en cada ficha. Interfaces con datos demostrativos para proteger la información."
+            : "Cada ficha distingue entre un caso de Ravela, experiencia previa de Ricardo Valdez y un concepto demostrativo. Las representaciones usan datos ficticios."}
         </p>
         {library && (
           <div
@@ -108,7 +117,9 @@ export function PortfolioShowcase({
               : (e) => {
                   if (
                     e.pointerType !== "mouse" ||
-                    (e.target as HTMLElement).closest("a,button")
+                    (e.target as HTMLElement).closest(
+                      "a,button,input,select,label",
+                    )
                   )
                     return;
                   drag.current = {
@@ -149,7 +160,11 @@ export function PortfolioShowcase({
               key={p.slug}
               className={library ? "library-card" : "portfolio-slide"}
             >
-              <SystemScene kind={p.scene} compact={library} />
+              <SystemScene
+                kind={p.scene}
+                compact={library}
+                interactive={confirmedOnly && p.scene === "dashboard"}
+              />
               <div className="portfolio-caption">
                 <div>
                   <span className="portfolio-kind">{p.kind}</span>

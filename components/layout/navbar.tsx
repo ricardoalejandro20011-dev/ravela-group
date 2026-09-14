@@ -1,6 +1,7 @@
 "use client";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -13,6 +14,10 @@ const navLinks = [
   { href: "/blog", label: "Perspectivas" },
 ];
 export function Navbar() {
+  const pathname = usePathname();
+  const visibleLinks = navLinks.filter(
+    (link) => pathname !== "/" || link.href !== "/labs",
+  );
   const [scrolled, setScrolled] = useState(false);
   const sentinel = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -50,7 +55,7 @@ export function Navbar() {
             className="hidden items-center gap-5 lg:flex"
             aria-label="Navegación principal"
           >
-            {navLinks.map((link) => (
+            {visibleLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -133,7 +138,7 @@ export function Navbar() {
           </div>
           <nav aria-label="Navegación móvil" className="mt-6">
             <ul>
-              {navLinks.map((link, i) => (
+              {visibleLinks.map((link, i) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

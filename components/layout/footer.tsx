@@ -1,3 +1,5 @@
+"use client";
+import { usePathname } from "next/navigation";
 import { Mail, Phone } from "lucide-react";
 import Link from "next/link";
 
@@ -41,10 +43,20 @@ const columns = [
 ];
 
 export function Footer() {
+  const pathname = usePathname();
+  const visibleColumns = columns.filter(
+    (column) => pathname !== "/" || column.title !== "Explorar",
+  );
   return (
     <footer className="border-t border-cloud/10 bg-midnight/40">
       <Container className="py-16">
-        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
+        <div
+          className={
+            pathname === "/"
+              ? "grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(3,1fr)]"
+              : "grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(4,1fr)]"
+          }
+        >
           <div>
             <Logo />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-cloud/70">
@@ -78,7 +90,7 @@ export function Footer() {
             </div>
           </div>
 
-          {columns.map((column) => (
+          {visibleColumns.map((column) => (
             <div key={column.title}>
               <h2 className="font-heading text-sm font-semibold text-cloud">
                 {column.title}

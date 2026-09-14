@@ -47,7 +47,7 @@ WhatsApp conserva el número existente y usa el mensaje aprobado. El correo púb
 
 ## Contenido y confianza
 
-La arquitectura oficial es Ravela Group → Ravela Solutions (servicios B2B y Ravela Intelligence) + Ravela Labs (productos propios). La Home mantiene el foco comercial en Solutions. Labs aparece en la navegación y tiene un adelanto visual en Home.
+La arquitectura oficial es Ravela Group → Ravela Solutions (servicios B2B y Ravela Intelligence) + Ravela Labs (productos propios). La Home mantiene el foco comercial en Solutions. Labs se conserva en páginas interiores y no aparece en el contenido ni la navegación de Home.
 
 `lib/data/cases.ts` contiene el caso real confirmado de una clínica dental privada: expediente digital y gestión de citas. El nombre comercial permanece reservado, las tecnologías están ocultas y solo se renderizan resultados con `verified === true`. `lib/data/portfolio.ts` distingue el caso Ravela de cinco experiencias previas del fundador y dos conceptos demostrativos, con privacidad explícita.
 
@@ -71,6 +71,6 @@ El dominio `https://www.ravela.online` ya responde desde Vercel. GoDaddy adminis
 
 ## Entrega visual
 
-Home con diez bloques, ocho capacidades, siete escenas interactivas, biblioteca de casos y experiencia, Labs, ecosistema, fundador y calculadora. Se crearon `WorkflowDemo`, `WhatsAppAgentDemo`, `DashboardPreview`, `ProcessBeforeAfter`, `ServiceCard`, `FounderSection`, `FAQ`, `LogoStrip` y la capa `Analytics`; se refactorizaron `DiagnosticoWizard`, `RoiWidget`, `CasoCard`, `ContactForm` y `CtaFinal`.
+Home comercial de seis bloques: presentación, experiencia, tecnologías, caso dental, calculadora y contacto. Capacidades, ecosistema, fundador y Labs se conservan en páginas interiores. Se crearon `WorkflowDemo`, `WhatsAppAgentDemo`, `DashboardPreview`, `ProcessBeforeAfter`, `ServiceCard`, `FounderSection`, `FAQ`, `LogoStrip` y la capa `Analytics`; se refactorizaron `DiagnosticoWizard`, `RoiWidget`, `CasoCard`, `ContactForm` y `CtaFinal`.
 
-Las mediciones locales no sustituyen datos de campo de Core Web Vitals ni la revisión del contenido real del negocio. Ver `docs/iteration-v5.md` para la última iteración de diseño, interactividad y móvil y `docs/technology-assets.md` para la procedencia de logos.
+Las mediciones locales no sustituyen datos de campo de Core Web Vitals ni la revisión del contenido real del negocio. Ver `docs/iteration-v6.md` para la última iteración de diseño, interactividad y móvil y `docs/technology-assets.md` para la procedencia de logos.

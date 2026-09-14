@@ -1,5 +1,6 @@
 "use client";
 import { useId, useState } from "react";
+import { OperationalDashboard as Dashboard } from "./operational-dashboard";
 import {
   Activity,
   ArrowUpRight,
@@ -97,91 +98,6 @@ function WindowTop({ name, right }: { name: string; right: string }) {
     </div>
   );
 }
-function Dashboard({ interactive }: { interactive: boolean }) {
-  const [period, setPeriod] = useState("Mes");
-  return (
-    <div className="dashboard-screen">
-      <aside className="scene-sidebar">
-        <Activity size={24} />
-        <span>Operación</span>
-        <span>Indicadores</span>
-        <span>Inventario</span>
-        <span>Reportes</span>
-        <span className="sidebar-bottom">RV / Vista ejecutiva</span>
-      </aside>
-      <div className="dashboard-main">
-        <WindowTop name="Control operativo" right="Datos de ejemplo" />
-        <div className="scene-heading">
-          <div>
-            <small>UNA OPERACIÓN CONECTADA</small>
-            <p className="scene-title">Todo empieza con una mejor vista.</p>
-          </div>
-          {interactive ? (
-            <label className="scene-select">
-              Periodo
-              <select
-                aria-label="Periodo del dashboard"
-                value={period}
-                onChange={(e) => setPeriod(e.target.value)}
-              >
-                <option>Mes</option>
-                <option>Semana</option>
-              </select>
-            </label>
-          ) : (
-            <span className="scene-pill">Este mes</span>
-          )}
-        </div>
-        <div className="executive-kpis">
-          {[
-            ["Pedidos", period === "Mes" ? "248" : "62"],
-            ["Ingresos · MXN", period === "Mes" ? "$186,000" : "$46,500"],
-            ["En seguimiento", period === "Mes" ? "18" : "5"],
-          ].map(([l, v]) => (
-            <div key={l}>
-              <span>{l}</span>
-              <strong>{v}</strong>
-              <small>Periodo ilustrativo</small>
-            </div>
-          ))}
-        </div>
-        <div className="dashboard-charts">
-          <div className="chart-surface">
-            <div className="chart-label">
-              <span>Actividad y tendencia</span>
-              <span>01 — 12</span>
-            </div>
-            <Chart variant={period === "Mes" ? 0 : 1} />
-            <div className="chart-legend">
-              <span>Actividad</span>
-              <span>Referencia</span>
-            </div>
-          </div>
-          <div className="chart-surface scene-detail">
-            <p>Distribución operativa</p>
-            <div className="scene-donut">
-              <span>
-                248<small>pedidos</small>
-              </span>
-            </div>
-            <p className="small-note">Atendidos · En curso · Revisión</p>
-          </div>
-        </div>
-        <div className="scene-table scene-detail">
-          <span>ORDEN</span>
-          <span>ÁREA</span>
-          <span>ESTADO</span>
-          <span>OP-024</span>
-          <span>Operaciones</span>
-          <span className="scene-success">En seguimiento</span>
-          <span>OP-025</span>
-          <span>Administración</span>
-          <span>Validada</span>
-        </div>
-      </div>
-    </div>
-  );
-}
 function Agent({ interactive }: { interactive: boolean }) {
   const [done, setDone] = useState(false);
   return (
@@ -272,8 +188,8 @@ function Simulation({
           </small>
           <p className="scene-title">
             {learning
-              ? "Anticipar también exige validar."
-              : "¿Qué cambia si cambia la demanda?"}
+              ? "Validación de demanda por periodo"
+              : "Plan de abastecimiento"}
           </p>
         </div>
         {interactive ? (
@@ -540,14 +456,14 @@ export function ClinicalScene({ before = false }: { before?: boolean }) {
                 </div>
                 <div className="clinic-columns">
                   <div className="clinical-record">
-                    <p>Expediente digital</p>
+                    <p>Expediente · DEMO-001</p>
                     <div>
                       <span>Contacto</span>
-                      <strong>Dato de ejemplo</strong>
+                      <strong>demo@example.com</strong>
                     </div>
                     <div>
                       <span>Última consulta</span>
-                      <strong>Registro vinculado</strong>
+                      <strong>08 jun · Registro de ejemplo</strong>
                     </div>
                     <div>
                       <span>Seguimiento</span>
@@ -556,20 +472,23 @@ export function ClinicalScene({ before = false }: { before?: boolean }) {
                   </div>
                   <div className="clinical-calendar">
                     <p>
-                      <CalendarDays size={13} /> Agenda · Ejemplo
+                      <CalendarDays size={13} /> Junio 2026 · Ejemplo
                     </p>
                     <div className="calendar-grid">
                       {["L", "M", "M", "J", "V", "S", "D"].map((d, i) => (
                         <small key={i}>{d}</small>
                       ))}
-                      {Array.from({ length: 28 }, (_, i) => (
+                      {Array.from({ length: 30 }, (_, i) => (
                         <span key={i} data-selected={i === 9}>
                           {i + 1}
                         </span>
                       ))}
                     </div>
                     <div className="appointment">
-                      09:30 <span>Consulta / DEMO-001</span>
+                      09:30 <span>DEMO-001 · Confirmada</span>
+                    </div>
+                    <div className="appointment clinic-next">
+                      11:00 <span>DEMO-002 · Por confirmar</span>
                     </div>
                   </div>
                 </div>
@@ -624,8 +543,8 @@ function WorkflowScene({ cloud = false }: { cloud?: boolean }) {
         </small>
         <p className="scene-title">
           {cloud
-            ? "La arquitectura detrás del flujo."
-            : "Cada paso tiene una razón."}
+            ? "Integración · Entradas y destinos"
+            : "Solicitud de compra · Flujo de aprobación"}
         </p>
       </div>
       <div className="flow-canvas">
