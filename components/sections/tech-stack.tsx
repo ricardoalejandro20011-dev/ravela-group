@@ -135,9 +135,9 @@ export function TechStack() {
   return (
     <Section className="technology-section overflow-hidden border-y">
       <Container>
-        <p className="eyebrow">Tecnología / Ecosistema tecnológico</p>
+        <p className="eyebrow">Tecnología que conecta</p>
         <h2 className="section-title mt-4 max-w-3xl">
-          Trabajamos con las plataformas que tu empresa ya utiliza.
+          Tecnología que se integra con tu operación.
         </h2>
         <p className="mt-5 max-w-2xl text-sm leading-7 text-cloud/75">
           Conectamos tu operación sin obligarte a empezar desde cero.

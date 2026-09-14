@@ -1,66 +1,68 @@
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { Container, Section } from "@/components/ui/container";
 export function GroupArchitecture() {
   return (
-    <Section className="border-y bg-[#f7f8f5]">
+    <Section id="ecosistema">
       <Container>
-        <p className="eyebrow">Más que consultoría</p>
-        <h2 className="section-title mt-4 max-w-3xl">
-          Ravela Group combina servicios tecnológicos con productos propios.
+        <p className="eyebrow">El ecosistema Ravela</p>
+        <h2 className="section-title mt-4 max-w-4xl">
+          Servicios que resuelven hoy.
+          <br />
+          Productos que construyen el futuro.
         </h2>
-        <p className="mt-5 max-w-2xl text-sm leading-7 text-cloud/75">
-          Trabajamos directamente con empresas para resolver procesos reales y
-          utilizamos ese conocimiento para desarrollar nuevas herramientas desde
-          Ravela Labs.
-        </p>
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          {[
-            {
-              name: "Ravela Solutions",
-              tag: "Servicios",
-              title: "Tecnología aplicada a problemas reales de negocio.",
-              text: "Automatización, Inteligencia Artificial, datos e integración para empresas. Proyectos, implementaciones y servicios recurrentes.",
-              href: "/soluciones",
-              cta: "Conocer soluciones",
-            },
-            {
-              name: "Ravela Labs",
-              tag: "Productos",
-              title:
-                "Construimos herramientas que pueden escalar más allá de un proyecto.",
-              text: "Software y productos digitales desarrollados por Ravela Group. Un estudio interno de producto que está comenzando.",
-              href: "/labs",
-              cta: "Explorar Ravela Labs",
-            },
-          ].map((u, i) => (
-            <article
-              key={u.name}
-              className={`flex flex-col rounded-xl border p-7 sm:p-9 ${i ? "bg-[#eff1ec]" : "bg-white"}`}
-            >
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <h3 className="text-lg font-medium">{u.name}</h3>
-                <span className="eyebrow">{u.tag}</span>
-              </div>
-              <h4 className="mt-8 text-2xl font-medium leading-snug tracking-tight">
-                {u.title}
-              </h4>
-              <p className="mt-4 flex-1 text-sm leading-7 text-cloud/75">
-                {u.text}
+        <div className="ecosystem-root">
+          <div>
+            <strong>RAVELA GROUP</strong>
+            <p>La marca, el criterio y la visión que conectan todo.</p>
+          </div>
+          <Link href="/nosotros" className="text-link">
+            Conoce Ravela <ArrowUpRight size={15} />
+          </Link>
+        </div>
+        <div className="ecosystem-branches">
+          <div className="ecosystem-unit">
+            <p className="eyebrow">01 / Servicios para empresas</p>
+            <h3 className="mt-3">Ravela Solutions</h3>
+            <p>
+              Consultoría, estrategia e implementación de tecnología aplicada a
+              tu operación.
+            </p>
+            <Link href="/soluciones" className="text-link mt-3">
+              Explorar soluciones <ArrowUpRight size={15} />
+            </Link>
+            <div className="intelligence-child">
+              <p className="text-[10px] uppercase tracking-widest">
+                Dentro de Solutions
               </p>
-              {u.href !== "/labs" ? (
-                <Link
-                  href={u.href}
-                  className="mt-7 inline-block py-2 text-sm font-medium text-soft-cyan"
-                >
-                  {u.cta} ↗
-                </Link>
-              ) : (
-                <p className="mt-7 py-2 text-sm text-cloud/70">
-                  Estudio interno de producto de Ravela Group.
-                </p>
-              )}
-            </article>
-          ))}
+              <h4 className="mt-2 text-lg font-medium">Ravela Intelligence</h4>
+              <p className="mt-2">
+                Diagnóstico y herramientas para identificar por dónde empezar.
+              </p>
+              <Link href="/diagnostico" className="text-link">
+                Hacer diagnóstico <ArrowUpRight size={14} />
+              </Link>
+            </div>
+          </div>
+          <div className="ecosystem-unit labs-unit">
+            <p className="eyebrow">02 / Productos propios</p>
+            <h3 className="mt-3">Ravela Labs</h3>
+            <p>
+              Un espacio para convertir problemas compartidos en productos y
+              herramientas digitales.
+            </p>
+            <Link href="/labs" className="text-link mt-3">
+              Descubrir productos <ArrowUpRight size={15} />
+            </Link>
+            <div className="mt-8 flex gap-3">
+              <span className="rounded-full border px-4 py-2 text-xs">
+                Miga
+              </span>
+              <span className="rounded-full border px-4 py-2 text-xs">
+                Cobranza escolar
+              </span>
+            </div>
+          </div>
         </div>
       </Container>
     </Section>

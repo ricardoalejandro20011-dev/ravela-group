@@ -1,95 +1,69 @@
-import { Mail, MessageCircle, Phone } from "lucide-react";
 import type { Metadata } from "next";
-
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { ContactForm } from "@/components/forms/contact-form";
-import { Container, Section } from "@/components/ui/container";
-import { FadeIn } from "@/components/ui/fade-in";
+import { Container } from "@/components/ui/container";
+import { FAQ } from "@/components/sections/faq";
 import { CONTACTO } from "@/lib/constants/contacto";
-
 export const metadata: Metadata = {
   alternates: { canonical: "/contacto" },
-  title: "Contacto — Ravela Group",
+  title: "Hablemos de tu siguiente sistema | Ravela Group",
   description:
-    "Habla con Ravela Group. Cuéntanos sobre tu empresa y te ayudamos a identificar por dónde empezar a automatizar.",
+    "Cuéntanos cómo funciona tu operación. Identificamos qué conviene automatizar, integrar o construir. Diagnóstico inicial gratuito.",
 };
-
-const canales = [
-  {
-    icon: Phone,
-    label: "Teléfono",
-    value: CONTACTO.telefonoDisplay,
-    href: `tel:${CONTACTO.telefonoE164}`,
-  },
-  {
-    icon: MessageCircle,
-    label: "WhatsApp",
-    value: CONTACTO.telefonoDisplay,
-    href: CONTACTO.whatsappUrl,
-  },
-  {
-    icon: Mail,
-    label: "Correo",
-    value: CONTACTO.email,
-    href: `mailto:${CONTACTO.email}`,
-  },
-];
-
-export default function ContactoPage() {
+export default function Contact() {
   return (
-    <Section className="pt-24 sm:pt-32">
-      <Container>
-        <FadeIn className="mx-auto max-w-2xl text-center">
-          <h1 className="font-heading text-4xl font-semibold tracking-tight text-cloud sm:text-5xl">
-            Habla con Ravela Group
-          </h1>
-          <p className="mt-4 text-lg text-cloud/70">
-            Cuéntanos sobre tu empresa. Te ayudamos a identificar por dónde
-            empezar.
-          </p>
-        </FadeIn>
-
-        <div className="mx-auto mt-14 grid max-w-5xl gap-8 lg:grid-cols-[1fr_1.4fr]">
-          <FadeIn className="flex flex-col gap-4">
-            {canales.map((canal) => (
-              <a
-                key={canal.label}
-                href={canal.href}
-                target={canal.href.startsWith("http") ? "_blank" : undefined}
-                rel={
-                  canal.href.startsWith("http")
-                    ? "noopener noreferrer"
-                    : undefined
-                }
-                className="glass flex items-center gap-4 rounded-xl px-5 py-4 transition-colors hover:border-cloud/25"
-              >
-                <span className="gradient-brand flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
-                  <canal.icon className="h-5 w-5 text-white" />
-                </span>
-                <span>
-                  <span className="block text-xs text-cloud/70">
-                    {canal.label}
+    <>
+      <section className="page-intro">
+        <Container>
+          <div className="contact-layout">
+            <div>
+              <p className="eyebrow">Hablemos de tu operación</p>
+              <h1 className="display-title mt-5">
+                El siguiente paso empieza aquí.
+              </h1>
+              <p className="intro-copy mt-6">
+                No necesitas llegar con una solución definida. Cuéntanos qué
+                hace hoy tu equipo y qué te gustaría mejorar.
+              </p>
+              <div className="contact-channels">
+                <a href={`mailto:${CONTACTO.email}`}>
+                  <span>
+                    Correo
+                    <br />
+                    <strong className="font-medium">{CONTACTO.email}</strong>
                   </span>
-                  <span className="block text-sm font-medium text-cloud">
-                    {canal.value}
+                  <ArrowUpRight size={18} />
+                </a>
+                <a href={CONTACTO.whatsappUrl}>
+                  <span>
+                    WhatsApp
+                    <br />
+                    <strong className="font-medium">
+                      {CONTACTO.telefonoDisplay}
+                    </strong>
                   </span>
-                </span>
-              </a>
-            ))}
-            <p className="mt-2 text-sm leading-relaxed text-cloud/70">
-              ¿Prefieres un diagnóstico guiado antes de hablar con nosotros?
-              Prueba{" "}
-              <a href="/diagnostico" className="text-soft-cyan underline">
-                Ravela Intelligence
-              </a>
-              .
-            </p>
-          </FadeIn>
-
-          <FadeIn delay={0.1}>
-            <ContactForm />
-          </FadeIn>
-        </div>
-      </Container>
-    </Section>
+                  <ArrowUpRight size={18} />
+                </a>
+                <a href={`tel:${CONTACTO.telefonoE164}`}>
+                  <span>Llamar a Ravela</span>
+                  <ArrowUpRight size={18} />
+                </a>
+              </div>
+              <p className="mt-6 text-xs leading-6 text-cloud/70">
+                Diagnóstico inicial sin costo · Atención en México
+              </p>
+              <Link href="/diagnostico" className="text-link mt-5">
+                Prefiero empezar con el diagnóstico guiado ↗
+              </Link>
+            </div>
+            <div className="rounded-3xl bg-[#e4eadd] p-3 sm:p-5">
+              <ContactForm />
+            </div>
+          </div>
+        </Container>
+      </section>
+      <FAQ />
+    </>
   );
 }

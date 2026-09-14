@@ -7,7 +7,7 @@
   --color-cyber-blue: #315b4d;
   --color-soft-cyan: #315b4d;
   --color-magenta: #a32828;
-  --font-heading: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
 }
 * {

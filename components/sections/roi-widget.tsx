@@ -81,6 +81,9 @@ export function RoiWidget() {
     <Section id="calculadora" className="roi-section border-y bg-[#eef2eb]">
       <Container>
         <FadeIn className="mx-auto max-w-2xl text-center">
+          <p className="eyebrow mb-4">
+            Ravela Intelligence / Herramienta de diagnóstico
+          </p>
           <h2 className="font-heading text-3xl font-semibold tracking-tight text-cloud sm:text-4xl">
             ¿Cuánto te cuestan tus procesos manuales?
           </h2>
@@ -189,7 +192,7 @@ export function RoiWidget() {
             </p>
           </div>
           <div className="mt-6 text-center">
-            <Button href="/contacto">Calcularlo con mi proceso real ↗</Button>
+            <Button href="/diagnostico">Analizar mi proceso ↗</Button>
           </div>
           <p className="mt-5 text-center text-sm">
             <Link

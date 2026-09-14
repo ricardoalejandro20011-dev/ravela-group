@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-export const alt = "Ravela Group — Automatización e IA para PYMEs mexicanas";
+export const alt = "Ravela Group — Tecnología, datos e Inteligencia Artificial";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export default function Image() {
@@ -18,10 +18,10 @@ export default function Image() {
     >
       <div style={{ fontSize: 26 }}>RAVELA GROUP · MÉXICO</div>
       <div style={{ fontSize: 68, letterSpacing: -3, maxWidth: 950 }}>
-        Automatizamos el trabajo que hoy tu equipo hace a mano.
+        Convertimos procesos complejos en sistemas que funcionan.
       </div>
       <div style={{ fontSize: 24, color: "#315b4d" }}>
-        Automatización · Inteligencia Artificial · Datos
+        Estrategia · Ingeniería · Inteligencia Artificial · Software
       </div>
     </div>,
     size,

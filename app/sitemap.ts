@@ -1,3 +1,5 @@
+import { capabilities } from "@/lib/data/capabilities";
+import { portfolio } from "@/lib/data/portfolio";
 import { caseStudies } from "@/lib/data/cases";
 import type { MetadataRoute } from "next";
 import { blogPosts } from "@/lib/mock/blog";
@@ -20,6 +22,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       "/recursos",
       "/aviso-de-privacidad",
     ].map((p) => ({ url: `https://www.ravela.online${p}` })),
+    ...capabilities
+      .filter(
+        (c) =>
+          ![
+            "automatizacion",
+            "inteligencia-artificial",
+            "datos-inteligencia",
+          ].includes(c.slug),
+      )
+      .map((c) => ({ url: `https://www.ravela.online/soluciones/${c.slug}` })),
+    ...portfolio
+      .filter((p) => p.kind !== "Caso Ravela")
+      .map((p) => ({ url: `https://www.ravela.online${p.href}` })),
     ...caseStudies.map((c) => ({
       url: `https://www.ravela.online/casos/${c.slug}`,
     })),

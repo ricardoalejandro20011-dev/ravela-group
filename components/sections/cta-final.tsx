@@ -1,24 +1,29 @@
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { Container, Section } from "@/components/ui/container";
-import { Button } from "@/components/ui/button";
 import { CONTACTO } from "@/lib/constants/contacto";
 export function CtaFinal() {
   return (
-    <Section className="border-t bg-[#edf2eb]">
-      <Container className="max-w-4xl text-center">
-        <p className="eyebrow">Empecemos por un proceso</p>
-        <h2 className="section-title mt-5">
-          Si un proceso se repite todas las semanas, probablemente podemos
-          mejorarlo.
-        </h2>
-        <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-cloud/75">
-          Cuéntanos qué hace hoy tu equipo manualmente. En una primera sesión
-          identificamos si vale la pena automatizarlo y por dónde empezar.
-        </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <Button href="/contacto">Agenda un diagnóstico gratuito ↗</Button>
-          <Button href={CONTACTO.whatsappUrl} variant="secondary">
-            Hablar por WhatsApp
-          </Button>
+    <Section className="final-cta">
+      <Container>
+        <div className="max-w-4xl">
+          <p className="eyebrow">Construyamos el siguiente paso</p>
+          <h2 className="section-title mt-5">
+            Tu siguiente sistema puede comenzar con un proceso que hoy haces
+            manualmente.
+          </h2>
+          <p className="mt-6 max-w-2xl text-base leading-7">
+            Cuéntanos cómo funciona tu operación. Identificaremos qué conviene
+            automatizar, integrar o construir.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-6">
+            <Link href="/contacto" className="primary-link">
+              Agenda un diagnóstico <ArrowUpRight size={16} />
+            </Link>
+            <a href={CONTACTO.whatsappUrl} className="text-link">
+              Hablar con Ravela <ArrowUpRight size={15} />
+            </a>
+          </div>
         </div>
       </Container>
     </Section>

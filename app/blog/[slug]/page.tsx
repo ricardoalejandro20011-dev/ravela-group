@@ -1,80 +1,80 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-
 import { RichText } from "@/components/blog/rich-text";
-import { Badge } from "@/components/ui/badge";
-import { Container, Section } from "@/components/ui/container";
-import { FadeIn } from "@/components/ui/fade-in";
-import { pilares } from "@/lib/data/pilares";
+import { Container } from "@/components/ui/container";
+import { SceneThumbnail } from "@/components/visuals/system-scenes";
 import { blogPosts } from "@/lib/mock/blog";
-
-const dateFormatter = new Intl.DateTimeFormat("es-MX", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
-
 export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
+  return blogPosts.map((p) => ({ slug: p.slug }));
 }
-
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = blogPosts.find((p) => p.slug === slug);
-  if (!post) return {};
-  return {
-    title: `${post.title} — Ravela Group`,
-    description: post.excerpt,
-    alternates: { canonical: `/blog/${slug}` },
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      type: "article",
-      url: `/blog/${slug}`,
-    },
-  };
+  const p = blogPosts.find((p) => p.slug === slug);
+  return p
+    ? {
+        title: `${p.title} — Ravela Group`,
+        description: p.excerpt,
+        alternates: { canonical: `/blog/${slug}` },
+        openGraph: {
+          title: p.title,
+          description: p.excerpt,
+          type: "article",
+          url: `/blog/${slug}`,
+        },
+      }
+    : {};
 }
-
-export default async function BlogPostPage({
+export default async function Article({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = blogPosts.find((p) => p.slug === slug);
-  if (!post) notFound();
-
-  const pilar = pilares.find((p) => p.slug === post.pilarRelacionado);
-  const Icon = pilar?.icon;
-
+  const p = blogPosts.find((p) => p.slug === slug);
+  if (!p) notFound();
   return (
-    <Section className="pt-24 sm:pt-32">
+    <section className="page-intro">
       <Container>
-        <FadeIn className="mx-auto max-w-2xl">
-          <div className="gradient-brand flex h-40 items-center justify-center rounded-2xl sm:h-48">
-            {Icon && (
-              <Icon className="h-14 w-14 text-white" strokeWidth={1.5} />
-            )}
+        <div className="article-header">
+          <Link href="/blog" className="text-link">
+            ← Perspectivas
+          </Link>
+          <p className="eyebrow mt-6">Tecnología con criterio</p>
+          <h1 className="mt-5">{p.title}</h1>
+          <div className="mt-6 flex flex-wrap gap-4 text-xs text-cloud/70">
+            <span>
+              {new Date(p.publishedAt).toLocaleDateString("es-MX", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </span>
+            <span>{p.author}</span>
           </div>
-
-          <div className="mt-6 flex items-center gap-3 text-xs text-cloud/70">
-            <span>{dateFormatter.format(new Date(post.publishedAt))}</span>
-            <span>·</span>
-            <span>{post.author}</span>
-            {pilar && <Badge variant="neutral">{pilar.title}</Badge>}
+          <div className="blog-cover mt-9">
+            <SceneThumbnail
+              kind={
+                p.pilarRelacionado === "automatizacion"
+                  ? "workflow"
+                  : "dashboard"
+              }
+            />
           </div>
-          <h1 className="mt-4 font-heading text-3xl font-semibold tracking-tight text-cloud sm:text-4xl">
-            {post.title}
-          </h1>
-          <div className="mt-8">
-            <RichText content={post.content} />
+        </div>
+        <div className="article-body">
+          <RichText content={p.content} />
+          <div className="mt-12 border-t pt-6">
+            <Link href="/diagnostico" className="text-link">
+              Explorar qué puede mejorar en mi operación ↗
+            </Link>
           </div>
-        </FadeIn>
+        </div>
       </Container>
-    </Section>
+    </section>
   );
 }

@@ -1,73 +1,144 @@
 import Link from "next/link";
-import type { Metadata } from "next";
-
-import { CtaFinal } from "@/components/sections/cta-final";
-import { Soluciones } from "@/components/sections/soluciones";
 import { Container, Section } from "@/components/ui/container";
-import { FadeIn } from "@/components/ui/fade-in";
-
-export const metadata: Metadata = {
-  alternates: { canonical: "/soluciones" },
-  title:
-    "Soluciones — Automatización, IA, Datos y Transformación Digital | Ravela Group",
+import { CtaFinal } from "@/components/sections/cta-final";
+import { ProblemExplorer } from "@/components/soluciones/problem-explorer";
+import { CapabilityExplorer } from "@/components/sections/capability-explorer";
+import { SystemScene } from "@/components/visuals/system-scenes";
+import type { SceneKind } from "@/lib/data/capabilities";
+const groups: {
+  name: string;
+  title: string;
+  text: string;
+  items: string[];
+  scene: SceneKind;
+  caseHref: string;
+  caseLabel: string;
+}[] = [
+  {
+    name: "Operación conectada",
+    title: "Menos islas. Más operación.",
+    text: "Integramos procesos y herramientas para que el trabajo avance con trazabilidad.",
+    items: [
+      "Automatización",
+      "Integraciones y APIs",
+      "Flujos de aprobación",
+      "Documentos",
+      "ERP y CRM",
+      "Aplicaciones internas",
+    ],
+    scene: "workflow",
+    caseHref: "/experiencia/automatizacion-empresarial",
+    caseLabel: "Explorar experiencia en automatización",
+  },
+  {
+    name: "Inteligencia Artificial",
+    title: "IA que conoce el contexto.",
+    text: "Asistentes y sistemas que interpretan información, apoyan decisiones y preparan acciones.",
+    items: [
+      "Agentes empresariales",
+      "Asistentes documentales",
+      "Atención y seguimiento",
+      "IA generativa",
+      "Visión por computadora",
+      "Supervisión humana",
+    ],
+    scene: "agent",
+    caseHref: "/experiencia/agente-documental",
+    caseLabel: "Explorar experiencia en agentes",
+  },
+  {
+    name: "Datos y decisiones",
+    title: "Información que permite actuar.",
+    text: "De las fuentes dispersas a indicadores, modelos y escenarios que ayudan a decidir.",
+    items: [
+      "Business Intelligence",
+      "Dashboards",
+      "Arquitectura de datos",
+      "Forecasting",
+      "Machine Learning",
+      "Simulación y optimización",
+    ],
+    scene: "dashboard",
+    caseHref: "/experiencia/planeacion-inventarios",
+    caseLabel: "Explorar experiencia en simulación",
+  },
+  {
+    name: "Productos y desarrollo",
+    title: "La herramienta que tu proceso necesita.",
+    text: "Diseñamos aplicaciones para usuarios reales y productos que resuelven problemas compartidos.",
+    items: [
+      "Aplicaciones web",
+      "Herramientas internas",
+      "MVP",
+      "Productos digitales",
+      "Ravela Labs",
+      "Diseño de flujos",
+    ],
+    scene: "application",
+    caseHref: "/casos/clinica-dental-privada",
+    caseLabel: "Ver el caso de la clínica dental",
+  },
+];
+export const metadata = {
+  title: "Soluciones tecnológicas, IA, datos y software | Ravela Group",
   description:
-    "Automatización de procesos, Inteligencia Artificial, datos e inteligencia de negocio, y transformación digital para PYMEs mexicanas.",
+    "Explora automatización, IA, Machine Learning, simulación, visión por computadora, cloud y aplicaciones empresariales.",
+  alternates: { canonical: "/soluciones" },
 };
-
-export default function SolucionesPage() {
+export default function Solutions() {
   return (
     <>
-      <Section className="pb-0 pt-24 sm:pt-32">
+      <section className="page-intro">
         <Container>
-          <FadeIn className="mx-auto max-w-2xl text-center">
-            <h1 className="font-heading text-4xl font-semibold tracking-tight text-cloud sm:text-5xl">
-              Ravela Solutions
-            </h1>
-            <p className="mt-4 text-lg text-cloud/70">
-              La unidad de servicios B2B de Ravela Group. Automatización, IA,
-              datos e integración para PYMEs mexicanas mediante proyectos,
-              implementaciones y servicios recurrentes.
-            </p>
-          </FadeIn>
+          <p className="eyebrow">Ravela Solutions</p>
+          <h1 className="display-title mt-5 max-w-5xl">
+            La tecnología correcta.
+            <br />
+            Para el problema correcto.
+          </h1>
+          <p className="intro-copy mt-7">
+            Consultoría, estrategia e implementación. Conectamos capacidades de
+            ingeniería para construir lo que tu operación necesita.
+          </p>
+        </Container>
+      </section>
+      <Section className="pt-0">
+        <Container>
+          <ProblemExplorer />
         </Container>
       </Section>
-
-      <Soluciones />
-      <Section>
-        <Container>
-          <p className="eyebrow">Integración y diagnóstico</p>
-          <div className="mt-5 grid gap-8 md:grid-cols-2">
-            <div>
-              <h2 className="text-2xl font-medium">
-                Conectamos lo que ya utilizas.
-              </h2>
-              <p className="mt-4 text-sm leading-7 text-cloud/75">
-                Integraciones, aplicaciones internas y una ruta de
-                implementación para que tus herramientas compartan información.
-              </p>
-              <Link
-                href="/soluciones/transformacion-digital"
-                className="mt-5 inline-block py-2 text-sm font-medium text-soft-cyan"
-              >
-                Explorar integraciones y aplicaciones ↗
-              </Link>
+      {groups.map((g, i) => (
+        <Section key={g.name} className={i % 2 ? "bg-[#edece5]" : ""}>
+          <Container>
+            <div className="solution-family">
+              <div className={i % 2 ? "lg:order-2" : ""}>
+                <p className="family-index">
+                  0{i + 1} / {g.name.toUpperCase()}
+                </p>
+                <h2 className="section-title mt-5">{g.title}</h2>
+                <p className="mt-5 max-w-lg text-sm leading-7 text-cloud/75">
+                  {g.text}
+                </p>
+                <ul>
+                  {g.items.map((s) => (
+                    <li key={s}>— {s}</li>
+                  ))}
+                </ul>
+                <Link href={g.caseHref} className="text-link mt-6">
+                  {g.caseLabel} ↗
+                </Link>
+                {i === 3 && (
+                  <Link href="/labs" className="text-link ml-5">
+                    Descubrir Labs ↗
+                  </Link>
+                )}
+              </div>
+              <SystemScene kind={g.scene} />
             </div>
-            <div>
-              <h2 className="text-2xl font-medium">Ravela Intelligence</h2>
-              <p className="mt-4 text-sm leading-7 text-cloud/75">
-                Nuestra herramienta de diagnóstico identifica oportunidades de
-                automatización e IA dentro de Ravela Solutions.
-              </p>
-              <Link
-                href="/diagnostico"
-                className="mt-5 inline-block py-2 text-sm font-medium text-soft-cyan"
-              >
-                Hacer diagnóstico gratuito ↗
-              </Link>
-            </div>
-          </div>
-        </Container>
-      </Section>
+          </Container>
+        </Section>
+      ))}
+      <CapabilityExplorer />
       <CtaFinal />
     </>
   );

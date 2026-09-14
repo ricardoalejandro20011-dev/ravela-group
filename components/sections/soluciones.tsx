@@ -147,9 +147,9 @@ export function Soluciones() {
         <noscript>
           <p className="mt-6">
             También diseñamos agentes de IA y soluciones de datos.{" "}
-            <a href="/soluciones" className="underline">
+            <Link href="/soluciones" className="underline">
               Consulta todas las soluciones.
-            </a>
+            </Link>
           </p>
         </noscript>
       </Container>

@@ -6,7 +6,11 @@ export function Analytics() {
   const path = usePathname();
   useEffect(() => {
     if (path.startsWith("/soluciones/")) track("service_view", { path });
-    if (path === "/casos-de-exito" || path.startsWith("/casos/"))
+    if (
+      path === "/casos-de-exito" ||
+      path.startsWith("/casos/") ||
+      path.startsWith("/experiencia/")
+    )
       track("case_use_view", { path });
   }, [path]);
   useEffect(() => {

@@ -1,44 +1,40 @@
-import { Sparkles } from "lucide-react";
-import type { Metadata } from "next";
-
 import { DiagnosticoWizard } from "@/components/diagnostico/wizard";
-import { Badge } from "@/components/ui/badge";
-import { Container, Section } from "@/components/ui/container";
-import { FadeIn } from "@/components/ui/fade-in";
-
-export const metadata: Metadata = {
+import { Container } from "@/components/ui/container";
+export const metadata = {
   alternates: { canonical: "/diagnostico" },
-  title: "Ravela Intelligence — Diagnóstico gratuito | Ravela Group",
+  title: "Diagnóstico gratuito — Ravela Intelligence",
   description:
-    "Descubre en minutos qué procesos de tu empresa puedes automatizar y cómo la Inteligencia Artificial puede ayudarte, con tu Diagnóstico de oportunidades.",
+    "Identifica oportunidades de automatización, IA, integración y datos con el diagnóstico orientativo de Ravela Solutions.",
 };
-
-export default function DiagnosticoPage() {
+export default function Diagnostic() {
   return (
-    <Section className="pt-24 sm:pt-32">
+    <section className="page-intro">
       <Container>
-        <FadeIn className="mx-auto max-w-2xl text-center">
-          <Badge variant="cyan">
-            <Sparkles className="h-3.5 w-3.5" />
-            Ravela Intelligence
-          </Badge>
-          <h1 className="mt-5 font-heading text-4xl font-semibold tracking-tight text-cloud sm:text-5xl">
-            Encuentra qué vale la pena automatizar.
+        <div className="mx-auto max-w-4xl">
+          <p className="eyebrow">Ravela Intelligence / Dentro de Solutions</p>
+          <h1 className="display-title mt-5">
+            Antes de construir,
+            <br />
+            entendamos el proceso.
           </h1>
-          <p className="mt-4 text-lg text-cloud/70">
-            Preguntas breves para identificar qué procesos puedes automatizar,
-            cuánto podrías ahorrar y cómo la IA puede ayudar a tu negocio.
+          <p className="intro-copy mt-6">
+            Un diagnóstico guiado para identificar tareas, herramientas y
+            oportunidades. Tus datos de contacto se solicitan al final.
           </p>
-          <p className="mt-2 text-sm text-cloud/70">
-            Ravela Intelligence es la herramienta de diagnóstico de Ravela Solutions.
-            Profundizamos en tus respuestas durante una sesión de trabajo.
+          <div className="mt-7 flex flex-wrap gap-6 border-y py-5 text-xs text-cloud/70">
+            <span>01 / Tu operación</span>
+            <span>02 / Tus prioridades</span>
+            <span>03 / Orientación inicial</span>
+          </div>
+          <div className="mt-9">
+            <DiagnosticoWizard />
+          </div>
+          <p className="mt-6 text-xs leading-6 text-cloud/70">
+            El resultado es orientativo. Profundizamos en tus respuestas durante
+            una sesión para definir viabilidad, alcance y siguientes pasos.
           </p>
-        </FadeIn>
-
-        <FadeIn delay={0.1} className="mx-auto mt-12 max-w-3xl">
-          <DiagnosticoWizard />
-        </FadeIn>
+        </div>
       </Container>
-    </Section>
+    </section>
   );
 }

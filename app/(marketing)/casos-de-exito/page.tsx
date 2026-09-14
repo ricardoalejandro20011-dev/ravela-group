@@ -1,43 +1,34 @@
-import type { Metadata } from "next";
-import { Container, Section } from "@/components/ui/container";
-import { CasoCard } from "@/components/casos/caso-card";
+import { Container } from "@/components/ui/container";
+import { PortfolioShowcase } from "@/components/portfolio/portfolio-showcase";
 import { CtaFinal } from "@/components/sections/cta-final";
-import { caseStudies } from "@/lib/data/cases";
-export const metadata: Metadata = {
-  title: "Casos reales | Ravela Solutions — Ravela Group",
+export const metadata = {
+  title: "Casos y experiencia aplicada | Ravela Group",
   description:
-    "Trabajo realizado por Ravela. Proyectos reales, con identidad reservada y únicamente información confirmada.",
+    "Biblioteca de proyectos Ravela, experiencia previa del fundador y conceptos demostrativos, claramente identificados y con datos protegidos.",
   alternates: { canonical: "/casos-de-exito" },
   openGraph: {
-    title: "Casos reales de Ravela",
-    description: "Trabajo realizado, sin resultados ni métricas inventadas.",
+    title: "De la idea a la operación | Ravela",
+    description: "Casos, experiencia aplicada y conceptos de solución.",
   },
 };
 export default function Cases() {
   return (
     <>
-      <Section className="pb-0">
+      <section className="page-intro">
         <Container>
-          <p className="eyebrow">Ravela Solutions</p>
-          <h1 className="section-title mt-4">
-            Trabajo realizado.
-            <br />
-            Proyectos reales.
+          <p className="eyebrow">Biblioteca de casos y experiencia</p>
+          <h1 className="display-title mt-5 max-w-4xl">
+            De la idea
+            <br />a la operación.
           </h1>
-          <p className="mt-5 max-w-2xl text-sm leading-7 text-cloud/75">
-            Compartimos únicamente proyectos confirmados. Respetamos la
-            confidencialidad de cada cliente y publicamos resultados cuando
-            están documentados.
+          <p className="intro-copy mt-6">
+            Distintos problemas. Distintas formas de resolverlos. Explora
+            proyectos, experiencia empresarial y representaciones de lo que
+            podemos construir.
           </p>
         </Container>
-      </Section>
-      <Section>
-        <Container className="space-y-16">
-          {caseStudies.map((c) => (
-            <CasoCard caso={c} key={c.slug} />
-          ))}
-        </Container>
-      </Section>
+      </section>
+      <PortfolioShowcase library />
       <CtaFinal />
     </>
   );

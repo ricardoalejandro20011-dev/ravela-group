@@ -16,7 +16,9 @@ const columns = [
         label: "Inteligencia Artificial",
       },
       { href: "/soluciones/datos-inteligencia", label: "Datos e Inteligencia" },
-      { href: "/diagnostico", label: "Ravela Intelligence" },
+      { href: "/soluciones/integracion-cloud", label: "Integración y cloud" },
+      { href: "/soluciones/machine-learning", label: "Machine Learning" },
+      { href: "/diagnostico", label: "Diagnóstico" },
     ],
   },
   {
@@ -26,7 +28,7 @@ const columns = [
   {
     title: "Empresa",
     links: [
-      { href: "/casos-de-exito", label: "Casos reales" },
+      { href: "/casos-de-exito", label: "Casos y experiencia" },
       { href: "/nosotros", label: "Nosotros" },
       { href: "/contacto", label: "Contacto" },
       { href: "/blog", label: "Perspectivas" },
@@ -69,7 +71,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Ravela Group en LinkedIn"
-                className="mt-1 flex h-8 w-8 items-center justify-center rounded-lg border border-cloud/15 text-cloud/70 transition-colors hover:border-cloud/30 hover:text-cloud"
+                className="mt-1 flex h-11 w-11 items-center justify-center rounded-lg border border-cloud/15 text-cloud/70 transition-colors hover:border-cloud/30 hover:text-cloud"
               >
                 <LinkedinIcon className="h-4 w-4" />
               </a>
@@ -86,7 +88,7 @@ export function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-cloud/70 transition-colors hover:text-cloud"
+                      className="inline-flex min-h-11 items-center text-sm text-cloud/70 transition-colors hover:text-cloud"
                     >
                       {link.label}
                     </Link>

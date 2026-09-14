@@ -1,163 +1,146 @@
-import type { Metadata } from "next";
-import { Container, Section } from "@/components/ui/container";
 import Link from "next/link";
+import { Container, Section } from "@/components/ui/container";
+import { labProducts } from "@/lib/data/products";
 import {
-  MigaPreview,
-  SchoolPreview,
-  SchoolWorkflow,
-} from "@/components/demos/lab-previews";
-import { labProducts, type LabProduct } from "@/lib/data/products";
-export const metadata: Metadata = {
-  title: "Ravela Labs — Exploramos problemas. Construimos productos.",
+  MigaProductVisual,
+  SchoolProductVisual,
+} from "@/components/visuals/product-visuals";
+import { SchoolWorkflow } from "@/components/demos/lab-previews";
+export const metadata = {
+  title: "Ravela Labs — Productos nacidos de problemas reales",
   description:
-    "El estudio de producto de Ravela Group. Conoce Miga y nuestra plataforma de cobranza escolar, ambos en desarrollo.",
+    "El portafolio de productos propios de Ravela: Miga y Cobranza escolar inteligente. Conoce su propuesta y estado de desarrollo.",
   alternates: { canonical: "/labs" },
   openGraph: {
-    title: "Ravela Labs",
-    description: "Construimos productos propios a partir de problemas reales.",
+    title: "Ravela Labs / Productos propios",
+    description: "Productos nacidos de problemas que vale la pena resolver.",
     url: "/labs",
   },
 };
-function Capabilities({ product }: { product: LabProduct }) {
-  return (
-    <ul className="mt-5 space-y-3">
-      {product.capabilities.map((c) => (
-        <li
-          key={c.label}
-          className="flex flex-wrap justify-between gap-2 border-b pb-3 text-sm"
-        >
-          <span>{c.label}</span>
-          <span className="text-xs text-soft-cyan">{c.status}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
 export default function Labs() {
-  const [miga, school] = labProducts;
   return (
     <>
-      <Section className="labs-entry border-b bg-[#f4f5ef]">
+      <section className="page-intro ink-section">
         <Container>
-          <p className="eyebrow">Ravela Labs</p>
-          <h1 className="section-title mt-5 max-w-3xl">
-            Exploramos problemas. Construimos productos.
+          <p className="eyebrow">Ravela Labs / Estudio de producto</p>
+          <h1 className="display-title mt-5 max-w-5xl">
+            Productos nacidos de problemas que vale la pena resolver.
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-cloud/75">
-            Ravela Labs es el espacio de producto de Ravela Group. Aquí
-            desarrollamos herramientas propias a partir de problemas que
-            observamos en empresas y en la vida cotidiana.
+          <p className="mt-7 max-w-2xl text-base leading-8 text-[#d6ddcf]">
+            Herramientas propias, diseñadas para problemas compartidos.
+            Exploramos, prototipamos y construimos con una idea clara de a quién
+            queremos ayudar.
           </p>
-          <p className="mt-5 max-w-xl text-sm leading-7 text-cloud/75">
-            Algunos proyectos apenas están tomando forma. Otros evolucionarán
-            hacia productos independientes.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-4 text-sm">
-            <a className="rounded-lg border px-4 py-3" href="#miga">
-              Miga ↓
+          <div className="mt-8 flex flex-wrap gap-5">
+            <a className="text-link" href="#miga">
+              01 / Miga ↓
             </a>
-            <a className="rounded-lg border px-4 py-3" href="#cobranza-escolar">
-              Cobranza escolar ↓
+            <a className="text-link" href="#cobranza-escolar">
+              02 / Cobranza escolar ↓
             </a>
           </div>
         </Container>
-      </Section>
-      <Section id="miga">
-        <Container>
-          <div className="grid items-center gap-12 lg:grid-cols-2">
-            <div>
-              <p className="eyebrow">01 / {miga.category}</p>
-              <div className="mt-5 flex flex-wrap items-center gap-4">
-                <h2 className="text-4xl font-medium tracking-tight">Miga</h2>
-                <span className="rounded-full border px-3 py-1.5 text-xs text-soft-cyan">
-                  {miga.status}
-                </span>
-              </div>
-              <p className="mt-2 text-xs text-cloud/70">
-                A product by Ravela Group.
-              </p>
-              <h3 className="mt-7 text-3xl font-medium leading-tight tracking-tight">
-                {miga.tagline}
-              </h3>
-              <p className="mt-5 text-sm leading-7 text-cloud/75">
-                {miga.description}
-              </p>
-              <details className="mt-6 rounded-lg border p-5">
-                <summary className="cursor-pointer text-sm font-medium text-soft-cyan">
-                  Conocer Miga
-                </summary>
-                <p className="mt-5 text-sm leading-7 text-cloud/75">
-                  El concepto busca que registrar un gasto sea tan sencillo como
-                  escribirlo. Estas son las capacidades que estamos
-                  desarrollando o explorando; ninguna se ofrece todavía como
-                  disponible.
+      </section>
+      {labProducts.map((p, i) => (
+        <section
+          id={p.slug}
+          key={p.slug}
+          className={`product-detail ${i ? "school-product" : "miga-product"}`}
+        >
+          <Container>
+            <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+              <div>
+                <p className="text-xs uppercase tracking-widest">
+                  0{i + 1} / {p.category}
                 </p>
-                <Capabilities product={miga} />
-              </details>
+                <h2 className="mt-5">{p.name}</h2>
+                <span className="portfolio-kind mt-5">{p.status}</span>
+                <h3 className="mt-7 max-w-xl">{p.tagline}</h3>
+                <p className="mt-5 max-w-lg text-sm leading-7">
+                  {p.description}
+                </p>
+                <dl className="mt-6 space-y-4 text-sm leading-6">
+                  <div>
+                    <dt className="text-[10px] uppercase tracking-widest">
+                      Para quién
+                    </dt>
+                    <dd>
+                      {i
+                        ? "Administración de escuelas privadas."
+                        : "Personas que quieren registrar y entender sus gastos."}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-[10px] uppercase tracking-widest">
+                      Función principal prevista
+                    </dt>
+                    <dd>
+                      {i
+                        ? "Centralizar vencimientos, recordatorios y seguimiento de colegiaturas."
+                        : "Registrar gastos mediante lenguaje natural y convertirlos en información útil."}
+                    </dd>
+                  </div>
+                </dl>
+                <details className="mt-7 border-t border-current pt-3">
+                  <summary className="flex min-h-11 cursor-pointer items-center justify-between text-sm font-medium">
+                    Explorar estado y capacidades <span>+</span>
+                  </summary>
+                  <ul className="mt-4 space-y-3">
+                    {p.capabilities.map((c) => (
+                      <li
+                        key={c.label}
+                        className="flex flex-wrap justify-between gap-3 border-b border-current/20 pb-3 text-xs leading-5"
+                      >
+                        <span>{c.label}</span>
+                        <span>{c.status}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-5 text-xs leading-6">
+                    {i
+                      ? "El nombre comercial está por definir. Ravela no procesa pagos directamente; las integraciones con proveedores son capacidades previstas."
+                      : "La aplicación está en desarrollo. Ninguna de estas capacidades se ofrece todavía como disponible."}
+                  </p>
+                </details>
+                <Link href="/contacto" className="text-link mt-5">
+                  Conversar sobre {i ? "el producto" : p.name} ↗
+                </Link>
+              </div>
+              <div>
+                {i ? <SchoolProductVisual /> : <MigaProductVisual />}
+                <p className="mt-5 text-center text-[10px] leading-6">
+                  Representación de producto · Datos demostrativos.
+                  <br />
+                  No es una captura de una aplicación publicada.
+                </p>
+              </div>
             </div>
-            <MigaPreview />
-          </div>
-        </Container>
-      </Section>
-      <Section id="cobranza-escolar" className="border-y bg-[#f7f8f5]">
+            {i === 1 && (
+              <div className="mt-14">
+                <p className="text-xs uppercase tracking-widest">
+                  El flujo que estamos diseñando
+                </p>
+                <SchoolWorkflow />
+              </div>
+            )}
+          </Container>
+        </section>
+      ))}
+      <Section>
         <Container>
-          <div className="grid items-center gap-12 lg:grid-cols-2">
+          <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
-              <p className="eyebrow">02 / {school.category}</p>
-              <h2 className="section-title mt-5">{school.name}</h2>
-              <span className="mt-4 inline-block rounded-full border px-3 py-1.5 text-xs text-soft-cyan">
-                Proyecto en desarrollo
-              </span>
-              <h3 className="mt-7 text-2xl font-medium tracking-tight">
-                {school.tagline}
-              </h3>
-              <p className="mt-5 text-sm leading-7 text-cloud/75">
-                {school.description}
-              </p>
-              <p className="mt-4 text-sm leading-7 text-cloud/75">
-                El enfoque es la cobranza preventiva: seguimiento,
-                automatización, recordatorios e información para la
-                administración. El nombre comercial está por definir.
-              </p>
-              <details className="mt-6 rounded-lg border bg-white p-5">
-                <summary className="cursor-pointer text-sm font-medium text-soft-cyan">
-                  Explorar el alcance previsto
-                </summary>
-                <Capabilities product={school} />
-              </details>
+              <p className="eyebrow">Dos caminos para construir</p>
+              <h2 className="section-title mt-4 max-w-3xl">
+                Labs crea productos propios.
+                <br />
+                Solutions construye contigo.
+              </h2>
             </div>
-            <SchoolPreview />
+            <Link href="/soluciones" className="primary-link">
+              Explorar servicios personalizados ↗
+            </Link>
           </div>
-          <div className="mt-12">
-            <p className="eyebrow">
-              Flujo demostrativo / Funcionalidad prevista
-            </p>
-            <SchoolWorkflow />
-            <p className="mt-5 text-xs leading-6 text-cloud/70">
-              Ravela no procesa pagos directamente. El acceso al pago es una
-              capacidad prevista mediante integración posterior con proveedores
-              de pago.
-            </p>
-          </div>
-        </Container>
-      </Section>
-      <Section className="border-t bg-[#edf0e7]">
-        <Container>
-          <p className="eyebrow">Ravela Labs</p>
-          <h2 className="section-title mt-4 max-w-2xl">
-            Ideas que toman forma.
-            <br />
-            Productos que aún estamos construyendo.
-          </h2>
-          <p className="mt-5 text-sm text-cloud/75">
-            A product initiative by Ravela Group.
-          </p>
-          <Link
-            href="/"
-            className="mt-6 inline-block py-3 text-sm font-medium text-soft-cyan"
-          >
-            Volver a Ravela Group ↗
-          </Link>
         </Container>
       </Section>
     </>

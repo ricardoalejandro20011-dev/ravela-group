@@ -1,39 +1,54 @@
-import type { Metadata } from "next";
-
-import { PostCard } from "@/components/blog/post-card";
-import { Container, Section } from "@/components/ui/container";
-import { FadeIn } from "@/components/ui/fade-in";
+import Link from "next/link";
+import { Container } from "@/components/ui/container";
+import { SceneThumbnail } from "@/components/visuals/system-scenes";
 import { blogPosts } from "@/lib/mock/blog";
-
-export const metadata: Metadata = {
+export const metadata = {
   alternates: { canonical: "/blog" },
-  title: "Blog — Ravela Group",
+  title: "Perspectivas — Tecnología con criterio | Ravela Group",
   description:
-    "Artículos prácticos sobre automatización, Inteligencia Artificial y datos para PYMEs mexicanas.",
+    "Ideas prácticas sobre tecnología, automatización, IA y datos para entender mejor la operación y decidir por dónde empezar.",
 };
-
-export default function BlogIndexPage() {
+export default function Blog() {
   return (
-    <Section className="pt-24 sm:pt-32">
+    <section className="page-intro">
       <Container>
-        <FadeIn className="mx-auto max-w-2xl text-center">
-          <h1 className="font-heading text-4xl font-semibold tracking-tight text-cloud sm:text-5xl">
-            Blog
-          </h1>
-          <p className="mt-4 text-lg text-cloud/70">
-            Ideas prácticas sobre automatización, IA y datos, pensadas para
-            PYMEs mexicanas.
-          </p>
-        </FadeIn>
-
-        <div className="mx-auto mt-14 grid max-w-3xl gap-6">
-          {blogPosts.map((post, i) => (
-            <FadeIn key={post.slug} delay={i * 0.08}>
-              <PostCard post={post} />
-            </FadeIn>
+        <p className="eyebrow">Perspectivas / Ravela Group</p>
+        <h1 className="display-title mt-5 max-w-4xl">
+          Pensar bien.
+          <br />
+          Construir mejor.
+        </h1>
+        <p className="intro-copy mt-6">
+          Ideas para conectar los problemas del negocio con decisiones
+          tecnológicas útiles.
+        </p>
+        <div className="blog-editorial-grid mt-14">
+          {blogPosts.map((p, i) => (
+            <article key={p.slug}>
+              <div className="blog-cover">
+                <SceneThumbnail kind={i ? "dashboard" : "workflow"} />
+              </div>
+              <p className="text-xs text-cloud/70">
+                {new Date(p.publishedAt).toLocaleDateString("es-MX", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}{" "}
+                · {p.author}
+              </p>
+              <h2 className="mt-4 text-3xl font-medium leading-tight tracking-tight">
+                <Link href={`/blog/${p.slug}`}>{p.title}</Link>
+              </h2>
+              <p className="mt-4 max-w-lg text-sm leading-7 text-cloud/75">
+                {p.excerpt}
+              </p>
+              <Link className="text-link mt-4" href={`/blog/${p.slug}`}>
+                Leer perspectiva ↗<span className="sr-only">: {p.title}</span>
+              </Link>
+            </article>
           ))}
         </div>
       </Container>
-    </Section>
+    </section>
   );
 }

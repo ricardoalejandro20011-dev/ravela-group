@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container, Section } from "@/components/ui/container";
-import { CasoCard } from "@/components/casos/caso-card";
 import { CtaFinal } from "@/components/sections/cta-final";
-import { caseStudies, caseDisplayName } from "@/lib/data/cases";
-import { hasPublicAsset } from "@/lib/assets";
+import { RealCase } from "@/components/sections/real-case";
+import { SystemScene } from "@/components/visuals/system-scenes";
+import {
+  caseStudies,
+  caseDisplayName,
+  verifiedResults,
+} from "@/lib/data/cases";
 export function generateStaticParams() {
   return caseStudies.map((c) => ({ slug: c.slug }));
 }
@@ -23,7 +26,7 @@ export async function generateMetadata({
         description: c.summary,
         alternates: { canonical: `/casos/${slug}` },
         openGraph: {
-          title: `${caseDisplayName(c)} | Caso real`,
+          title: `${caseDisplayName(c)} | Caso Ravela`,
           description: c.summary,
           url: `/casos/${slug}`,
         },
@@ -40,53 +43,74 @@ export default async function CasePage({
   if (!c) notFound();
   return (
     <>
-      <Section>
+      <section className="page-intro">
         <Container>
-          <Link href="/casos-de-exito" className="text-sm text-soft-cyan">
-            ← Casos reales
+          <Link href="/casos-de-exito" className="text-link">
+            ← Casos y experiencia
           </Link>
-          <h1 className="section-title mt-7">{caseDisplayName(c)}</h1>
-          <div className="mt-10">
-            <CasoCard caso={c} detail />
+          <p className="eyebrow mt-6">
+            Caso Ravela / Aplicaciones empresariales
+          </p>
+          <h1 className="display-title mt-5 max-w-4xl">{caseDisplayName(c)}</h1>
+          <p className="mt-6 max-w-3xl text-2xl tracking-tight">{c.title}</p>
+          <p className="intro-copy mt-5">{c.summary}</p>
+          <p className="mt-5 text-xs text-cloud/70">
+            Identidad del cliente reservada. Sin datos personales ni médicos
+            reales.
+          </p>
+          <div className="portfolio-detail-visual">
+            <SystemScene kind="application" />
           </div>
-          {c.workflow?.length ? (
-            <section className="mt-12">
-              <h2 className="text-2xl font-medium">Cómo funciona</h2>
-              <ol className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {c.workflow.map((step, i) => (
-                  <li className="rounded-lg border p-5 text-sm" key={step}>
-                    <span className="mr-3 text-soft-cyan">{i + 1}.</span>
-                    {step}
-                  </li>
-                ))}
-              </ol>
+        </Container>
+      </section>
+      <Section className="pt-0">
+        <Container>
+          <div className="detail-layout">
+            <section>
+              <h2>El problema</h2>
+              <p>{c.problem}</p>
             </section>
-          ) : null}
-          {c.technologies?.length ? (
+            <section>
+              <h2>La solución implementada</h2>
+              <p>{c.solution}</p>
+            </section>
+          </div>
+          <section className="mt-12 rounded-2xl bg-[#e2ebe4] p-8">
+            <h2 className="text-2xl font-medium tracking-tight">
+              Resultado confirmado
+            </h2>
+            {verifiedResults(c).map((r) => (
+              <p key={r.label} className="mt-4 max-w-3xl text-base leading-8">
+                {r.value}
+              </p>
+            ))}
+            <p className="mt-5 text-xs text-cloud/70">
+              No se publican porcentajes de ahorro, volumen de pacientes ni
+              resultados económicos sin mediciones verificadas.
+            </p>
+          </section>
+          <section className="mt-12">
+            <h2 className="text-2xl font-medium">Un flujo completo</h2>
+            <ol className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {c.workflow?.map((s, i) => (
+                <li className="border-t py-4 text-sm leading-6" key={s}>
+                  <span className="mr-3 text-xs text-soft-cyan">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  {s}
+                </li>
+              ))}
+            </ol>
+          </section>
+          {c.technologies?.length && (
             <section className="mt-10">
-              <h2 className="text-xl font-medium">Tecnología utilizada</h2>
-              <ul className="mt-4 flex flex-wrap gap-3">
-                {c.technologies.map((t) => (
-                  <li className="rounded-full border px-4 py-2 text-sm" key={t}>
-                    {t}
-                  </li>
-                ))}
-              </ul>
+              <h2 className="text-xl">Tecnologías confirmadas</h2>
+              <p className="mt-4">{c.technologies.join(" · ")}</p>
             </section>
-          ) : null}
-          {c.screenshots?.filter(hasPublicAsset).map((src, i) => (
-            <div className="relative mt-8 aspect-video" key={src}>
-              <Image
-                src={src}
-                alt={`Captura autorizada de la solución, vista ${i + 1}`}
-                fill
-                sizes="(max-width: 1024px) 100vw, 80vw"
-                className="object-contain"
-              />
-            </div>
-          ))}
+          )}
         </Container>
       </Section>
+      <RealCase />
       <CtaFinal />
     </>
   );

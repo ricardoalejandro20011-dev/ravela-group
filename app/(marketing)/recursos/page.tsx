@@ -1,84 +1,62 @@
-import {
-  ArrowRight,
-  BookOpen,
-  Calculator,
-  Sparkles,
-  Trophy,
-} from "lucide-react";
-import type { Metadata } from "next";
 import Link from "next/link";
-
-import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { Container, Section } from "@/components/ui/container";
-import { FadeIn } from "@/components/ui/fade-in";
-
-export const metadata: Metadata = {
+import { Container } from "@/components/ui/container";
+import { Activity, FileText, Layers, SlidersHorizontal } from "lucide-react";
+export const metadata = {
   alternates: { canonical: "/recursos" },
-  title: "Recursos — Ravela Group",
+  title: "Recursos y herramientas | Ravela Group",
   description:
-    "Artículos, herramientas y casos reales para ayudarte a empezar tu camino de automatización e Inteligencia Artificial.",
+    "Diagnóstico, calculadora, perspectivas y biblioteca de casos para explorar oportunidades tecnológicas.",
 };
-
-const recursos = [
+const resources = [
   {
     href: "/diagnostico",
-    icon: Sparkles,
     title: "Ravela Intelligence",
-    description:
-      "Diagnóstico gratuito: descubre tu Diagnóstico de oportunidades.",
+    text: "Un diagnóstico guiado para entender tu operación y ordenar prioridades.",
+    Icon: Activity,
   },
   {
     href: "/calculadora-roi",
-    icon: Calculator,
-    title: "Calculadora de ROI",
-    description: "Estima cuánto te cuestan tus procesos manuales.",
+    title: "Calculadora de procesos",
+    text: "Explora el costo y las horas de un proceso manual con supuestos ajustables.",
+    Icon: SlidersHorizontal,
   },
   {
     href: "/blog",
-    icon: BookOpen,
-    title: "Blog",
-    description:
-      "Artículos prácticos sobre automatización, IA y datos para PYMEs.",
+    title: "Perspectivas",
+    text: "Ideas prácticas para conectar negocio y tecnología.",
+    Icon: FileText,
   },
   {
     href: "/casos-de-exito",
-    icon: Trophy,
-    title: "Casos reales",
-    description: "Proyectos reales de Ravela con información confirmada.",
+    title: "Casos y experiencia",
+    text: "Proyectos, experiencia del fundador y conceptos, con su clasificación visible.",
+    Icon: Layers,
   },
 ];
-
-export default function RecursosPage() {
+export default function Resources() {
   return (
-    <Section className="pt-24 sm:pt-32">
+    <section className="page-intro">
       <Container>
-        <FadeIn className="mx-auto max-w-2xl text-center">
-          <h1 className="font-heading text-4xl font-semibold tracking-tight text-cloud sm:text-5xl">
-            Recursos
-          </h1>
-          <p className="mt-4 text-lg text-cloud/70">
-            Herramientas y artículos para ayudarte a identificar por dónde
-            empezar.
-          </p>
-        </FadeIn>
-
-        <div className="mx-auto mt-14 grid max-w-3xl gap-6 sm:grid-cols-2">
-          {recursos.map((recurso, i) => (
-            <FadeIn key={recurso.href} delay={i * 0.08}>
-              <Link href={recurso.href} className="group block h-full">
-                <Card className="h-full">
-                  <recurso.icon className="h-8 w-8 text-soft-cyan" />
-                  <CardTitle className="mt-4">{recurso.title}</CardTitle>
-                  <CardDescription>{recurso.description}</CardDescription>
-                  <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-soft-cyan opacity-0 transition-opacity group-hover:opacity-100">
-                    Ir <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                </Card>
-              </Link>
-            </FadeIn>
+        <p className="eyebrow">Herramientas para pensar el siguiente paso</p>
+        <h1 className="display-title mt-5">
+          Empieza con
+          <br />
+          más claridad.
+        </h1>
+        <div className="resource-grid mt-12">
+          {resources.map(({ href, title, text, Icon }, i) => (
+            <Link className="resource-card" href={href} key={href}>
+              <div className="flex justify-between">
+                <Icon size={25} />
+                <span className="text-xs">0{i + 1}</span>
+              </div>
+              <h2>{title}</h2>
+              <p>{text}</p>
+              <span className="text-link mt-4">Explorar ↗</span>
+            </Link>
           ))}
         </div>
       </Container>
-    </Section>
+    </section>
   );
 }
