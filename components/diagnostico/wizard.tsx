@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
 import type { DiagnosticoResultado } from "@/lib/types";
 import type { DiagnosticoFormValues } from "@/lib/validations/diagnostico";
+import { ContactForm } from "@/components/forms/contact-form";
+import { diagnosticoSchema } from "@/lib/validations/diagnostico";
 import { ResultadoDiagnostico } from "./resultado";
 const procesosOpciones: {
   value: DiagnosticoFormValues["procesosManuales"][number];
@@ -187,6 +189,21 @@ export function DiagnosticoWizard() {
           resultado={resultado}
           empresa={String(state.empresa)}
         />
+        <details
+          id="cotizacion"
+          className="group mt-8 rounded-2xl border border-cloud/15 bg-[#fafbf9] open:bg-white"
+        >
+          <summary className="cursor-pointer rounded-2xl p-6 marker:text-soft-cyan focus-visible:outline-2 focus-visible:outline-offset-4 sm:p-8">
+            <span className="ml-2 text-lg font-medium">Cotiza tu proyecto</span>
+            <span className="mt-2 block text-sm leading-6 text-cloud/70">
+              Un siguiente paso opcional: convierte las oportunidades de tu
+              diagnóstico en una propuesta de alcance, inversión y tiempos.
+            </span>
+          </summary>
+          <div className="px-3 pb-3 sm:px-6 sm:pb-6">
+            <ContactForm diagnostico={diagnosticoSchema.parse(state)} />
+          </div>
+        </details>
       </div>
     );
   return (

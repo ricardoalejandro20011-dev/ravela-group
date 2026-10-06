@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { flattenError } from "zod";
 
-import { notificarNuevoLead } from "@/lib/email/notify-lead";
+import { entregarLead } from "@/lib/integrations/lead-delivery";
 import { guardarLead } from "@/lib/mock/leads-store";
 import { checkRateLimit } from "@/lib/utils/rate-limit";
 import { contactoSchema } from "@/lib/validations/contacto";
@@ -59,6 +59,7 @@ export async function POST(request: Request) {
 
   try {
     const lead = await guardarLead({
+      cotizacion: parsed.data.cotizacion,
       nombre,
       empresa,
       email,
@@ -74,7 +75,9 @@ export async function POST(request: Request) {
       origen: "contacto",
     });
 
-    await notificarNuevoLead(lead);
+    await entregarLead(lead).catch(() => {
+      console.error("[leads] Entrega pendiente; solicitud guardada", lead.id);
+    });
 
     return NextResponse.json({ ok: true, leadId: lead.id });
   } catch {

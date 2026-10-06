@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { flattenError } from "zod";
 
-import { notificarNuevoLead } from "@/lib/email/notify-lead";
+import { entregarLead } from "@/lib/integrations/lead-delivery";
 import { guardarLead } from "@/lib/mock/leads-store";
 import { generarDiagnostico } from "@/lib/scoring/opportunity-score";
 import { checkRateLimit } from "@/lib/utils/rate-limit";
@@ -62,7 +62,9 @@ export async function POST(request: Request) {
       }),
     });
 
-    await notificarNuevoLead(lead);
+    await entregarLead(lead).catch(() => {
+      console.error("[leads] Entrega pendiente; solicitud guardada", lead.id);
+    });
 
     return NextResponse.json({ ok: true, leadId: lead.id, resultado });
   } catch {

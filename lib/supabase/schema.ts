@@ -1,7 +1,8 @@
 /**
  * Forma de la tabla `leads` en Supabase/PostgreSQL. lib/mock/leads-store.ts
  * inserta en esta tabla cuando hay credenciales configuradas (ver
- * lib/supabase/client.ts), y cae de vuelta a memoria si no las hay.
+ * lib/supabase/client.ts), y falla si no hay credenciales.
+ * Aplicar también supabase/migrations/202610050001_cotizaciones.sql.
  *
  * SQL para crear la tabla en el SQL Editor de Supabase:
  *
@@ -31,6 +32,7 @@
  */
 
 export interface LeadsRow {
+  cotizacion?: import("@/lib/validations/contacto").Cotizacion | null;
   id: string;
   nombre: string;
   empresa: string;

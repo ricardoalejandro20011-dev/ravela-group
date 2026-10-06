@@ -16,7 +16,7 @@ export default function Privacidad() {
         <div className="mt-8 space-y-7 text-sm leading-7 text-cloud/80">
           <p>
             Ravela Group utiliza los datos que proporcionas en este sitio para
-            atender tus solicitudes de contacto y diagnóstico. Puedes
+            atender tus solicitudes de contacto, cotización y diagnóstico. Puedes
             comunicarte sobre el tratamiento de tus datos a{" "}
             <a className="underline" href={`mailto:${CONTACTO.email}`}>
               {CONTACTO.email}
@@ -29,7 +29,7 @@ export default function Privacidad() {
             </h2>
             <p>
               Nombre, empresa, correo o WhatsApp y la descripción del proceso
-              que deseas mejorar. En el diagnóstico también recopilamos tus
+              que deseas mejorar. Para cotizaciones recopilamos también objetivos, alcance, sistemas, volumen, usuarios, presupuesto y plazos. En el diagnóstico también recopilamos tus
               respuestas sobre tareas, horas, herramientas y prioridades. No
               solicitamos datos sensibles; evita incluir información
               confidencial, contraseñas o documentos de terceros.
@@ -54,7 +54,7 @@ export default function Privacidad() {
             <p>
               El sitio se aloja en Vercel. Utilizamos servicios de
               almacenamiento y notificación, como Supabase y Resend, para
-              procesar las solicitudes cuando están configurados. Estos
+              procesar las solicitudes cuando están configurados. También podemos procesar estos datos mediante n8n para preparar cotizaciones y dar seguimiento. Estos
               proveedores pueden procesar información fuera de México. Al abrir
               WhatsApp, también aplican sus propias condiciones y política de
               privacidad.

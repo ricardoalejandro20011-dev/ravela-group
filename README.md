@@ -29,13 +29,11 @@ npx tsx scripts/check-content.ts
 
 ## Recepción de solicitudes
 
-Configurar en Vercel las variables de `.env.example` y crear la tabla `leads` descrita en `lib/supabase/schema.ts`. `NEXT_PUBLIC_SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY` son obligatorias para guardar prospectos en producción.
+La sección `/contacto` ahora permite solicitar cotizaciones con datos de cliente, alcance, objetivos, integraciones, volumen, usuarios, presupuesto, plazo y soporte. Ver [activación, acceso a respuestas y contrato n8n](docs/cotizaciones.md).
 
-Las variables locales de Supabase y Resend estaban vacías durante esta entrega. Las pruebas de integración usan un servidor simulado; no prueban recepción real en una cuenta de producción. Si falta almacenamiento o falla la inserción, la API responde 503 y el formulario ofrece reintento y WhatsApp, sin confirmar falsamente la recepción. En desarrollo, sin Supabase, se conserva el respaldo temporal en memoria.
+Aplicar `supabase/migrations/202610050001_cotizaciones.sql` antes de desplegar y configurar `.env.example`. Sin almacenamiento, la API devuelve 503 en todos los entornos. Las claves locales estaban vacías durante la implementación; las pruebas usan servicios simulados.
 
-El contacto acepta nombre, empresa, WhatsApp **o** correo y descripción. Se preservan los campos anteriores como opcionales por compatibilidad. El diagnóstico pide contacto al final y conserva sus respuestas y resultado en `mensaje` para el seguimiento.
-
-Resend notifica después del guardado. Revisar remitente y destinatario autorizados; el remitente de prueba tiene restricciones del proveedor. Una falla de notificación no elimina un prospecto guardado. No se ha enviado ningún correo real durante la verificación.
+Cada registro se guarda antes de intentar el aviso a `hola@ravela.online` y el webhook de n8n. Los estados de entrega se guardan en Supabase y los pendientes pueden reenviarse con `scripts/retry-delivery.ts`. La confirmación del formulario indica recepción, no envío de una cotización. El precio automático requiere configurar reglas y tarifas en n8n.
 
 Protección: validación Zod, campos trampa, límites por IP e instancia, respuestas de error controladas y escape HTML en correos. Ante abuso distribuido, complementar con reglas del firewall de Vercel o un límite compartido.
 

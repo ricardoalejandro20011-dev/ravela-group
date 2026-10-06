@@ -1,3 +1,4 @@
+import type { Cotizacion } from "@/lib/validations/contacto";
 export type LeadOrigen =
   | "diagnostico"
   | "calculadora-roi"
@@ -8,6 +9,7 @@ export type LeadOrigen =
 export type TamanoEmpresa = "1-10" | "11-50" | "51-200" | "201-500" | "500+";
 
 export interface Lead {
+  cotizacion?: Cotizacion;
   id: string;
   nombre: string;
   empresa: string;

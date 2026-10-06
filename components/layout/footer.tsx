@@ -32,7 +32,7 @@ const columns = [
     links: [
       { href: "/casos-de-exito", label: "Casos y experiencia" },
       { href: "/nosotros", label: "Nosotros" },
-      { href: "/contacto", label: "Contacto" },
+      { href: "/contacto", label: "Cotiza tu proyecto" },
       { href: "/blog", label: "Perspectivas" },
     ],
   },

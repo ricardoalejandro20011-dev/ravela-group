@@ -4,16 +4,22 @@ import { createServer } from "node:http";
 
 async function main() {
   let fail = false;
+  let oldSchema = false;
   const saved: Record<string, unknown>[] = [];
   const server = createServer(async (req, res) => {
     let body = "";
     for await (const chunk of req) body += chunk;
+    if (oldSchema && req.method === "POST" && JSON.parse(body).cotizacion) {
+      res.writeHead(400, { "content-type": "application/json" });
+      res.end(JSON.stringify({ code: "PGRST204", message: "Could not find cotizacion column" }));
+      return;
+    }
     if (fail) {
       res.writeHead(500, { "content-type": "application/json" });
       res.end(JSON.stringify({ message: "Simulated storage failure" }));
       return;
     }
-    saved.push(JSON.parse(body));
+    if (req.method === "POST") saved.push(JSON.parse(body));
     res.writeHead(201, { "content-type": "application/json" });
     res.end("{}");
   });
@@ -23,6 +29,8 @@ async function main() {
   process.env.NEXT_PUBLIC_SUPABASE_URL = `http://127.0.0.1:${address.port}`;
   process.env.SUPABASE_SERVICE_ROLE_KEY = "local-test-key";
   process.env.RESEND_API_KEY = "";
+  process.env.N8N_WEBHOOK_URL = "";
+  process.env.CRM_WEBHOOK_URL = "";
   const { POST: contact } = await import("../app/api/contacto/route");
   const { POST: diagnostic } = await import("../app/api/diagnostico/route");
   let ip = 0;
@@ -61,6 +69,51 @@ async function main() {
       200,
     );
     assert.equal(saved.length, 2, "Honeypot must not save");
+    const quote = {
+      plazo: "1–3 meses",
+      usuarios: "1–10",
+      volumen: "Hasta 100",
+      datos: "Excel o archivos",
+      soporte: "Solo implementación",
+      sistemas: "Excel",
+      objetivo: "Reducir tiempo de captura",
+      alcance: "Reportes",
+      consentimiento: true,
+    };
+    assert.equal(
+      (await contact(request({ ...payload, cotizacion: quote }))).status,
+      400,
+    );
+    assert.equal(
+      (
+        await contact(
+          request({
+            ...payload,
+            email: "quote@example.com",
+            cotizacion: quote,
+          }),
+        )
+      ).status,
+      200,
+    );
+    assert.deepEqual(saved.at(-1)?.cotizacion, quote);
+    assert.equal(
+      (
+        await contact(
+          request({
+            ...payload,
+            email: "quote@example.com",
+            cotizacion: { ...quote, consentimiento: false },
+          }),
+        )
+      ).status,
+      400,
+    );
+    oldSchema = true;
+    assert.equal((await contact(request({ ...payload, email: "quote@example.com", cotizacion: quote }))).status, 200);
+    assert.deepEqual(JSON.parse(String(saved.at(-1)?.mensaje)).cotizacion, quote);
+    assert.equal(saved.at(-1)?.cotizacion, undefined);
+    oldSchema = false;
     fail = true;
     assert.equal(
       (await contact(request(payload))).status,
@@ -83,6 +136,16 @@ async function main() {
       principalesProblemas: ["Reportes"],
       interesPrincipal: "automatizacion",
     };
+    const quoteFromDiagnostic = await contact(request({ ...payload, email: answers.email, cotizacion: { ...quote, diagnostico: answers } }));
+    assert.equal(quoteFromDiagnostic.status, 200);
+    assert.deepEqual((saved.at(-1)?.cotizacion as Record<string, unknown>).diagnostico, answers);
+    const { quoteEvent } = await import("../lib/integrations/lead-delivery");
+    const { contactoSchema } = await import("../lib/validations/contacto");
+    const parsedQuote = contactoSchema.parse({ ...payload, email: answers.email, cotizacion: { ...quote, diagnostico: answers } });
+    const event = quoteEvent({ ...parsedQuote, tamano: undefined, origen: "contacto", id: "test-id", createdAt: new Date().toISOString() });
+    assert.equal(event.event, "quote.requested");
+    assert(event.contextoDiagnostico!.score.overall > 0);
+    assert.equal((await contact(request({ ...payload, email: answers.email, cotizacion: { ...quote, diagnostico: { ...answers, horasSemanalesEnProcesosManuales: -1 } } }))).status, 400);
     const result = await diagnostic(request(answers));
     assert.equal(result.status, 200);
     assert((await result.json()).resultado.score.overall > 0);

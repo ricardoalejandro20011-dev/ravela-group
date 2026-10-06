@@ -66,7 +66,7 @@ export function Navbar() {
             ))}
           </nav>
           <div className="ml-auto mr-3 hidden sm:block lg:ml-0 lg:mr-0">
-            <Button href="/contacto" size="sm">
+            <Button href="/diagnostico" size="sm">
               Diagnóstico gratuito
             </Button>
           </div>
@@ -156,7 +156,7 @@ export function Navbar() {
                 </li>
               ))}
             </ul>
-            <Button href="/contacto" className="mt-8 w-full" onClick={close}>
+            <Button href="/diagnostico" className="mt-8 w-full" onClick={close}>
               Diagnóstico gratuito
             </Button>
           </nav>

@@ -23,6 +23,11 @@ function escapeHtml(value: string) {
 
 function renderLeadHtml(lead: Lead): string {
   const filas: [string, string | undefined][] = [
+    ["Folio", lead.id],
+    [
+      "Cotización",
+      lead.cotizacion ? JSON.stringify(lead.cotizacion, null, 2) : undefined,
+    ],
     ["Origen", origenLabel[lead.origen]],
     ["Nombre", lead.nombre],
     ["Empresa", lead.empresa],
@@ -63,18 +68,15 @@ export async function notificarNuevoLead(lead: Lead) {
     console.info(
       "[notify-lead] RESEND_API_KEY no configurada; se omite el correo.",
     );
-    return;
+    return false;
   }
 
   try {
     const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
       from: process.env.RESEND_FROM || "Ravela Group <onboarding@resend.dev>",
-      to:
-        process.env.NOTIFICATIONS_EMAIL_TO &&
-        process.env.NOTIFICATIONS_EMAIL_TO !== "ravelaservicios@gmail.com"
-          ? process.env.NOTIFICATIONS_EMAIL_TO
-          : CONTACTO.email,
+      to: process.env.NOTIFICATIONS_EMAIL_TO || CONTACTO.email,
+      replyTo: lead.email || undefined,
       subject: `Nuevo lead: ${lead.empresa} (${origenLabel[lead.origen]})`,
       html: renderLeadHtml(lead),
     });
@@ -83,7 +85,9 @@ export async function notificarNuevoLead(lead: Lead) {
         "[notify-lead] Proveedor rechazó la notificación",
         error.name,
       );
-  } catch (error) {
-    console.error("[notify-lead] Error enviando notificación:", error);
+    return !error;
+  } catch {
+    console.error("[notify-lead] Error enviando notificación");
+    return false;
   }
 }
